@@ -1,0 +1,93 @@
+{% include '/campaign/tab_bar.html' %}
+<div class="campaign_content active">
+	<div class="row content_header">
+		<div class="col-6">
+			<h1 class="title">
+				<i class="fa fa-check-circle"></i> Channel Selection
+			</h1>
+		</div>
+	</div>
+	<div class="content_body">
+		{% if supported_social_media_connections %}
+		<form class="needs-validation" action="{{ form_action }}" novalidate data-custom_errors_container="form-error-messages-block">
+			<div class="social_media_connections">
+				<div class="form-group">
+					{% set social_icon_size = 'fa-2x' %}
+					{% for connection_type, connections in supported_social_media_connections %}
+					{% if connections %}
+					<div class="social_media_connection">
+						<h6 class="title">
+							{% if connection_type == 'ORGANIC' %}
+							Suggested or Preferred channels to reach YYYY users
+							{% elseif connection_type == 'PAID' %}
+							Q number of users are targeted
+							{% else %}
+							Other kinds of communication
+							{% endif %}
+						</h6>
+						<div class="channels_block">
+							{% for connection in connections %}
+							<div class="form-check each_channel">
+								<label class="form-check-label channel_label" for="channel_{{ connection.unique_name}}">
+									<span class="social-icons icon-rounded icon-circle">
+										{% set social_icon_unique_key = connection.unique_name %}
+										{% include 'social_icons.html' %}
+									</span>
+									<span class="connection_name">{{ connection.name }}&nbsp(N - number)</span>
+								</label>
+								<div class="toggle-switch">
+									<input type="checkbox" name="preferred_channels[]" value="{{ connection.name}}" id="channel_{{ connection.unique_name}}" data-toggle="toggle" data-onstyle="success" data-offstyle="light" data-on="Selected" data-off="Off" data-width="100" {% if selected_social_media_connections[connection.unique_name] %} checked disabled {% endif %}>
+								</div>
+							</div>
+							{% endfor %}
+						</div>
+					</div>
+					{% endif %}
+					{% endfor %}
+				</div>
+				<input type="hidden" name="campaign_id" id="campaign_id" value="{{ current_campaign_strategy_definition_details.campaign_id }}">
+				<input type="hidden" name="campaign_selected_channels" id="campaign_selected_channels" value="{% if selected_social_media_connections %} 1 {% else %} 0 {%endif %}">
+				<input type="hidden" name="form_source" id="form_source" value="channel_selection">
+				<input type="hidden" name="button_source" id="button_source" value>
+			</div>
+			<div class="row">
+				<div class="form-error-messages-block"></div>
+			</div>
+			<div class="row">
+				<!--				<div class="text-center">-->
+				<!--					{% if selected_social_media_connections %}-->
+				<!--					<button class="btn btn-min btn-promulgate-primary button_source" data-b-source="save" type="submit">-->
+				<!--						Update-->
+				<!--					</button>-->
+				<!--					{% endif %}-->
+				<!--					<button class="btn btn-min btn-success button_source" type="submit" data-b-source="save_continue" id="form_main_action_button">-->
+				<!--						{% if selected_social_media_connections %}-->
+				<!--						Update-->
+				<!--						{% else %}-->
+				<!--						Save-->
+				<!--						{% endif %} & Continue-->
+				<!--					</button>-->
+				<!--					<button class="btn btn-min btn-outline-danger" type="reset">Ignore Changes</button>-->
+				<!--				</div>-->
+				<div class="text-center">
+					<button class="btn btn-min btn-success button_source" type="submit" data-b-source="save_continue" id="form_main_action_button">
+						Save & Continue
+					</button>
+					<button class="btn btn-min btn-outline-danger" type="reset">Ignore Changes</button>
+				</div>
+			</div>
+		</form>
+		{% else %}
+		<div class="row mt-5">
+			<div class="text-center">
+				<h3 class="page-data-needed-block animate__animated animate__pulse">Your organization does not have any channels configured</h3>
+				<h5 class="mt-5">
+					<a href="{{ url('admin_connections') }}" class="btn btn-promulgate-secondary">
+						Configure Channels
+					</a>
+				</h5>
+			</div>
+		</div>
+		{% endif %}
+	</div>
+</div>

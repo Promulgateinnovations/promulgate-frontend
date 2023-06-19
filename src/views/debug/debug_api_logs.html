@@ -1,0 +1,21 @@
+{% if debug_api_logs %}
+<div class="api-logs-block">
+	<div class="accordion" id="api_logs_accordion">
+		<div class="accordion-item">
+			<h2 class="accordion-header title" id="api_log_heading">
+				<span class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#api_logs_content" aria-expanded="false" aria-controls="api_logs_content">
+					API Calls
+				</span>
+			</h2>
+			<div id="api_logs_content" class="accordion-collapse collapse"
+					aria-labelledby="api_log_heading" data-bs-parent="#api_logs_accordion">
+				<div class="accordion-body">
+					<div class="rows">
+						{% include 'debug/debug_api_log_row.html' %}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endif %}

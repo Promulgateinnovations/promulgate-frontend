@@ -1,0 +1,26 @@
+<div class="developer-debug">
+	{% if debug_api_response_errors %}
+	<h6 class="text-danger text-center mb-5">
+		Some of the data in this page may not be available due to errors from API
+	</h6>
+	{% endif %}
+	{% if allowed_to_debug %}
+	<div class="accordion" id="developer_debug_accordion">
+		<div class="accordion-item">
+			<h2 class="accordion-header title" id="developer_debug__heading">
+			<span class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#developer_debug__content" aria-expanded="false" aria-controls="developer_debug__content">
+				Debug Information
+			</span>
+			</h2>
+			<div id="developer_debug__content" class="accordion-collapse show"
+					aria-labelledby="developer_debug__heading" data-bs-parent="#developer_debug_accordion">
+				<div class="accordion-body">
+					{% include 'debug/debug_api_errors.html' %}
+					{% include 'debug/debug_session.html' %}
+					{% include 'debug/debug_api_logs.html' %}
+				</div>
+			</div>
+		</div>
+	</div>
+	{% endif %}
+</div>

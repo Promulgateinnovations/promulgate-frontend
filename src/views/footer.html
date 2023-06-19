@@ -1,0 +1,25 @@
+<footer class="footer">
+	<div class="col-3 d-flex flex-column justify-content-start">
+		<a target="_blank" href="{{ url('privacy') }}" class="text-light">Privacy Policy</a>
+		<a target="_blank" href="{{ url('terms') }}" class="text-light">Terms & Conditions</a>
+	</div>
+	<div class="col-5">
+		<p class="copyright text-center">
+			&copy; {{ 'now' | date('Y') }}
+			<a href="{{ url('/') }}" class="font-weight-bold" target="_blank"> {{ site_name }}</a>
+		</p>
+	</div>
+	<div class="col-3"></div>
+	<div class="col-1">
+		<div class="social-icons icon-circle icon-rotate">
+			<ul class="d-flex justify-content-between">
+				<li>
+					<i class="fa fa-facebook fa-2x"></i>
+				</li>
+				<li>
+					<i class="fa fa-linkedin fa-2x"></i>
+				</li>
+			</ul>
+		</div>
+	</div>
+</footer>

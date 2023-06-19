@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="robots" content="{{ meta_robots }}"/>
+	<meta name="googlebot" content="{{ meta_robots }}"/>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="description" content="{{ site_name }}">
+	<meta name="author" content="{{ site_name }}">
+	<link rel="shortcut icon" href="{{ images_path }}/favicon.png" type="image/x-icon"/>
+	<link rel="canonical" href="https://…"/>
+
+	<title>{{ page_title |title }}</title>
+
+
+	<link rel="preconnect" href="https://fonts.googleapis.com/" crossorigin>
+	<link rel="dns-prefetch" href="https://fonts.googleapis.com/">
+
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700">
+	<link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+	<script src="https://www.gstatic.com/charts/loader.js"></script>
+
+	<link rel="stylesheet" href="{{ css_path }}/lib/bootstrap/bootstrap-reboot.min.css">
+	<link rel="stylesheet" href="{{ css_path }}/lib/bootstrap/bootstrap.min.css">
+	<link rel="stylesheet" href="{{ css_path }}/lib/bootstrap/bootstrap-utilities.min.css">
+	<link rel="stylesheet" href="{{ css_path }}/lib/fontawsome/css/font-awesome.min.css">
+	<link rel="stylesheet" href="{{ css_path }}/lib/bootstrap_validator/bootstrapValidator.min.css">
+	<link rel="stylesheet" href="{{ css_path }}/lib/toastr.min.css">
+	<link rel="stylesheet" href="{{ css_path }}/promulgate.css?v={{site_version}}">
+
+	<link rel="stylesheet" href="{{ css_path }}/youtube.css?v={{site_version}}">
+	<link rel="stylesheet" href="{{ css_path }}/lib/select2.min.css">
+	<link rel="stylesheet" href="{{ css_path }}/lib/datatables.min.css">
+	<link rel="stylesheet" href="{{ css_path }}/lib/bootstrap-slider.min.css">
+	<link rel="stylesheet" href="{{ css_path }}/lib/jquery.datetimepicker.min.css">
+	<link rel="stylesheet" href="{{ css_path }}/lib/bootstrap4-toggle.min.css">
+	<link rel="stylesheet" href="{{ css_path }}/lib/animate.min.css">
+	<link rel="stylesheet" href="{{ css_path }}/lib/jquery.fancybox.min.css">
+</head>
+<body class="page_{{ current_url_name }}
+{% if show_only_content %} only_content full_width no_grid {% endif %}
+{% if hide_side_menu %} hide_side_menu {% endif %}
+">
+<div class="main_body transition-ease">
+
+	{% if not show_only_content %}
+	{% include 'top_header.html' %}
+	{% if not hide_side_menu%}
+	{% include 'side_menu.html' %}
+	{% endif %}
+	{% endif %}
+
+	<main class="main-page-content content transition-ease">
+
+		{% if not show_only_content %}
+		{% if not hide_side_menu %}
+		{% include 'breadcrumbs_content_heading.html' %}
+		{% endif %}
+		{% endif %}
+		<div class="error-messages"></div>
+		{{ include(content_template_file, content_template_placeholders, ignore_missing = true) }}
+
+		{% include 'debug/dev_debug.html' %}
+
+	</main>
+
+	{% if not show_only_content %}
+	{% include 'footer.html' %}
+	{% endif %}
+
+</div>
+<input type="hidden" id="notifications" value="{{ notifications }}">
+<script type="text/javascript" src="{{ js_path }}/lib/jquery-3.6.0.min.js"></script>
+<script type="text/javascript" src="{{ js_path }}/lib/bootstrap/bootstrap.bundle.min.js"></script>
+<script type="text/javascript" src="{{ js_path }}/lib/bootstrap_validator/bootstrapValidator.min.js"></script>
+<script type="text/javascript" src="{{ js_path }}/promulgate.js?v={{site_version}}"></script>
+
+<script type="text/javascript" src="{{ js_path }}/lib/select2.full.min.js"></script>
+<script type="text/javascript" src="{{ js_path }}/lib/bootstrap-slider.min.js"></script>
+<script type="text/javascript" src="{{ js_path }}/lib/datatables.min.js"></script>
+<script type="text/javascript" src="{{ js_path }}/lib/toastr.min.js"></script>
+<script type="text/javascript" src="{{ js_path }}/lib/jquery.datetimepicker.full.min.js"></script>
+<script type="text/javascript" src="{{ js_path }}/lib/sweetalert2_10.15.7.all.min.js"></script>
+
+<script type="text/javascript" src="{{ js_path }}/lib/bootstrap4-toggle.min.js"></script>
+<script type="text/javascript" src="{{ js_path }}/lib/jquery.fancybox.min.js"></script>
+
+{% if (current_url_name == 'admin_connections') or (current_url_name == 'admin_business') %}
+<script>
+    const ADMINS_AJAX_SOURCE = '{{ url("admin_ajax") | raw }}';
+    const CONNECTION_OAUTH_STATUS = {{ CONNECTION_OAUTH_STATUS | raw }};
+
+    $(document).ready(function () {
+        showOauthConnectionStatus();
+    });
+
+</script>
+{% endif %}
+
+{% if plugins_google %}
+<script>
+    const LOGIN_AJAX_SOURCE = '{{ url("login_ajax") | raw}}';
+</script>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+{% endif %}
+
+{% if plugins_google_youtube or plugins_google_drive_picker %}
+
+	<script>
+		const GOOGLE_OAUTH_CLIENT_ID = '{{ GOOGLE_OAUTH_CLIENT_ID }}';
+	</script>
+	<script src="https://apis.google.com/js/api.js"></script>
+
+	{% if plugins_google_youtube %}
+		<script>
+			const GOOGLE_YOUTUBE_API_KEY = '{{ GOOGLE_YOUTUBE_API_KEY }}';
+		</script>
+	{% endif %}
+
+	{% if plugins_google_drive_picker %}
+		<script>
+			const GOOGLE_DRIVE_API_KEY = '{{ GOOGLE_DRIVE_API_KEY }}';
+			const GOOGLE_APP_ID = '{{ GOOGLE_APP_ID }}';
+			const GOOGLE_DRIVE_ACCESS_TOKEN = '{{ GOOGLE_DRIVE_ACCESS_TOKEN }}';
+			const BUSINESS_URL = '{{ BUSINESS_URL | raw }}';
+		</script>
+		<script type="text/javascript" src="{{ js_path }}/promulgate_google_drive_picker.js?v={{site_version}}"></script>
+	{% endif %}
+
+{% endif %}
+
+{% if plugins_facebook %}
+<script>
+    const FACEBOOK_APP_ID = '{{ facebook_app_id }}';
+    const FACEBOOK_APP_CLIENT_ID = '{{ facebook_app_client_id }}';
+    const FACEBOOK_APP_CLIENT_SECRET = '{{ facebook_app_client_secret }}';
+    const FACEBOOK_GRAPH_API_VERSION = '{{ facebook_graph_api_version }}';
+
+    window.fbAsyncInit = function () {
+        FB.init({
+            appId: FACEBOOK_APP_ID,
+            cookie: true,
+            xfbml: true,
+            autoLogAppEvents: true,
+            version: FACEBOOK_GRAPH_API_VERSION
+        });
+
+        FB.AppEvents.logPageView();
+
+    };
+
+    (function (d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {
+            return;
+        }
+        js = d.createElement(s);
+        js.id = id;
+        js.src = "https://connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+</script>
+{% endif %}
+
+{% if plugins_linkedin %}
+<script>
+    const LINKEDIN_OAUTH_AUTHORIZATION_URL = '{{ linkedin_oauth_authorization_url }}';
+</script>
+{% endif %}
+
+<script>
+    $(document).ready(function () {
+        // Campaign Screen share with members checkbox current status
+        var shareCampaignWithMembers = "{{ share_campaign_with_others }}" || false;
+        changeTargetViewers(shareCampaignWithMembers);
+        showNotifications();
+    });
+</script>
+</body>
+</html>
+

@@ -1,0 +1,96 @@
+{% include '/admin/tab_bar.html' %}
+<div class="admin_content active">
+	<div class="row content_header">
+		<div class="col-6">
+			<h1 class="title">
+				<i class="fa fa-shopping-bag"></i> Business Details
+			</h1>
+		</div>
+	</div>
+	<div class="content_body">
+		{% if user_organization.id %}
+		<div class="row">
+			<form class="needs-validation" action="{{ form_action }}" novalidate>
+				<div class="row">
+					<div class="col-12">
+						<div class="form-group">
+							<label for="business_tag_line" class="form-label">Tag line about your business</label>
+							<input type="text" class="form-control" name="business_tag_line" id="business_tag_line" placeholder="Tag line about your business" value="{{ business_details.tagLine }}">
+						</div>
+						<div class="form-group">
+							<label for="about_business" class="form-label">About your business</label>
+							<textarea class="form-control" id="about_business" name="about_business" placeholder="Describe your business">{{business_details.description}}</textarea>
+						</div>
+						<div class="form-group">
+							<label for="page_description_tags" class="form-label">Standard Page Description Tags</label>
+							<input type="text" class="form-control" name="page_description_tags" id="page_description_tags" placeholder="Standard page description tags" value="{{ business_details.descriptionTags }}">
+						</div>
+						<div>
+							<label for="competitor_1" class="form-label">Competitor 1</label>
+							<div class="row">
+								<div class="col-10">
+									<div class="input-group mb-3">
+										<div class="input-group-prepend">
+											<span class="input-group-text" id="competitor_1_prefix">https://youtube.com/</span>
+										</div>
+										<input aria-describedby="competitor_1_prefix" type="text" class="form-control" name="competitor_1" id="competitor_1" placeholder="Competitor 1" value="{{ business_details.competitor1 }}">
+									</div>
+								</div>
+								<div class="col-2">
+									<a href="#" target="_blank" class="btn btn-promulgate-primary btn-min competitor_1_preview">
+										<span>Preview </span>
+										<i class="fa fa-external-link fa-1x"></i>
+									</a>
+								</div>
+							</div>
+						</div>
+						<div>
+							<label for="competitor_2" class="form-label">Competitor 2</label>
+							<div class="row">
+								<div class="col-10">
+									<div class="input-group mb-3">
+										<div class="input-group-prepend">
+											<span class="input-group-text" id="competitor_2_prefix">https://youtube.com/</span>
+										</div>
+										<input aria-describedby="competitor_2_prefix" type="text" class="form-control" name="competitor_2" id="competitor_2" placeholder="Competitor 2" value="{{ business_details.competitor2 }}">
+									</div>
+								</div>
+								<div class="col-2">
+									<a href="#" target="_blank" class="btn btn-promulgate-primary btn-min competitor_2_preview">
+										<span>Preview </span>
+										<i class="fa fa-external-link fa-1x"></i>
+									</a>
+								</div>
+							</div>
+						</div>
+						<input type="hidden" name="business_id" id="business_id" value="{{ business_details.businessId }}">
+						<input type="hidden" name="form_source" id="form_source" value="business">
+					</div>
+					<div class="row mt-5">
+						<div class="text-center">
+							<button class="btn btn-min btn-promulgate-primary" type="submit" id="form_main_action_button">
+								{% if business_details.businessId %}
+								Update
+								{% else %}
+								Save
+								{% endif %}
+							</button>
+							<button class="btn btn-min btn-outline-danger" type="reset">Ignore Changes</button>
+						</div>
+					</div>
+			</form>
+		</div>
+		{% else %}
+		<div class="row mt-5">
+			<div class="text-center">
+				<h3 class="page-data-needed-block animate__animated animate__pulse">Please create organization for adding more info about your business</h3>
+				<h5 class="mt-5">
+					<a href="{{ url('admin_organization') }}" class="btn btn-promulgate-secondary">
+						Create Organization
+					</a>
+				</h5>
+			</div>
+		</div>
+		{% endif %}
+	</div>
+</div>

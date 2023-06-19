@@ -1,0 +1,17 @@
+{% if social_icon_unique_key == 'facebook' or social_icon_unique_key == 'facebook_ads' %}
+<i class="fa fa-facebook-square {{ social_icon_size }}" aria-hidden="true"></i>
+{% elseif social_icon_unique_key == 'twitter' %}
+<i class="fa fa-twitter {{ social_icon_size }}" aria-hidden="true"></i>
+{% elseif social_icon_unique_key == 'youtube' %}
+<i class="fa fa-youtube {{ social_icon_size }}" aria-hidden="true"></i>
+{% elseif social_icon_unique_key == 'instagram' %}
+<i class="fa fa-instagram {{ social_icon_size }}" aria-hidden="true"></i>
+{% elseif social_icon_unique_key == 'google_ads' %}
+<i class="fa fa-google {{ social_icon_size }}" aria-hidden="true"></i>
+{% elseif social_icon_unique_key == 'reddit' %}
+<i class="fa fa-reddit-square {{ social_icon_size }}" aria-hidden="true"></i>
+{% elseif social_icon_unique_key == 'linkedin' %}
+<i class="fa fa-linkedin {{ social_icon_size }}" aria-hidden="true"></i>
+{% else %}
+<span class="fa text">{{ social_icon_unique_key | getFirstCharactersFromString | upper }}</span>
+{% endif %}

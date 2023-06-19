@@ -1,0 +1,142 @@
+{% include '/analytics/tab_bar.html' %}
+<div class="admin_content active">
+	<div class="row content_header">
+		<div class="col-6">
+			<h1 class="title">
+				<i class="fa fa-link"></i> Subscription Analysis (across channels)
+			</h1>
+		</div>
+	</div>
+	<div class="content_body">
+		<div class="row">
+			<div class="channel_stats">
+				<h2 class="title">Social Media Stats</h2>
+				{% if organization_channels %}
+				<div class="social_media_stats_block">
+					{% for channel_unique_name, channel_stats in organization_channels %}
+					<div class="social_media_stats_section">
+						<div class="stats_title">
+							<span class="social-icons icon-circle">
+										{% set social_icon_unique_key = channel_unique_name %}
+										{% include 'social_icons.html' %}
+							</span>
+							<span class="channel_name">{{channel_stats['name']}}</span>
+						</div>
+						<div class="stats_data">
+							{% for index, channel_data in channel_stats['analytics'] %}
+							<div class="data_row">
+								<span class="data-title">{{channel_data['title']}}</span>
+								<span class="data-value">{{channel_data['count'] | number_format(0, '.', ',')}}</span>
+							</div>
+							{% endfor %}
+						</div>
+					</div>
+					{% endfor %}
+				</div>
+				{% else %}
+				<h4 class="text-center">No Channels available for your organization</h4>
+				{% endif %}
+			</div>
+		</div>
+		<div class="row">
+			<div class="channel_stats">
+				<h2 class="title">Website Stats</h2>
+				<div class="users_stats_block">
+					<div class="row d-flex justify-content-center align-items-center">
+						<div class="col-3">
+							<div class="user_count_card">
+								<div class="icon-section">
+									<i class="fa fa-users fa-4x" aria-hidden="true"></i><br>
+								</div>
+								<div class="content-section">
+									<h2>Users</h2>
+									<sub>Last 14 Days</sub>
+									<h1>{{ last_days_users_count }}</h1>
+								</div>
+							</div>
+						</div>
+						<div class="col-9">
+							<div id="users_stats_columns_bar_chart"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+    google.charts.load('current', {'packages': ['bar']});
+    google.charts.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+        var users_data = [
+            ['Date', 'Users Active', {role: 'style'}],
+        ].concat({{graph_users_count | raw}})
+        ;
+
+        var data = google.visualization.arrayToDataTable(users_data);
+
+        var options = {
+            height: 400,
+            titleTextStyle: {
+                color: '#1998bf', fontSize: 30,
+                bold: true,
+                italic: false
+            },
+            chart: {
+                title: 'Users Stats',
+                subtitle: 'Users count per day',
+            },
+            titlePosition: 'in',
+            legend: {
+                position: 'none', // top
+                maxLines: 3,
+                textStyle: {
+                    color: 'grey', fontSize: 18,
+                    bold: true,
+                    italic: false
+                },
+                alignment: 'center',
+            },
+
+            hAxis: {
+                titleTextStyle: {
+                    color: '#1998bf',
+                    fontSize: 20,
+                    bold: true,
+                    italic: false
+                },
+                textPosition: 'in',
+                title: 'Date'
+            },
+            vAxis: {
+                titleTextStyle: {
+                    color: '#1998bf',
+                    fontSize: 20,
+                    bold: true,
+                    italic: false
+                },
+                minValue: 0,
+                format: 'decimal',
+                title: 'No. Of Users Active'
+            },
+            axes: {
+                x: {
+                    0: {
+                        side: 'bottom',
+                        // label: 'Last 14 days'
+                    },
+                },
+            },
+            bars: 'vertical',
+            bar: {
+                groupWidth: "80%"
+            },
+        };
+
+        var chart = new google.charts.Bar(document.getElementById('users_stats_columns_bar_chart'));
+
+        chart.draw(data, google.charts.Bar.convertOptions(options));
+    }
+</script>

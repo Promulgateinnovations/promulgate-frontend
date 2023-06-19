@@ -1,0 +1,113 @@
+<div class="admin_content active">
+	<div class="row content_header">
+		<div class="col-12 text-center">
+			<h1 class="title">
+				Campaign Analysis - {{ campaign_analysis_details.campaign_name}}
+			</h1>
+		</div>
+	</div>
+	<div class="content_body">
+		<div class="row">
+			<div class="d-sm-flex align-items-center justify-content-between">
+				<div>
+					<h5 class="text-muted">Status</h5>
+					<h4 class="text-promulgate-primary">{{ campaign_analysis_details.campaign_status}}
+						(
+							{{ get_date(campaign_analysis_details.campaign_start_date, 2)}}
+							to
+							{{ get_date(campaign_analysis_details.campaign_end_date, 2)}}
+						)</h4>
+				</div>
+				<div>
+					<h5 class="text-muted">System Feedback</h5>
+					<h4 class="text-promulgate-primary">
+						{{ campaign_analysis_details.system_status}}
+					</h4>
+				</div>
+				<div>
+					<h5 class="text-muted">Reach</h5>
+					<h4 class="text-promulgate-primary">{{ campaign_analysis_details.reach }}</h4>
+				</div>
+				<div>
+					<h5 class="text-muted">Engagement</h5>
+					<h4 class="text-promulgate-primary">{{ campaign_analysis_details.engagement }} %</h4>
+				</div>
+				<a class="btn btn-promulgate-primary"><i class="fa fa-download"></i> Generate Report</a>
+			</div>
+		</div>
+		{% if campaign_analysis_details %}
+		<div class="row mt-4 mb-5">
+			<div class="card-deck d-flex flex-wrap justify-content-center">
+				{% for connection_name, connection_analytics in campaign_analysis_details.connections %}
+				<div class="card w-25 mr-2 mt-2">
+					<div class="card-body">
+						<div class="text-center align-items-center">
+							<span class="social-icons icon-rounded icon-circle">
+								{% set social_icon_unique_key = connection_name %}
+								{% set social_icon_size = 'fa-2x' %}
+								{% include 'social_icons.html' %}
+							</span>
+							<span class="bold">{{ connection_name  | upper }}</span>
+						</div>
+						<div class="mt-5">
+							{% for stats_name, stats_count in connection_analytics %}
+							<p class="d-flex justify-content-between">
+								<label class="bold">{{stats_name | replace({'Count': ""}) | title }}</label>
+								<label class="badge bg-promulgate-primary"> {{stats_count}}</label>
+							</p>
+							{% endfor %}
+						</div>
+					</div>
+				</div>
+				{% endfor %}
+			</div>
+		</div>
+		{% endif %}
+		<div class="row">
+			<div class="text-center d-flex justify-content-center">
+				<!-- Pie Chart -->
+				<div class="col-6">
+					<div id="campaign_spread_piechart" class="card"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+    google.charts.load("current", {packages: ["corechart"]});
+    google.charts.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+            ['Task', 'Hours per Day'],
+            ['Social', 68],
+            ['Referral', 8],
+            ['Paid', 24],
+        ]);
+
+        var options = {
+            height: 300,
+            pieHole: 0.5,
+            title: "Campaign Spread",
+            titleTextStyle: {
+                color: '#1998bf',
+                fontSize: 20,
+                bold: true,
+                italic: false,
+                alignment: 'center',
+            },
+            legend: {
+                position: 'right',
+                textStyle: {
+                    color: 'grey', fontSize: 16,
+                    bold: true,
+                    italic: false
+                },
+                alignment: 'center',
+            },
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('campaign_spread_piechart'));
+        chart.draw(data, options);
+    }
+</script>

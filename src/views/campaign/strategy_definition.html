@@ -1,0 +1,179 @@
+{% if current_campaign_strategy_definition_details.campaign_id != 0 %}
+{% include '/campaign/tab_bar.html' %}
+{% endif %}
+<div class="campaign_content active">
+	<div class="row content_header">
+		<div class="col-6">
+			<h1 class="title">
+				<i class="fa fa-clipboard"></i> Strategy Definition
+			</h1>
+		</div>
+		{% if current_campaign_strategy_definition_details.campaign_id != 0 %}
+		<div class="col-6 action_buttons">
+			<a href="{{ url('campaign_channel_selection', {'campaign_id': current_campaign_strategy_definition_details.campaign_id}) }}" class="btn btn-promulgate-primary btn-sm">
+				Channels Selection
+			</a>
+			<a href="{{ url('campaign_target_viewers', {'campaign_id': current_campaign_strategy_definition_details.campaign_id}) }}" class="target_viewers btn btn-promulgate-primary btn-sm">
+				Target Viewers
+			</a>
+		</div>
+		{% endif %}
+	</div>
+	<div class="content_body">
+		<form class="needs-validation" action="{{ form_action }}" novalidate>
+			<div class="row">
+				<div class="col-lg-6">
+					<div class="form-group">
+						<label for="campaign_name">Campaign Name</label>
+						<input type="text" class="form-control " value="{{ current_campaign_strategy_definition_details.campaign_name }}" id="campaign_name" name="campaign_name" placeholder="Campaign Name">
+					</div>
+					<div class="form-group">
+						<label for="campaign_topic">Campaign Topic</label>
+						<div class="row justify-content-center align-items-center">
+							<div class="col-5">
+								<input type="text" class="form-control" value="{{ current_campaign_strategy_definition_details.campaign_topic }}" placeholder="Topic" id="campaign_topic" name="campaign_topic">
+							</div>
+							<div class="col-7">
+								<a id="pre-campaign-analysis-link" href="https://www.social-searcher.com/social-buzz/?q5={{ current_campaign_strategy_definition_details.campaign_topic }}" target="_blank" class="btn btn-promulgate-primary btn-sm">Check pre-campaign analysis</a>
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="page_description_tags" class="form-label">Campaign Tags</label>
+						<input type="text" class="form-control" name="page_description_tags" id="page_description_tags" placeholder="Campaign tags" value="{{ current_campaign_strategy_definition_details.page_description_tags }}">
+					</div>
+					<div class="form-group">
+						<label for="campaign_objective">Campaign Objective</label>
+						<textarea type="textarea" class="form-control" id="campaign_objective" name="campaign_objective" placeholder="Objective and Goal">{{ current_campaign_strategy_definition_details.campaign_objective }}</textarea>
+					</div>
+				</div>
+				<div class="col-lg-6">
+					<div class="form-group">
+						<label for="campaign_influencers">Campaign Influencers
+							<i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="Provide camma separated values"></i></label>
+						<div class="col-12">
+							<input type="text" class="form-control" placeholder="Influencers" id="campaign_influencers" value="{{ current_campaign_strategy_definition_details.campaign_influencers }}" name="campaign_influencers">
+						</div>
+					</div>
+					<div class="form-group mb-4">
+						<label for="type_of_campaign">Type of Campaign</label>
+						<select class="js-select-2 form-control" id="type_of_campaign" name="type_of_campaign"
+								data-placeholder--id="0"
+								data-placeholder--text="Type of Campaign">
+							<option {% if current_campaign_strategy_definition_details.type_of_campaign==
+							"Acquisitions" %} selected {% endif %} value="Acquisitions">Acquisitions</option>
+							<option {% if current_campaign_strategy_definition_details.type_of_campaign==
+							"Behaviour" %} selected {% endif %} value="Behaviour">Behaviour</option>
+							<option {% if current_campaign_strategy_definition_details.type_of_campaign==
+							"Conversions" %} selected {% endif %} value="Conversions">Conversions</option>
+						</select>
+					</div>
+					<div class="row start_end">
+						<div class="form-group col-6">
+							<label for="campaign_start_date">Campaign Start date</label>
+							<input autocomplete="off" class="form-control date-time-picker-min-time" type="text"
+									value="{{ get_date(current_campaign_strategy_definition_details.campaign_start_date, 6) }}"
+									placeholder="Start" id="campaign_start_date" name="campaign_start_date">
+						</div>
+						<div class="form-group col-6">
+							<label for="campaign_end_date">Campaign End date</label>
+							<input autocomplete="off" class="form-control date-time-picker-min-time" type="text"
+									value="{{ get_date(current_campaign_strategy_definition_details.campaign_end_date, 6) }}"
+									placeholder="End" id="campaign_end_date" name="campaign_end_date">
+						</div>
+					</div>
+					<div class="form-group row">
+						<label for="campaign_targeted_audience">Total targeted Audience</label>
+						<div class="col-10">
+							<input type="number" class="form-control " placeholder="Total targeted Audience" value="{{ current_campaign_strategy_definition_details.campaign_targeted_audience }}" id="campaign_targeted_audience" name="campaign_targeted_audience">
+						</div>
+						<div class="col-2">
+							<a href="#" class="btn btn-promulgate-primary">
+								Calculate
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			{% if organization_hub.type %}
+			<div class="form-group row justify-content-center align-items-center">
+				<label for="campaign_video_url">Campaign Video URL</label>
+				<label for="campaign_video_url">Hub URL</label>
+				{% if organization_hub.type == 'youtube' %}
+				<div class="col-9">
+					<input type="text" list="top_video_urls" autocomplete="off" class="form-control" placeholder="Video URL" value="{{ organization_hub.ucurrent_campaign_strategy_definition_details.campaign_video_url}}" id="campaign_video_url" name="campaign_video_url" data-url_type="{{organization_hub.type}}">
+					<!-- <input type="text" list="top_video_urls" autocomplete="off" class="form-control" placeholder="Video URL"
+							value="{{ current_campaign_strategy_definition_details.campaign_video_url }}" id="campaign_video_url" name="campaign_video_url"> -->
+					{% if top_video_urls_by_org %}
+					<datalist id="top_video_urls">
+						{% for video_url in top_video_urls_by_org %}
+						<option value="{{video_url.name}} - {{video_url.url}}">{{video_url.name}} - {{video_url.url}}</option>
+						{% endfor %}
+					</datalist>
+					{% endif %}
+				</div>
+				<div class="col-3 d-flex justify-content-between">
+					<button type="button" id="enrich_video_url" class="btn btn-promulgate-primary"  data-video-url="" data-video-id="">
+						<span>Enrich </span><i class="fa fa-magic fa-1x"></i>
+					</button>
+					<a href="#" target="_blank" id="view_campaign_video_url" class="btn btn-promulgate-primary">
+						<span>Preview </span><i class="fa fa-file-video-o fa-1x"></i>
+					</a>
+				</div>
+				{% endif %}
+				{% if organization_hub.type == 'e_commerce' or organization_hub.type == 'website' %}
+				<div class="col-10">
+					<input type="text" list="top_video_urls" autocomplete="off" class="form-control" placeholder="URL"
+							value="{{ organization_hub.url }}" id="campaign_video_url" data-url_type="{{organization_hub.type}}" name="campaign_video_url">
+				</div>
+				<div class="col-2 d-flex justify-content-between">
+					<a href="{{ organization_hub.url }}" target="_blank" id="view_campaign_video_url" class="btn btn-promulgate-primary">
+						<span>Preview </span><i class="fa fa-file-video-o fa-1x"></i>
+					</a>
+				</div>
+				{% endif %}
+			</div>
+			{% endif %}
+			<div class="row mb-3">
+				<div class="col-12">
+					<div class="card">
+						<div class="card-body">
+							<div class="form-check">
+								<input class="form-check-input" type="checkbox" id="share_with_captive_members" name="share_with_captive_members"
+										{% if current_campaign_strategy_definition_details.selected_share_with_captive_members== true %} checked {% endif %}
+										value="true">
+								<label for="share_with_captive_members" class="form-check-label">
+									Share with all captive members on their preferred channels
+								</label>
+							</div>
+						</div>
+					</div>
+				</div>
+				<input type="hidden" name="campaign_id" id="campaign_id" value="{{ current_campaign_strategy_definition_details.campaign_id }}">
+				<input type="hidden" name="form_source" id="form_source" value="strategy_definition">
+				<input type="hidden" name="button_source" id="button_source" value>
+			</div>
+			<div class="row mt-4">
+				<div class="text-center">
+					{% if current_campaign_strategy_definition_details.campaign_id != 0 %}
+					<button class="btn btn-min btn-promulgate-primary button_source" data-b-source="save" type="submit">
+						Update
+					</button>
+					{% endif %}
+					<button class="btn btn-min btn-success button_source" type="submit" data-b-source="save_continue" id="form_main_action_button">
+						{% if current_campaign_strategy_definition_details.campaign_id != 0 %}
+						Update
+						{% else %}
+						Create
+						{% endif %} & Continue
+					</button>
+					<button class="btn btn-min btn-outline-danger" type="reset">Ignore Changes</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+<script>
+    const CAMPAIGN_AJAX_SOURCE = '{{ url("campaign_ajax") | raw }}';
+    const ORG_TOP_URLS = {{ top_video_urls_by_org_for_script | raw }};
+</script>

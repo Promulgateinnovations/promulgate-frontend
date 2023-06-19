@@ -1,0 +1,79 @@
+<div class="campaign_content active">
+	<div class="row content_header">
+		<div class="col-md-8">
+			<h1 class="title">
+				<i class="fa fa-play-circle"></i> Campaign Initiation</h1>
+		</div>
+		<div class="action_buttons col-md-4">
+			<a href="{{ url('campaign_strategy_definition') }}" class="btn btn-promulgate-primary">Start a new campaign</a>
+		</div>
+	</div>
+	<div class="content_body">
+		{% if campaigns_list %}
+		<div class="row mb-3">
+			<fieldset class="border p-2 filters_section">
+				<legend>Filters</legend>
+				<div class="row">
+					<div class="col-4"></div>
+					<div class="col-4 text-center">
+						<select id="campaign_status_filter" name="campaign_status_filter" class="js-select-2 form-control"
+								data-placeholder--id="0"
+								data-placeholder--text="Campaign Status"
+						>
+							<option value="">Campaign Status</option>
+							{% for each_status in filters.status %}
+							<option value="{{ each_status }}">{{ each_status }}</option>
+							{% endfor %}
+						</select>
+					</div>
+					<div class="col-4"></div>
+				</div>
+			</fieldset>
+		</div>
+		{% endif %}
+		<div class="row">
+			{% if campaigns_list %}
+			<table class="table data-table-campaigns-list table-hover table-bordered align-middle">
+				<thead>
+				<tr class="text-center">
+					<th>Name</th>
+					<th>Status</th>
+					<th>Type</th>
+					<th>Created By</th>
+					<th>Created At</th>
+					<th>Actions</th>
+				</tr>
+				</thead>
+				<tbody>
+				{% for campaign in campaigns_list %}
+				<tr>
+					<td>{{ campaign.name }}</td>
+					<td>{{ campaign.status }}</td>
+					<td>{{ campaign.campaignTypes }}</td>
+					<td>{{ campaign.user.firstName }}</td>
+					<td>{{ get_date(campaign.createdAt, 4) }}</td>
+					<td class="text-center">
+						<a href="{{ url('campaign_strategy_definition',  {'campaign_id': campaign.campaignDefinitionId}) }}" class="btn btn-sm btn-outline-promulgate-primary">
+							<span><i class="fa fa-edit"></i> Edit</span>
+						</a>
+						<a href="{{ url('analytics_campaign_analysis', {campaign_id : campaign.campaignDefinitionId}) }}" class="link-in-iframe btn btn-sm btn-outline-success">
+							<span><i class="fa fa-eye"></i> View Analysis</span>
+						</a>
+					</td>
+				</tr>
+				{% endfor %}
+				</tbody>
+			</table>
+			{% else %}
+			<div class="row mt-5">
+				<div class="text-center">
+					<h3>No campaigns available</h3>
+					<h5 class="mt-5">
+						<a href="{{ url('campaign_strategy_definition') }}" class="btn btn-promulgate-secondary btn-sm">Start a new campaign</a>
+					</h5>
+				</div>
+			</div>
+			{% endif %}
+		</div>
+	</div>
+</div>

@@ -1,0 +1,102 @@
+{% include '/admin/tab_bar.html' %}
+
+<div class="admin_content active">
+	<div class="row content_header">
+		<div class="col-6">
+			<h1 class="title">
+				<i class="fa fa-users"></i> Team
+			</h1>
+		</div>
+		{% if user_organization.id %}
+		<div class="col-6 action_buttons">
+			<a class="btn btn-promulgate-primary btn-sm" href="{{ url('admin_team_add_new_member') }}">
+				<span>Add New</span>
+				<i class="fa fa-user-plus"></i>
+			</a>
+		</div>
+		{% endif %}
+	</div>
+	<div class="content_body">
+		{% if user_organization.id %}
+		<div class="row">
+			<div class="col-4"></div>
+			<div class="col-4 text-center">
+				<div class="card">
+					<div class="card-header">
+						Marketing Director
+					</div>
+					<div class="card-body">
+						{% if director_details.user.email %}
+						<p class="m-0">
+							<strong>{{ director_details.user.userName | upper }}</strong>
+						</p>
+						<sub>{{ director_details.user.email | lower }}</sub>
+						{% else %}
+						<label>No Director</label>
+						{% endif %}
+					</div>
+				</div>
+			</div>
+			<div class="col-4"></div>
+		</div>
+		<div class="row">
+			{% if teams_list %}
+			<table class="table data-table table-hover table-bordered align-middle">
+				<thead>
+				<tr class="text-center">
+					<th>First Name</th>
+					<th>Last Name</th>
+					<th>Username</th>
+					<th>Email</th>
+					<th>Role</th>
+					<th>User Status</th>
+					<th>Actions</th>
+				</tr>
+				</thead>
+				<tbody>
+				{% for team in teams_list %}
+				<tr>
+					<td>{{ team.user.firstName }}</td>
+					<td>{{ team.user.lastName }}</td>
+					<td>{{ team.user.userName }}</td>
+					<td>{{ team.user.email }}</td>
+					<td>{{ team.role.roleName }}</td>
+					<td>{{ team.user.userStatus }}</td>
+					<td class="text-center">
+						<a href="#" class="btn btn-outline-primary">
+							<span><i class="fa fa-edit"></i></span>
+						</a>
+						<a href="#" class="btn btn-outline-danger">
+							<span><i class="fa fa-trash-o"></i></span>
+						</a>
+					</td>
+				</tr>
+				{% endfor %}
+				</tbody>
+			</table>
+			{% else %}
+			<div class="row mt-5">
+				<div class="text-center">
+					<h3>No team members are available</h3>
+					<a class="btn btn-promulgate-primary btn-min mt-5" href="{{ url('admin_team_add_new_member') }}">
+						<span>Add New</span>
+						<i class="fa fa-plus"></i>
+					</a>
+				</div>
+			</div>
+			{% endif %}
+		</div>
+		{% else %}
+		<div class="row mt-5">
+			<div class="text-center">
+				<h3 class="page-data-needed-block animate__animated animate__pulse">Please create organization for adding your team!</h3>
+				<h5 class="mt-5">
+					<a href="{{ url('admin_organization') }}" class="btn btn-promulgate-secondary">
+						Create Organization
+					</a>
+				</h5>
+			</div>
+		</div>
+		{% endif %}
+	</div>
+</div>

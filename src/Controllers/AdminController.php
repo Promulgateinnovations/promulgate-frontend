@@ -1,0 +1,956 @@
+<?php
+
+namespace Promulgate\Controllers;
+
+use Josantonius\Session\Session;
+use Promulgate\Core\Config;
+use Promulgate\Core\GoogleAPIClient;
+use Promulgate\Models\AdminModel;
+use Promulgate\Models\AgencyModel;
+
+/**
+ * Class AdminController
+ *
+ * @package Promulgate\Controllers
+ */
+class AdminController extends BaseController
+{
+	private $adminModel;
+	private $agencyModel;
+	private $organizationId;
+	private $agencyId;
+
+	/**
+	 * AdminController constructor.
+	 */
+	public function __construct()
+	{
+		if(get_loaded_route_name() === "admin_organization_createnew")
+		{
+			Session::destroy('organization');
+		}
+		
+		parent::__construct();
+		$this->agencyModel = new AgencyModel();
+		$this->adminModel = new AdminModel();
+
+	}
+
+
+	protected function setWebContext()
+	{
+
+		$this->view_sub_directory_path = "/admin/";
+		$this->Breadcrumbs->add([
+			'title' => 'Admin',
+			'url'   => url('admin_organization'),
+		]);
+		$this->setAgencyId(Session::get('agency', 'id'));
+
+		$this->setOrganizationId(Session::get('organization', 'id'));
+	}
+
+
+
+	private function setAgencyId($agencyId)
+	{
+		if($agencyId && !is_array($agencyId)) {
+			$agencyId       = trim($agencyId);
+			$this->agencyId = $agencyId;
+		}
+	}
+
+
+
+	private function setOrganizationId($organizationId)
+	{
+		if($organizationId && !is_array($organizationId)) {
+			$organizationId       = trim($organizationId);
+			$this->organizationId = $organizationId;
+		}
+	}
+
+
+	public function showOrganizationDetails()
+	{
+		$this->Breadcrumbs->add([
+			'title' => 'Organization',
+			'url'   => url('admin_organization'),
+		]);
+
+		$organization_details = $this->adminModel->getOrganizationDetails($this->organizationId)['body'];
+
+		if(getValue('status', $organization_details) == 'success') {
+
+			$organization_details = $organization_details['data'];
+
+		} else {
+			$organization_details = [];
+		}
+
+		$this->setViewData('organization.html',
+			[
+				'form_action'          => url('admin_ajax'),
+				'organization_details' => $organization_details,
+				'page_title'           => "Admin Organization",
+			]
+		);
+	}
+
+	public function CreateOrganizationDetails()
+	{
+		$this->Breadcrumbs->add([
+			'title' => 'Organization',
+			'url'   => url('admin_organization'),
+		]);
+
+		Session::destroy('organization');
+
+		$this->setViewData('organization.html',
+			[
+				'form_action'          => url('admin_ajax'),
+				'organization_details' => [],
+				'page_title'           => "Admin Organization",
+			]
+		);
+	}
+
+
+	public function showTeam()
+	{
+
+		$this->Breadcrumbs->add([
+			'title' => 'Team',
+			'url'   => url('admin_team_list'),
+		]);
+
+		$teams_list = $this->adminModel->getTeamsList($this->organizationId)['body'];
+		if(getValue('status', $teams_list) != 'success') {
+			$teams_list = [];
+		} else {
+			$teams_list = getValue('teams', $teams_list['data'], []);
+		}
+
+		$final_team_list = [];
+		$directors_list  = [];
+
+		//TODO: Propose to return director data from API
+
+		// Separate Director list from results
+		foreach($teams_list as $team_member) {
+			if(strtolower($team_member['role']['roleName']) == "director") {
+				$directors_list[] = $team_member;
+			} else {
+				$final_team_list[] = $team_member;
+
+			}
+		}
+
+		$this->setViewData('team.html',
+			[
+				'teams_list'       => $final_team_list,
+				'director_details' => reset($directors_list),
+				'page_title'       => "Admin Team",
+			]
+		);
+
+	}
+
+
+	public function showAddTeamMember()
+	{
+
+		$this->Breadcrumbs->add([
+			'title' => 'Team',
+			'url'   => url('admin_team_list'),
+		]);
+
+		$this->Breadcrumbs->add([
+			'title' => 'Add New',
+			'url'   => url('admin_team_add_new_member'),
+		]);
+
+		$organization_roles_list = $this->adminModel->getRoles($this->organizationId)['body'];
+		$agency_user_list = $this->agencyModel->getTeamsList($this->agencyId)['body'];
+		if(getValue('status', $organization_roles_list) != 'success') {
+			$organization_roles_list = [];
+		} else {
+			$organization_roles_list = getValue('data', $organization_roles_list, []);
+		}
+		if(getValue('status', $agency_user_list) != 'success') {
+			$agency_user_list = [];
+		} else {
+			$agency_user_list = getValue('data', $agency_user_list, []);
+		}
+
+		
+		$final_organization_roles_list = [];
+		// Remove Director from the list
+		foreach($organization_roles_list as $role) {
+
+			if(strtolower(trim($role['roleName'])) != 'director') {
+				$final_organization_roles_list[] = $role;
+			}
+		}
+
+		$this->setViewData('add_new_team_member.html',
+			[
+				'form_action'             => url('admin_ajax'),
+				'organization_roles_list' => $final_organization_roles_list,
+				'agency_user_list' => $agency_user_list,
+				'page_title'              => "Add new Team",
+			]
+		);
+
+	}
+
+
+	public function showBusiness()
+	{
+
+		$this->Breadcrumbs->add([
+			'title' => 'Business',
+			'url'   => url('admin_business'),
+		]);
+
+		$business_details = $this->getBusinessDetails($this->organizationId);
+
+		$this->setViewData('business.html',
+			[
+				'form_action'      => url('admin_ajax'),
+				'page_title'       => "Admin Business",
+				'business_details' => $business_details,
+				'supported_api_connections' => Config::API_CONFIGURATION_CONNECTIONS,
+				'business_details'          => $business_details,
+				'plugins_google_youtube'    => true,
+				'plugins_google_drive_picker' => true,
+				'GOOGLE_APP_ID'               => env('GOOGLE_APP_ID'),
+				'GOOGLE_OAUTH_CLIENT_ID'    => env('GOOGLE_OAUTH_CLIENT_ID'),
+				'GOOGLE_YOUTUBE_API_KEY'    => env('GOOGLE_YOUTUBE_API_KEY'),
+				'GOOGLE_DRIVE_API_KEY'        => env('GOOGLE_DRIVE_API_KEY'),
+				'CONNECTION_OAUTH_STATUS'     => json_encode(Session::pull('CONNECTION_OAUTH_STATUS') ?? []),
+			]
+		);
+	}
+
+
+	public function showConnections()
+	{
+
+		$this->Breadcrumbs->add([
+			'title' => 'Connections',
+			'url'   => url('admin_connections'),
+		]);
+
+		$organization_connections = $this->adminModel->getConnectionsList($this->organizationId)['body'] ?? [];
+		if(getValue('status', $organization_connections) != 'success') {
+			$organization_connections = [];
+		} else {
+			$organization_connections = getValue('connections', $organization_connections['data'], []);
+		}
+
+		$CampaignController     = new CampaignController([
+			'context' => 'data',
+		]);
+		$configured_connections = $CampaignController->getSocialMediaConnections(true);
+
+		$final_organization_connections        = [];
+		$final_organization_connections_titles = [];
+
+		if($organization_connections) {
+
+			foreach($organization_connections as $connection) {
+
+				$unique_name   = strtolower(preg_replace('/[^a-zA-Z0-9_]/', '_', $connection['name']));
+				$final_organization_connections[$connection['type']]
+				[$unique_name] = [
+					'name'        => $connection['name'],
+					'unique_name' => $unique_name,
+					'id'          => $connection['id'] ?? 0,
+					'type'        => $connection['type'],
+				];
+			}
+
+			// For looping in same order
+			$final_organization_connections = [
+				'ORGANIC' => $final_organization_connections['ORGANIC'] ?? [],
+				'PAID'    => $final_organization_connections['PAID'] ?? [],
+				#'SOCIAL'  => $final_organization_connections['SOCIAL'] ?? [],
+			];
+
+			$final_organization_connections_titles = [
+				'ORGANIC' => "Organic",
+				#'SOCIAL'  => "Social",
+				'PAID'    => "Paid",
+			];
+		}
+
+		
+	 	$LinkedInClient = new \LinkedIn\Client(env('LINKEDIN_CLIENT_ID'), env('LINKEDIN_CLIENT_SECRET'));
+
+		$LinkedInClient->setRedirectUrl(getAbsoluteUrl('oauth_linkedin_callback', NULL, [
+			'source' => 'connection',
+		], [
+			'NO_DEBUG' => false,
+		]));
+
+				// P($final_organization_connections);
+		//Saving state in session & validate once we receive authorization code for security
+		//Session::set('linkedin_oauth_state', $LinkedInClient->getState());
+
+
+		$this->setViewData('connections.html',
+			[
+				'form_action'                     => url('admin_ajax'),
+				'page_title'                      => "Admin Connections",
+				'organization_connections'        => $final_organization_connections,
+				'organization_connections_titles' => $final_organization_connections_titles,
+				'supported_api_connections'       => Config::API_CONFIGURATION_CONNECTIONS,
+				'configured_connections'          => $configured_connections,
+				'plugins_google_youtube'          => true,
+				'plugins_facebook'                => true,
+				'plugins_linkedin'                 => true,
+				'facebook_app_id'                 => env('FACEBOOK_APP_ID'),
+				'facebook_app_client_id'          => env('FACEBOOK_CLIENT_ID'),
+				'facebook_app_client_secret'      => env('FACEBOOK_CLIENT_SECRET'),
+				'facebook_graph_api_version'      => env('FACEBOOK_GRAPH_API_VERSION'),
+				'GOOGLE_OAUTH_CLIENT_ID'          => env('GOOGLE_OAUTH_CLIENT_ID'),
+				'GOOGLE_YOUTUBE_API_KEY'          => env('GOOGLE_YOUTUBE_API_KEY'),
+				'linkedin_oauth_authorization_url' => $LinkedInClient->getLoginUrl(['r_emailaddress', 'r_liteprofile', 'w_member_social', 'rw_organization_admin', 'r_organization_social', 'w_organization_social', 'w_member_social', 'r_1st_connections_size']),
+				'CONNECTION_OAUTH_STATUS'          => json_encode(Session::pull('CONNECTION_OAUTH_STATUS') ?? []),
+			]
+		);
+	}
+
+
+	public function processAjax()
+	{
+		$all_input                = input()->all();
+		$all_input['form_source'] = $all_input['form_source'] ?? "";
+
+		switch ($all_input['form_source']) {
+
+			case 'organization' :
+
+				$organization_id = $all_input['organization_id'];
+
+				if($organization_id) {
+
+					$this->updateOrganizationDetails($organization_id, $all_input);
+
+				} else {
+
+					$this->createOrganization($all_input);
+				}
+				break;
+
+			case 'business' :
+
+				$business_id = $all_input['business_id'];
+
+				if($business_id) {
+
+					$this->updateBusinessDetails($business_id, $all_input);
+
+				} else {
+
+					$this->saveBusiness($all_input);
+				}
+				break;
+
+
+			case 'connection_configuration' :
+
+				$connection_type = $all_input['connection_type'] ?? "";
+				$this->saveConnectionConfiguration($connection_type, $all_input);
+
+				break;
+
+			case 'update_connection_configuration' :
+
+				$this->updateConnectionConfiguration($all_input, 'isConfigurationRemoved');
+
+				break;
+
+			case 'update_connection_status' :
+
+				$this->updateConnectionConfiguration($all_input, 'isConnectionStatusUpdated');
+
+				break;
+
+			case 'add_new_user' :
+				$this->addUser($all_input);
+				break;
+
+
+			default:
+				response()->json([
+					'status' => false,
+					'error'  => [
+						'code'    => 100,
+						'message' => 'Invalid data',
+					],
+				]);
+				break;
+		}
+	}
+
+
+	private function createOrganization($organization_details)
+	{
+		$organization_details['org_status'] = 'ACTIVE';
+		$organization_details['user_id']    = Session::get('user', 'id');
+		$organization_details['agencyId']   = Session::get('agency', 'id');
+
+
+		$created_organization = $this->adminModel->saveOrganizationDetails($organization_details)['body'];
+
+		if(getValue('status', $created_organization) != 'success') {
+
+			response()->json([
+				'status' => false,
+				'error'  => [
+					'code'    => 20,
+					'message' => $created_organization['message'] ?? "Some problem form API",
+				],
+			]);
+
+		} else {
+
+			Session::set('organization', [
+				'id' => $created_organization['data']['orgId'],
+				'name' => $organization_details['company_name'],
+			]);
+
+			response()->json([
+				'status' => true,
+				'data'   =>
+					[
+						'message' => "Organization created successfully",
+						'extra'   => [
+							'organization_id' => $created_organization['data']['orgId'],
+						],
+					],
+			]);
+
+		}
+	}
+
+
+	private function updateOrganizationDetails($organization_id, $organization_details)
+	{
+
+		if(!$organization_id) {
+
+			response()->json([
+				'status' => false,
+				'error'  => [
+					'code'    => 10,
+					'message' => 'No Organization to update details',
+				],
+			]);
+		}
+
+		$updated_created_organization = $this->adminModel->updateOrganizationDetails($organization_id, $organization_details)['body'];
+
+		if(getValue('status', $updated_created_organization) != 'success') {
+
+			response()->json([
+				'status' => false,
+				'error'  => [
+					'code'    => 20,
+					'message' => $updated_created_organization['message'] ?? "Some problem form API",
+				],
+			]);
+
+		} else {
+
+			//Update company name
+			Session::set('organization', [
+				'id' => $organization_id,
+			]);
+
+			response()->json([
+				'status' => true,
+				'data'   =>
+					[
+						'message' => "Organization details updated successfully",
+					],
+			]);
+
+		}
+
+	}
+
+
+	private function prepareBusinessDetails($business_details)
+	{
+
+		$business_details['competitor_1'] = str_replace('https://youtube.com/', '', $business_details['competitor_1']);
+		$business_details['competitor_1'] = str_replace('www.youtube.com/', '', $business_details['competitor_1']);
+
+		$business_details['competitor_2'] = str_replace('https://youtube.com/', '', $business_details['competitor_2']);
+		$business_details['competitor_2'] = str_replace('www.youtube.com/', '', $business_details['competitor_2']);
+
+		$business_details['competitor_1'] = 'https://youtube.com/'.$business_details['competitor_1'];
+		$business_details['competitor_2'] = 'https://youtube.com/'.$business_details['competitor_2'];
+
+		$hub_type             = $business_details['hub_type'];
+		$dam_credentials_type = $business_details['dam_credentials_type'];
+
+		$business_details['hub_type']        = "";
+		$business_details['hub_url']         = "";
+		$business_details['hub_credentials'] = "";
+
+		if($hub_type) {
+
+			$business_details['hub_type'] = $hub_type;
+
+			if($hub_type != 'youtube') {
+				$business_details['hub_url'] = $business_details['hub_url_'.$hub_type];
+			} else {
+				$youtube_credentials = json_decode(urldecode($business_details['hub_credentials_'.$hub_type] ?? ""), true);
+
+				if($youtube_credentials) {
+
+					// Get credentials By token
+					$GoogleApiClient = new GoogleAPIClient();
+					$user_tokens     = $GoogleApiClient->getTokensByAuthCode($youtube_credentials['userAccountAuthCode']);
+
+					if(!isset($user_tokens['error'])) {
+
+						unset($youtube_credentials['userAccountAuthCode']);
+						$business_details['hub_credentials'] = json_encode(array_merge($user_tokens, $youtube_credentials));
+						$business_details['hub_url'] =  $youtube_credentials['title'];
+					}
+				}			}
+		}
+		if($dam_credentials_type) {
+
+			$dam_credentials_type_credentials = $business_details['dam_credentials_'.$dam_credentials_type];
+
+			if($dam_credentials_type == 'google_drive' && $dam_credentials_type_credentials) {
+
+				// Get credentials By token
+				$GoogleApiClient = new GoogleAPIClient();
+				$user_tokens     = $GoogleApiClient->getTokensByAuthCode($dam_credentials_type_credentials);
+
+				if(!isset($user_tokens['error'])) {
+					$business_details['assetName']        = $dam_credentials_type;
+					$business_details['assetExpiry']      = getCustomUtcDate(strtotime("+1 hour", strtotime(date("Y-m-d H:i:s"))));
+					$business_details['assetCredentials'] = json_encode($user_tokens);
+				}
+
+			}
+
+		}
+
+		return $business_details;
+
+	}
+
+
+	private function saveBusiness($business_details)
+	{
+		$business_details['org_id'] = Session::get('organization', 'id');
+
+		$business_details = $this->prepareBusinessDetails($business_details);
+
+		$created_business_info = $this->adminModel->saveBusinessDetails($business_details)['body'];
+
+		if(getValue('status', $created_business_info) != 'success') {
+
+			response()->json([
+				'status' => false,
+				'error'  => [
+					'code'    => 20,
+					'message' => $created_business_info['message'] ?? "Some problem form API",
+				],
+			]);
+
+		} else {
+
+			response()->json([
+				'status' => true,
+				'data'   =>
+					[
+						'message' => "Business details saved successfully",
+						'extra'   => [
+							'business_id' => $created_business_info['data']['businessId'],
+						],
+					],
+			]);
+
+		}
+	}
+
+
+	private function updateBusinessDetails($business_id, $business_details)
+	{
+
+		if(!$business_id) {
+
+			response()->json([
+				'status' => false,
+				'error'  => [
+					'code'    => 10,
+					'message' => 'No Business details to update details',
+				],
+			]);
+		}
+
+		$business_details = $this->prepareBusinessDetails($business_details);
+
+		$updated_business_details = $this->adminModel->updateBusinessDetails($business_id, $business_details)['body'];
+
+		if(getValue('status', $updated_business_details) != 'success') {
+
+			response()->json([
+				'status' => false,
+				'error'  => [
+					'code'    => 20,
+					'message' => $updated_business_details['message'] ?? "Some problem form API",
+				],
+			]);
+
+		} else {
+
+			response()->json([
+				'status' => true,
+				'data'   =>
+					[
+						'message' => "Business details updated successfully",
+					],
+			]);
+
+		}
+
+	}
+
+
+	public function saveConnectionConfiguration($connection_type, $all_input, $return_connection_status_array = false)
+	{
+		$selected_config_info      = json_decode(urldecode($all_input[$connection_type] ?? ""), true);
+		$connection_name           = $all_input['connection_name'];
+		$connection_media_type     = $all_input['connection_media_type'];
+		$organization_id           = Session::get('organization', 'id');
+		$connection_config_data    = [];
+		$connection_status_message = "";
+	
+		switch ($connection_type) {
+
+			case 'facebook_page':
+				$connection_config_data = [
+					'name'              => $connection_name,
+					'socialMediaType'   => $connection_media_type,
+					'socialMediaHandle' => $selected_config_info['user_id'],
+					'password'          => $selected_config_info['access_token'],
+					'orgId'             => $organization_id,
+					'tokenExpiry'       => getCustomUtcDate(strtotime("+3 months", strtotime(date("Y-m-d H:i:s")))),
+					'status'            => 'Active',
+					'isConfigured'      => true,
+					'pageId'            => $selected_config_info['id'],
+					'pageToken'         => $selected_config_info['access_token'],
+					'description'       => $selected_config_info['category'],
+				    'title' 			=> $selected_config_info['name']
+				];
+				break;
+
+			case 'youtube_channel':
+
+				$GoogleApiClient = new GoogleAPIClient();
+				$user_tokens     = $GoogleApiClient->getTokensByAuthCode($selected_config_info['userAccountAuthCode']);
+
+				if(!isset($user_tokens['error'])) {
+
+					$user_details           = $GoogleApiClient->verifyUserCredentialsValidToken($user_tokens['id_token']);
+					$connection_config_data = [
+						'name'              => $connection_name,
+						'socialMediaType'   => $connection_media_type,
+						'socialMediaHandle' => $user_details['sub'] ?? "",
+						'password'          => $user_tokens['access_token'],
+						'orgId'             => $organization_id,
+						'tokenExpiry'       => getCustomUtcDate(strtotime("+1 hour", strtotime(date("Y-m-d H:i:s")))),
+						'status'            => 'Active',
+						'isConfigured'      => true,
+						'pageId'            => $selected_config_info['channel_id'],
+						'pageToken'         => json_encode($user_tokens),
+						'description'       => $selected_config_info['description'],
+						'title'				=>$selected_config_info['title']
+						
+					];
+
+				} else {
+
+					$connection_status_message = "Could not get the channel details from ".$connection_name.", Please try again";
+				}
+
+				break;
+				
+				case 'instagram_account':
+
+					$connection_config_data = [
+						'name'              => $connection_name,
+						'socialMediaType'   => $connection_media_type,
+						'socialMediaHandle' => $selected_config_info['instagram_account_username'], //$selected_config_info['user_id'],
+						'password'          => $selected_config_info['page_access_token'],
+						'orgId'             => $organization_id,
+						'tokenExpiry'       => getCustomUtcDate(strtotime("+3 months", strtotime(date("Y-m-d H:i:s")))),
+						'status'            => 'Active',
+						'isConfigured'      => true,
+						'pageId'            => $selected_config_info['instagram_account_id'], //'page_id'
+						'pageToken'         => $selected_config_info['page_access_token'],
+						'description'       => "Instagram business account",
+						'title'				=>$all_input['instagram_pagename']
+					];
+					break;
+	
+				case 'linkedin':
+	
+					$connection_config_data = [
+						'name'              => $connection_name,
+						'socialMediaType'   => $connection_media_type,
+						'socialMediaHandle' => $selected_config_info['user_id'],
+						'password'          => $selected_config_info['access_token'],
+						'orgId'             => $organization_id,
+						'tokenExpiry'       => getCustomUtcDate(strtotime("+2 months", strtotime(date("Y-m-d H:i:s")))),
+						'status'            => 'Active',
+						'isConfigured'      => true,
+						'pageId'            => $selected_config_info['user_id'],
+						'pageToken'         => $selected_config_info['access_token'],
+						'description'       => "LinkedIn Account",
+						'title' 			=>  $selected_config_info['username']
+					];
+					break;
+					
+				case 'E-Mail':
+
+					$connection_config_data = [
+						'name'              => $connection_name,
+						'socialMediaType'   => $connection_media_type,
+						'socialMediaHandle' => md5($connection_type),
+						'password'          => $all_input['email_api_key'],
+						'orgId'             => $organization_id,
+						'tokenExpiry'       => getCustomUtcDate(strtotime("+3 months", strtotime(date("Y-m-d H:i:s")))),
+						'status'            => 'Active',
+						'isConfigured'      => true,
+						'pageId'            => sha1($connection_name),
+						'pageToken'         => json_encode([
+							'from_email' => $all_input['email_from_address'],
+							'api_key'    => $all_input['email_api_key'],
+						]),
+						'description'       => "E-Mail Provider details",
+					];
+					break;
+
+			default:
+				$connection_config_data = [
+					'name'              => $connection_name,
+					'socialMediaType'   => $connection_media_type,
+					'socialMediaHandle' => md5($connection_type),
+					'password'          => sha1($connection_name),
+					'orgId'             => $organization_id,
+					'tokenExpiry'       => getCustomUtcDate(strtotime("+3 months", strtotime(date("Y-m-d H:i:s")))),
+					'status'            => 'Active',
+					'isConfigured'      => true,
+					'pageId'            => sha1($connection_name),
+					'pageToken'         => sha1($connection_media_type.$connection_name),
+					'description'       => "Info about channel",
+				];
+				break;
+
+		}
+
+		$connection_status = [];
+
+
+		if($connection_config_data) {
+
+			$saved_connection_configuration = $this->adminModel->saveConnectionConfiguration($connection_config_data)['body'];
+
+			if(getValue('status', $saved_connection_configuration) != 'success') {
+
+				$connection_status = [
+					'status' => false,
+					'error'  => [
+						'code'    => 20,
+						'message' => $saved_connection_configuration['message'] ?? "Some problem from API",
+						'extra'   => [
+							'isConfigured' => false,
+						],
+					],
+				];
+
+			} else {
+
+				$connection_status = [
+					'status' => true,
+					'data'   =>
+						[
+							//'message' => "Connection Configured successfully",
+							'extra' => [
+								'isConfigured' => true,
+							],
+						],
+				];
+			}
+
+		} else {
+
+			$connection_status = [
+				'status' => false,
+				'error'  => [
+					'code'    => 20,
+					'message' => $connection_status_message ?? "Connection not supported currently",
+					'extra'   => [
+						'isConfigured' => false,
+					],
+				],
+			];
+
+		}
+
+
+		if(!$return_connection_status_array) {
+
+			response()->json($connection_status);
+
+		} else {
+
+			return $connection_status;
+		}
+
+	}
+
+
+	private function updateConnectionConfiguration($all_input, $status_key)
+	{
+
+		$connection_name                     = $all_input['connection_name'];
+		$connection_new_configuration_status = (bool)$all_input['connection_new_configuration_status'];
+		$connection_new_status               = $all_input['connection_new_status'];
+		$organization_id                     = Session::get('organization', 'id');
+		$connection_config_data              = [
+			'name'         => $connection_name,
+			'orgId'        => $organization_id,
+			'isConfigured' => $connection_new_configuration_status,
+			'status'       => $connection_new_status,
+		];
+		$updated_connection_configuration    = $this->adminModel->updateConnectionConfiguration($connection_config_data)['body'];
+
+		if(getValue('status', $updated_connection_configuration) != 'success') {
+
+
+			response()->json([
+				'status' => false,
+				'error'  => [
+					'code'    => 20,
+					'message' => $updated_connection_configuration['message'] ?? "Some problem form API",
+					'extra'   => [
+						$status_key => false,
+					],
+				],
+			]);
+
+		} else {
+
+			response()->json([
+				'status' => true,
+				'data'   =>
+					[
+						'message' => "Connection has been updated",
+						'extra'   => [
+							$status_key => true,
+						],
+					],
+			]);
+		}
+
+	}
+
+
+	private function addUser($user_details)
+	{
+		$organization_id = Session::get('organization', 'id');
+		$agencyId = Session::get('agency', 'id');
+		if(!$organization_id) {
+
+			response()->json([
+				'status' => false,
+				'error'  => [
+					'code'    => 10,
+					'message' => `${$organization_id} ${$agencyId}`,
+				],
+			]);
+		}
+
+		
+		$user_details['org_id'] = $organization_id;
+		$user_details['agency_id'] = $agencyId;
+
+		$created_user = $this->adminModel->createUser($user_details)['body'];
+
+		if(getValue('status', $created_user) != 'success') {
+
+			response()->json([
+				'status' => false,
+				'error'  => [
+					'code'    => 20,
+					'message' => $created_user['message'] ?? "Some problem form API",
+				],
+			]);
+
+		} else {
+
+			response()->json([
+				'status' => true,
+				'data'   =>
+					[
+						'message' => "User created successfully",
+						'extra'   => [
+							'next_screen' => url('admin_team_list'),
+						],
+					],
+			]);
+
+		}
+	}
+
+
+	/**
+	 * @param $organization_id
+	 *
+	 * @return array|mixed
+	 */
+	public function getBusinessDetails($organization_id)
+	{
+		$business_details = $this->adminModel->getBusinessDetails($organization_id)['body'];
+
+		if(getValue('status', $business_details) == 'success') {
+
+			$business_details = $business_details['data'];
+
+			$business_details['type'] = $business_details['type'] ?? "";
+			$business_details['url']  = $business_details['url'] ?? "";
+
+			$business_details['competitor1'] = str_replace('https://youtube.com/', '', $business_details['competitor1']);
+			$business_details['competitor1'] = str_replace('www.youtube.com/', '', $business_details['competitor1']);
+			$business_details['competitor2'] = str_replace('https://youtube.com/', '', $business_details['competitor2']);
+			$business_details['competitor2'] = str_replace('www.youtube.com/', '', $business_details['competitor2']);
+
+			$business_details['type'] = str_replace("-", "_", strtolower($business_details['type']));
+			$business_details['page_description_tags']  = $business_details['descriptionTags'] ?? "";
+			
+			$business_details['hub_url_'.$business_details['type']] = $business_details['url'];
+			if($business_details['assetAssetId'] && $business_details['assetName'] && $business_details['assetCredentials']) {
+
+				$business_details['assetCredentials'] = json_decode($business_details['assetCredentials'], true);
+			}
+
+		} else {
+			$business_details = [];
+		}
+
+		return $business_details;
+	}
+}

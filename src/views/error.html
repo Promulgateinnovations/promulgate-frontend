@@ -1,0 +1,11 @@
+<div class="error-page">
+	{% if error_type == 404 %}
+	<p class="code-message">Oops! You have got broken link</p>
+	<div class="animate__animated animate__zoomIn">
+		<p class="code"><i class="fa fa-hand-stop-o fa-2x"></i></p>
+	</div>
+	{% endif %}
+	{% if error_type != 404 %}
+	<h1>Some error occurred {{ error_type }}</h1>
+	{% endif %}
+</div>

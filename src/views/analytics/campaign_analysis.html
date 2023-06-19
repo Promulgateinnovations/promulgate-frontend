@@ -1,0 +1,53 @@
+{% include '/analytics/tab_bar.html' %}
+<div class="admin_content active">
+	<div class="row content_header">
+		<div class="col-6">
+			<h1 class="title">
+				<i class="fa fa-link"></i> Campaigns Analysis
+			</h1>
+		</div>
+	</div>
+	<div class="content_body">
+		<div class="row">
+			{% if campaigns_list %}
+			<table class="table data-table table-hover table-bordered align-middle">
+				<thead>
+				<tr class="text-center">
+					<th>Name</th>
+					<th>Status</th>
+					<th>Target Group</th>
+					<th>Created By</th>
+					<th>Created At</th>
+					<th>Actions</th>
+				</tr>
+				</thead>
+				<tbody>
+				{% for campaign in campaigns_list %}
+				<tr>
+					<td>{{ campaign.name }}</td>
+					<td>{{ campaign.status }}</td>
+					<td>{{ campaign.campaignTypes }}</td>
+					<td>{{ campaign.user.firstName }}</td>
+					<td>{{ get_date(campaign.createdAt, 4) }}</td>
+					<td class="text-center">
+						<a href="{{ url('analytics_campaign_analysis', {campaign_id : campaign.campaignDefinitionId}) }}" class="link-in-iframe btn btn-sm btn-outline-success">
+							<span><i class="fa fa-line-chart"></i> View Analysis</span>
+						</a>
+					</td>
+				</tr>
+				{% endfor %}
+				</tbody>
+			</table>
+			{% else %}
+			<div class="row mt-5">
+				<div class="text-center">
+					<h3>No campaigns available</h3>
+					<h5 class="mt-5">
+						<a href="{{ url('campaign_strategy_definition') }}" class="btn btn-promulgate-secondary">Start a new campaign</a>
+					</h5>
+				</div>
+			</div>
+			{% endif %}
+		</div>
+	</div>
+</div>
