@@ -1,4 +1,6 @@
 {% include '/analytics/tab_bar.html' %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link rel="stylesheet" type="text/css" href="/assets/css/analysis/compititor_analytics.css">
 <div class="admin_content active">
 	<div class="row content_header">
 		<div class="col-6">
@@ -7,10 +9,179 @@
 			</h1>
 		</div>
 	</div>
-	<div class="content_body">
+	<div class="container-fluid">
+		<section class="dev_parent_section">
+			<div class="row">
+				<div class="col-md-12 heading_area">
+					<h3 class="top_heading">
+						Compare Channels
+						<select class="top_heading_filter">
+							<option>Youtube</option>
+						</select>
+					</h3>
+				</div>
+
+				<div class="col-md-4 channel_info">
+					<div class="channel_search_parent">
+						<div class="input-group">
+						    <input type="text" class="form-control" placeholder="Search 1">
+						    <span class="input-group-text">
+						    	<i class="fa fa-search"></i>
+						    </span>
+					  	</div>
+					  	<div class="right_part_right">
+							<span>VS</span>
+						</div>
+					</div>
+					<img class="channel_img" id="channel_1_image"  />
+					<h3 class="channel_name channel_1_name">Channel 1</h3>
+					<h3 class="channel_sub_heading">
+						<span class="channel_1_subs">111M</span> subscribers <i class="fa fa-circle"></i>
+						<span id="channel_1_total_videos"></span> videos
+					</h3>
+					<div class="content">
+			          <h3 class="box_heading">Views</h3>
+			          <p class="box_heading_numbers inc_num" id="channel_1_views">123.5K <i class="fa fa-angle-up"></i></p>
+			          <p class="box_sub_heading"> <span id="channel_1_percentage_view">+23</span>%  Compared to (<span id="channel_1_prev_view">112.3K</span> last month)</p>
+			        </div>
+			        <div class="content">
+			          <h3 class="box_heading">Subscribers</h3>
+			          <p class="box_heading_numbers inc_num channel_1_subs" >123.5K <i class="fa fa-angle-up"></i></p>
+			          <p class="box_sub_heading"> <span id="channel_1_percentage_subs">+23</span>%  Compared to (<span id="channel_1_prev_subs">112.3K</span> last month)</p>
+			        </div>
+			        <div class="content">
+			          <h3 class="box_heading">Revenue</h3>
+			          <p class="box_heading_numbers inc_num" id="channel_1_revenue">123.5K  <i class="fa fa-angle-up"></i></p>
+			          <p class="box_sub_heading"> <span id="channel_1_percentage_revenue" >+23</span>%  Compared to (<span id="channel_1_prev_revenue">112.3K</span> last month)</p>
+			        </div>
+
+			        <div class="channel_info_box">
+			        	<h3 class="channel_rank" id="channel_1_rank">0</h3>  <!-- //This Value would be coming from DB -->
+			        	<h3 class="channel_rank_label">Global Rank</h3>
+			        </div>
+			        <div class="channel_info_box">
+			        	<h3 class="channel_rank" id="channel_1_watch_time">0</h3>  <!-- //This Value would be coming from DB -->
+			        	<h3 class="channel_rank_label">Watch Time</h3>
+			        </div>
+			        <div class="channel_info_box">
+			        	<h3 class="channel_rank" id="channel_1_total_likes">0</h3>  <!-- //This Value would be coming from DB -->
+			        	<h3 class="channel_rank_label">Total Likes</h3>
+			        </div>
+				</div>
+				<div class="col-md-4 channel_info">
+					<div class="channel_search_parent">
+						<div class="input-group">
+						    <input type="text" class="form-control" placeholder="Search 1">
+						    <span class="input-group-text">
+						    	<i class="fa fa-search"></i>
+						    </span>
+					  	</div>
+					  	<div class="right_part_right">
+							<span>VS</span>
+						</div>
+					</div>
+					<img class="channel_img" id="channel_2_image" />
+					<h3 class="channel_name" id="channel_2_name">Channel 2</h3>
+					<h3 class="channel_sub_heading">
+						<span class="channel_2_subs">111M</span> subscribers <i class="fa fa-circle"></i>
+						<span id="channel_2_total_videos"></span> videos
+					</h3>
+					<div class="content">
+			          <h3 class="box_heading">Views</h3>
+			          <p class="box_heading_numbers inc_num" id="channel_2_views" >123.5K  <i class="fa fa-angle-up"></i></p>
+			          <p class="box_sub_heading"><span id="channel_2_percentage_view">+23</span>% Compared to (<span id="channel_2_prev_view">112.3K</span> last month)</p>
+			        </div>
+			        <div class="content">
+			          <h3 class="box_heading">Subscribers</h3>
+			          <p class="box_heading_numbers inc_num channel_2_subs">123.5K <i class="fa fa-angle-up"></i></p>
+			          <p class="box_sub_heading">  <span id="channel_2_percentage_subs">+23</span>%  Compared to (<span id="channel_2_prev_subs">112.3K</span> last month)</p>
+			        </div>
+			        <div class="content">
+			          <h3 class="box_heading">Revenue</h3>
+			          <p class="box_heading_numbers inc_num" id="channel_2_revenue">123.5K  <i class="fa fa-angle-up"></i></p>
+			          <p class="box_sub_heading"> <span id="channel_2_percentage_revenue">+23</span>%  Compared to (<span id="channel_2_prev_revenue">112.3K</span> last month)</p>
+			        </div>
+			        <div class="channel_info_box">
+			        	<h3 class="channel_rank" id="channel_2_rank">0</h3>  <!-- //This Value would be coming from DB -->
+			        	<h3 class="channel_rank_label">Global Rank</h3>
+			        </div>
+			        <div class="channel_info_box">
+			        	<h3 class="channel_rank" id="channel_2_watch_time">0</h3>  <!-- //This Value would be coming from DB -->
+			        	<h3 class="channel_rank_label">Watch Time</h3>
+			        </div>
+			        <div class="channel_info_box">
+			        	<h3 class="channel_rank" id="channel_2_total_likes">0</h3>  <!-- //This Value would be coming from DB -->
+			        	<h3 class="channel_rank_label">Total Likes</h3>
+			        </div>
+				</div>
+				<div class="col-md-4 channel_info">
+					<div class="channel_search_parent">
+						<div class="input-group">
+						    <input type="text" class="form-control" placeholder="Search 1">
+						    <span class="input-group-text">
+						    	<i class="fa fa-search"></i>
+						    </span>
+					  	</div>
+					</div>
+					<img class="channel_img" id="channel_3_image" />
+					<h3 class="channel_name" id="channel_3_name">Channel 3</h3>
+					<h3 class="channel_sub_heading">
+						<span class="channel_3_subs">111M</span> subscribers <i class="fa fa-circle"></i>
+						<span id="channel_3_total_videos"></span> videos
+					</h3>
+					<div class="content">
+			          <h3 class="box_heading">Views</h3>
+			          <p class="box_heading_numbers inc_num" id="channel_3_views">123.5K  <i class="fa fa-angle-up"></i></p>
+			          <p class="box_sub_heading"> <span id="channel_3_percentage_view">+23</span>% Compared to (<span id="channel_3_prev_view">112.3K</span> last month)</p>
+			        </div>
+			        <div class="content">
+			          <h3 class="box_heading">Subscribers</h3>
+			          <p class="box_heading_numbers inc_num channel_3_subs">123.5K  <i class="fa fa-angle-up"></i></p>
+			          <p class="box_sub_heading"><span id="channel_3_percentage_subs">+23</span>% Compared to (<span id="channel_3_prev_subs">112.3K</span> last month)</p>
+			        </div>
+			        <div class="content">
+			          <h3 class="box_heading">Revenue</h3>
+			          <p class="box_heading_numbers inc_num" id="channel_3_revenue" >123.5K  <i class="fa fa-angle-up"></i></p>
+			          <p class="box_sub_heading"> <span id="channel_3_percentage_revenue">+23</span>%  Compared to (<span id="channel_3_prev_revenue">112.3K</span> last month)</p>
+			        </div>
+			        <div class="channel_info_box">
+			        	 <h3 class="channel_rank" id="channel_3_rank">0</h3>  <!-- //This Value would be coming from DB -->
+			        	<h3 class="channel_rank_label">Global Rank</h3>
+			        </div>
+			        <div class="channel_info_box">
+			        	<h3 class="channel_rank" id="channel_3_watch_time">0</h3>  <!-- //This Value would be coming from DB -->
+			        	<h3 class="channel_rank_label">Watch Time</h3>
+			        </div>
+			        <div class="channel_info_box">
+			        	<h3 class="channel_rank" id="channel_3_total_likes">0</h3>  <!-- //This Value would be coming from DB -->
+			        	<h3 class="channel_rank_label">Total Likes</h3>
+			        </div>
+				</div>
+				<div class="col-md-12 col-sm-12 col-xs-12 competitor_graph_box">
+			        <div class="content">
+			          <h3 class="box_heading">Statistics
+			          	<ul class="stat_filters">
+			          		<li class="active_filter">
+			          			<h3>Views</h3>
+			          		</li>
+			          		<li>
+			          			<h3>Subscribers</h3>
+			          		</li>
+			          	</ul>
+			          </h3>
+			          <div style="clear:both"></div>
+						</select>
+			          <canvas id="views_chart"></canvas>
+			        </div>
+		      	</div>
+			</div>
+		</section>
+	</div>
+	<!-- <div class="content_body">
 		<div class="alert alert-primary" role="alert">
 			View the comparision between your competitors from
 			<a target="_blank" href="https://socialblade.com/youtube/compare/{{ competitors }}" class=" btn btn-min btn-sm btn-primary">Social Blade</a>
 		</div>
-	</div>
+	</div> -->
 </div>
+<script src="/assets/js/analysis/channel_graph.js"></script>
