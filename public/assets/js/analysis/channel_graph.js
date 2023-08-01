@@ -187,4 +187,4 @@ async function getsubsChannelGraph(id1,id2,id3){
 
 
 getviewsChannelGraph('UCq-Fj5jknLsUf-MWSy4_brA','UCFFbwnve3yF62-tVXkTyHqg','UC2pmfLm7iq6Ov1UwYrWYkZA')
-getsubsChannelGraph('UCq-Fj5jknLsUf-MWSy4_brA','UCFFbwnve3yF62-tVXkTyHqg','UC2pmfLm7iq6Ov1UwYrWYkZA')
+//getsubsChannelGraph('UCq-Fj5jknLsUf-MWSy4_brA','UCFFbwnve3yF62-tVXkTyHqg','UC2pmfLm7iq6Ov1UwYrWYkZA')
