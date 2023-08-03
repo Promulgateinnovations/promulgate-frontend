@@ -130,14 +130,34 @@ class AdminModel extends BaseModel
 							'name' => 'Instagram',
 							'type' => 'ORGANIC',
 						],
-//						[
-//							'id'   => rand(1, 1000),
-//							'name' => 'SMS',
-//							'type' => 'PAID',
-//						],
+						[
+							'id'   => rand(1, 1000),
+							'name' => 'Reddit',
+							'type' => 'ORGANIC',
+						],
 						[
 							'id'   => rand(1, 1000),
 							'name' => 'E-Mail',
+							'type' => 'PAID',
+						],
+						[
+							'id'   => rand(1, 1000),
+							'name' => 'SMS',
+							'type' => 'PAID',
+						],
+						[
+							'id'   => rand(1, 1000),
+							'name' => 'WhatsApp',
+							'type' => 'PAID',
+						],
+						[
+							'id'   => rand(1, 1000),
+							'name' => 'Facebook Ads',
+							'type' => 'PAID',
+						],
+						[
+							'id'   => rand(1, 1000),
+							'name' => 'Twitter promotions',
 							'type' => 'PAID',
 						],
 						//						[
