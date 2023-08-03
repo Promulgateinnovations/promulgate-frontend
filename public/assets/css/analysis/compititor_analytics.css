@@ -25,6 +25,7 @@
 .channel_search_parent {
 	display: flex;
 	margin: 15px 0;
+	margin-bottom: 30px;
 }
 
 
@@ -59,8 +60,8 @@
 
 .channel_info .channel_img {
 	width: 200px;
-	border-radius: 50%;
-	margin: ;
+	/* border-radius: 50%; */
+	height: 200px;
 	display: block;
 	margin: 15px auto;
 }
@@ -73,7 +74,7 @@
 
 .channel_info .channel_sub_heading {
 	color: #606060;
-	font-size: 18px;
+	font-size: 16px;
 	text-align: center;
 }
 
