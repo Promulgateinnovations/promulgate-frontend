@@ -190,6 +190,20 @@ class AnalyticsController extends BaseController
 		);
 	}
 
+	public function showMentionsAnalysis()
+	{
+
+		$AdminController  = new AdminController();
+
+
+		$this->setViewData('mention_analysis.html',
+			[
+				'form_action' => url('analytics_ajax'),
+				'page_title'  => "Mentions Analysis".env('SITE_NAME'),
+			]
+		);
+	}
+
 	public function showYoutubeAnalysis()
 	{
 

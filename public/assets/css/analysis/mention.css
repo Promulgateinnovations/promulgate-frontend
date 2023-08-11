@@ -1,0 +1,262 @@
+.h5{
+  font-weight: 500;
+}
+/* Flexbox container */
+.flex-container {
+  display: flex;
+  overflow: hidden;
+  flex-wrap: nowrap;
+  height: auto;
+  margin-bottom: 7px;
+  width: 100%; /* Adjust height for mobile view */
+}
+
+/* Add gap between the grid items */
+.flex-container > div {
+
+  margin-bottom: 1px; /* Add margin bottom for spacing between rows */
+}
+.mobview{
+  margin: 5px;
+}
+
+/* Remove right margin for the last item */
+.flex-container > div:last-child {
+  margin-right: 3px;
+}
+
+/* Set each item to take 100% width in the flex container for mobile and tablet view */
+.item {
+  flex: 100%;
+  margin: 5px; /* Adjust the margin as needed */
+}
+
+/* First item */
+.item-1 {
+  flex: 49;
+  background-color: #ffffff;
+  padding: 7px;
+  display: block;
+}
+
+/* Second item */
+.item-2 {
+  flex: 23;
+  background-color: #ffffff;
+  padding: 7px;
+
+ 
+}
+
+/* Third item */
+.item-3 {
+  flex: 23;
+  background-color: #ffffff;
+  padding: 7px;
+
+}
+
+/* Fourth item */
+.item-4 {
+  background-color: #ffffff;
+  padding: 7px;
+}
+
+.txt {
+  font-size: 20px;
+  color: black;
+  font-weight: 500;
+}
+
+.item-btn {
+  display: flex;
+}
+
+.button-container {
+  display: flex;
+  flex-wrap: nowrap; 
+  justify-content: center; /* Center buttons horizontally */
+}
+
+.button-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 10px;
+}
+
+.button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  border: 11px solid #bbbdbe;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.3s;
+}
+
+.button img {
+  max-width: 40%;
+  max-height: 40%;
+}
+
+.button:hover {
+  border-color: #00acee;
+}
+
+.label {
+  color: #000000;
+  font-size: 16px;
+  text-align: center;
+  margin-top: 5px;
+}
+
+#chartdiv {
+  width: 100%;
+  height: 300px;
+}
+#chartdiv1 {
+  width: 100%;
+  height: 310px;
+  font-size: 15px;
+}
+
+.image-container {
+  width: 220px;
+  height: fit-content;
+  border: 2px;
+  overflow: hidden;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.image-container img {
+  width: 40%;
+  height: auto;
+  margin: 0;
+}
+
+.image-container1 {
+  width: 220px;
+  height: fit-content;
+  border: 2px;
+  overflow: hidden;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  padding: 0%;
+}
+
+
+
+.image-container1 img {
+  width: 60%;
+  height: auto;
+  margin: 0;
+  text-align: center;
+  padding: 0%;
+}
+
+/* Line chart container */
+.line-chart-container {
+  padding: 10px;
+  overflow: hidden;
+}
+.sizeMap{
+  display: block;
+}
+#map {
+  width: 100%;
+  height: 310px;
+}
+.Econtainer {
+  width: 80%;
+  height: 300px;
+}
+
+.svg {
+  font-size: 12px;
+  font-family: 'Roboto', sans-serif;
+}
+
+.main-label .label {
+  font-size: 15px;
+}
+
+.arc textPath,
+.main-label .description {
+  font-size: 14px;
+}
+
+.anychart-credits {
+  display: none;
+}
+#container {
+  width: 100%;
+  height: 300px;
+
+}
+.gendertxt{
+  display:flex; 
+  justify-content:center;
+  font-size: 20px;
+}
+/* Media queries for mobile and tablet view */
+@media (max-width: 991px) {
+  .mobview{
+    margin: 12px;
+  }
+  .flex-container {
+    flex-direction: column;
+    flex-wrap: nowrap;
+
+  }
+  .button-container {
+    flex-wrap: wrap !important; /* Adjust flex-wrap for mobile view */
+  }
+
+  .item {
+    flex: 100%;
+    padding: 10px;
+  }
+
+  .image-container, .image-container1 {
+    width: 100%; /* Adjust image container width for mobile and tablet view */
+  }
+
+  .image-container img, .image-container1 img {
+    width: 50%; /* Adjust image width for mobile and tablet view */
+  }
+
+  /* Adjust gauge chart width for mobile and tablet view */
+  .gauge-chart {
+    width: 100%;
+    max-width: 300px; /* Set the maximum width as needed */
+    margin: 0 auto;
+  }
+
+  /* Adjust line chart width for mobile and tablet view */
+  .line-chart-container {
+    max-width: 100%;
+    margin: 0 auto;
+  }
+  #map {
+    width: 100%;
+    height: 400px;
+  }
+  .sizeMap{
+    display: flex;
+  }
+  #chartdiv1 {
+    width: 100%;
+    height: 310px;
+    font-size: 20px;
+  }
+}
+

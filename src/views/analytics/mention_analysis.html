@@ -1,0 +1,117 @@
+{% include '/analytics/tab_bar.html' %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link rel="stylesheet" type="text/css" href="/assets/css/analysis/mention.css">
+<link rel="stylesheet" href="/assets/css/analysis/mention/leaf.css">
+<script src="/assets/js/analysis/channel_graph.js"></script>
+  <script src="/assets/js/analysis/mention/amcharts.js"></script>
+  <script src="/assets/js/analysis/mention/amchartscore.js"></script>
+  <script src="/assets/js/analysis/mention/jsdelivr.js"></script>
+  <script src="/assets/js/analysis/mention/leaflet.js"></script>
+  <script src="/assets/js/analysis/mention/animated.js"></script>
+  <script src="/assets/js/analysis/mention/anychart.js" type="text/javascript"></script>
+  <script src="/assets/js/analysis/mention/anycharts-world.js" type="text/javascript"></script>
+  <script src="https://cdn.anychart.com/releases/8.7.1/js/anychart-data-adapter.min.js"></script>
+  <script src="https://cdn.anychart.com/releases/8.7.1/js/anychart-map.min.js" type="text/javascript"></script>
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+
+<div class="admin_content active">
+	<div class="row content_header">
+		<div class="col-6">
+			<h1 class="title">
+				<i class="fa fa-link"></i> Sentiment Analysis
+			</h1>
+		</div>
+	</div>
+	<div class="container-fluid">
+        <div class="row dev_parent_section">
+            <div class="col-12 mb-3 ">
+                <h5>NUMBER OF MENTIONS</h5>
+                <div class="button-container mt-2 bg-white">
+                    <div class="button-wrapper">
+                      <div class="button">
+                        <img src="/assets/images/mention/ng.png" alt="Button 1">
+                        <h5>31 M</h5>
+                      </div>
+                      <div class="label">
+                        <h4>Twitter</h4>
+                      </div>
+                    </div>
+            
+                    <div class="button-wrapper">
+                      <div class="button">
+                        <img src="/assets/images/mention/chat.png" alt="Button 2">
+                        <h5>31 M</h5>
+                      </div>
+                      <div class="label">
+                        <h4>Chat</h4>
+                      </div>
+                    </div>
+            
+                    <div class="button-wrapper">
+                      <div class="button">
+                        <img src="/assets/images/mention/wifi.png" alt="Button 3">
+                        <h5>31 M</h5>
+                      </div>
+                      <div class="label">
+                        <h4>Wifi</h4>
+                      </div>
+                    </div>
+            
+                    <div class="button-wrapper">
+                      <div class="button">
+                        <img src="/assets/images/mention/facebook.png" alt="Button 4">
+                        <h5>31 M</h5>
+                      </div>
+                      <div class="label">
+                        <h4>Facebook</h4>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 mb-3 ">
+                <h5>SENTIMENT METER</h5>
+                <div class="bg-white" id="chartdiv1" style="width: 100%;"></div>
+            </div>
+            <div class="col-6 mb-3 ">
+                <h5>NUMBER OF MENTIONS</h5>
+        
+              <div class="line-chart-container bg-white">
+                <canvas id="lineChart" width="300" height="300"></canvas>
+              </div>
+            </div>
+            <div class="col-6 mb-3 ">
+              <h5>NUMBER OF MENTIONS</h5>
+              <div class="ml-5 bg-white">
+                <div class="row gendertxt mb-2">
+                  <div class="image-container1 col-5 ">
+                    <img src="/assets/images/mention/male.png" alt="">
+                  </div>
+                  <div class="col-5">
+                    <h3>Male</h3>
+                    <p class="txt">56%</p>
+                  </div>
+                </div>
+                <div class="row gendertxt">
+                  <div class="image-container1 col-5 mt-3">
+                    <img src="/assets/images/mention/female.png" alt="">
+                  </div>
+                  <div class="col-5">
+                    <h3>Female</h3>
+                    <p class="txt">44%</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-6 mb-3 ">
+                <h5>NUMBER OF MENTIONS</h5>
+                <div class="bg-white" id="chartdiv"></div>
+            </div>
+            <div class="col-12 mb-3">
+                <h5>GEO DISTRIBUTION</h5>
+                <div class="bg-white" id="container"></div>
+            </div>
+        </div>
+	</div>
+</div>
+
+  <script src="/assets/js/analysis/mention.js"></script>
