@@ -153,6 +153,11 @@ Route::group([
 	     ->name('analytics_competitors')
 	;
 
+	Route::get('/mentions', 'AnalyticsController@showMentionsAnalysis')
+	     ->name('analytics_mentions')
+	;
+
+
 	Route::get('/campaigns', 'AnalyticsController@showCampaignsAnalysis')
 	     ->name('analytics_campaigns')
 	;
