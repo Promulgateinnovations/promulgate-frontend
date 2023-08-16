@@ -22,96 +22,156 @@
 			</h1>
 		</div>
 	</div>
-	<div class="container-fluid">
-        <div class="row dev_parent_section">
-            <div class="col-12 mb-3 ">
-                <h5>NUMBER OF MENTIONS</h5>
-                <div class="button-container mt-2 bg-white">
-                    <div class="button-wrapper">
-                      <div class="button">
-                        <img src="/assets/images/mention/ng.png" alt="Button 1">
-                        <h5>31 M</h5>
-                      </div>
-                      <div class="label">
-                        <h4>Twitter</h4>
-                      </div>
-                    </div>
-            
-                    <div class="button-wrapper">
-                      <div class="button">
-                        <img src="/assets/images/mention/chat.png" alt="Button 2">
-                        <h5>31 M</h5>
-                      </div>
-                      <div class="label">
-                        <h4>Chat</h4>
-                      </div>
-                    </div>
-            
-                    <div class="button-wrapper">
-                      <div class="button">
-                        <img src="/assets/images/mention/wifi.png" alt="Button 3">
-                        <h5>31 M</h5>
-                      </div>
-                      <div class="label">
-                        <h4>Wifi</h4>
-                      </div>
-                    </div>
-            
-                    <div class="button-wrapper">
-                      <div class="button">
-                        <img src="/assets/images/mention/facebook.png" alt="Button 4">
-                        <h5>31 M</h5>
-                      </div>
-                      <div class="label">
-                        <h4>Facebook</h4>
-                      </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-6 mb-3 ">
-                <h5>SENTIMENT METER</h5>
-                <div class="bg-white" id="chartdiv1" style="width: 100%;"></div>
-            </div>
-            <div class="col-6 mb-3 ">
-                <h5>NUMBER OF MENTIONS</h5>
-        
-              <div class="line-chart-container bg-white">
-                <canvas id="lineChart" width="300" height="300"></canvas>
-              </div>
-            </div>
-            <div class="col-6 mb-3 ">
+  <div class="bg_color">
+    <div class="container-fluid">
+      <div class="row m-auto" style="background-clip: content-box;">
+        <div class="col-lg-6 col-md-12 col-sm-12 box p-2" style="background-clip: content-box;">
+          <div class="box-heading p-2">
               <h5>NUMBER OF MENTIONS</h5>
-              <div class="ml-5 bg-white">
-                <div class="row gendertxt mb-2">
-                  <div class="image-container1 col-5 ">
-                    <img src="/assets/images/mention/male.png" alt="">
+              <h6>25 MAR-30 MAY</h6>
+          </div>
+          <!-- button container section -->
+          <div class="container mt-5 p-3">
+              <div class="row">
+                  <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
+                      <div class="button-wrapper">
+                          <div class="button">
+                            <img src="/assets/images/mention/ng.png" alt="Button 1">
+                            <div class="circle-content">
+                              <h3>31 M</h3>
+                              <h5>Tweets</h5>
+                            </div>
+                          </div>
+                          <div class="label">
+                            <h4>Twitter</h4>
+                          </div>
+                      </div>
                   </div>
-                  <div class="col-5">
-                    <h3>Male</h3>
-                    <p class="txt">56%</p>
+                  <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
+                      <div class="button-wrapper">
+                          <div class="button">
+                            <img src="/assets/images/mention/chat.png" alt="Button 2">
+                            <div class="circle-content">
+                              <h3>49K</h3>
+                              <h5>mentions</h5>
+                            </div>
+                          </div>
+                          <div class="label">
+                            <h4>Message Boards</h4>
+                          </div>
+                      </div>
                   </div>
-                </div>
-                <div class="row gendertxt">
-                  <div class="image-container1 col-5 mt-3">
-                    <img src="/assets/images/mention/female.png" alt="">
+                  <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
+                      <div class="button-wrapper">
+                          <div class="button">
+                            <img src="/assets/images/mention/wifi.png" alt="Button 3">
+                            <div class="circle-content">
+                              <h3>41K</h3>
+                              <h5>mentions</h5>
+                            </div>
+                          </div>
+                          <div class="label">
+                            <h4>Blogs</h4>
+                          </div>
+                      </div>
                   </div>
-                  <div class="col-5">
-                    <h3>Female</h3>
-                    <p class="txt">44%</p>
+                  <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
+                      <div class="button-wrapper">
+                          <div class="button">
+                            <img src="/assets/images/mention/facebook.png" alt="Button 4">
+                            <div class="circle-content">
+                              <h3>36K</h3>
+                              <h5>mentions</h5>
+                            </div>
+                          </div>
+                          <div class="label">
+                            <h4>Facebook</h4>
+                          </div>
+                      </div>
                   </div>
-                </div>
               </div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-12 col-sm-12 p-2" style="background-clip: content-box;">
+          <div class="box p-2 h-100">
+          <div class="box-heading p-2">
+                <h5>SENTIMENT METER</h5>
+                <h6>25 MAR-30 MAY</h6>
             </div>
-            <div class="col-6 mb-3 ">
-                <h5>NUMBER OF MENTIONS</h5>
-                <div class="bg-white" id="chartdiv"></div>
+            <!-- sentiment METER -->
+            <div id="chartdiv1" style="width: 100%;height: 50%;"></div>
+
+            <div class="sentiment-status">
+                Slighty Positive
             </div>
-            <div class="col-12 mb-3">
-                <h5>GEO DISTRIBUTION</h5>
-                <div class="bg-white" id="container"></div>
+
+            <!-- progress bar -->
+            <div id="progress-container">
+                <div id="section1" class="progress-section" style="width: 0%; left: 0;"></div>
+                <div id="section2" class="progress-section" style="width: 0%; left: 0;"></div>
+                <div id="section3" class="progress-section" style="width: 0%; left: 0;"></div>
+            </div>
+            <div class="progress-text">
+                <p id="text1"></p>
+                <p id="text2"></p>
+                <p id="text3"></p>
+            </div>
+          </div>  
+        </div>
+        <div class="col-lg-3 col-md-12 col-sm-12 box p-2" style="background-clip: content-box;">
+            <div class="box-heading p-2">
+                <h5>SENTIMENT METER</h5>
+                <h6>25 MAR-30 MAY</h6>
+            </div>
+            <div class="mt-5">
+                <canvas id="myChart" height="200px"></canvas>
             </div>
         </div>
-	</div>
+      </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row m-auto" style="background-clip: content-box;">
+            <div class="col-lg-3 col-md-12 col-sm-12 box p-2" style="background-clip: content-box;">
+                <div class="box-heading p-2">
+                    <h5>Number of Mentions</h5>
+                    <h6>25 MAR-30 MAY</h6>
+                </div>
+                <div class="gender-box">
+                    <div class="gender-box-inner">
+                        <img src="/assets/images/mention/male.png" alt="">
+                        <div class="male-text">
+                            <h4>Male</h4>
+                            <h2>56%</h2>
+                        </div>
+                    </div>
+                    <div class="gender-box-inner" style="padding-right: 1.2rem;">
+                        <img src="/assets/images/mention/female.png" style="width: 40%;" alt="">
+                        <div class="female-text">
+                            <h4>Female</h4>
+                            <h2>44%</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-12 col-sm-12 box p-2" style="background-clip: content-box;">
+                <div class="box-heading p-2">
+                    <h5>Number of Mentions</h5>
+                    <h6>25 MAR-30 MAY</h6>
+                </div>
+                <div id="chartdiv" style="height: 400px;"></div>
+            </div>
+            <div class="col-lg-6 col-md-12 col-sm-12 box p-2" style="background-clip: content-box;">
+                <div class="box-heading p-2">
+                    <h5>Geo Distributions</h5>
+                    <h6>25 MAR-30 MAY</h6>
+                </div>
+                <div id="container" style="height: 200px;" class="mt-5"></div>
+            </div>
+        </div>
+    </div>
+  </div>
 </div>
 
   <script src="/assets/js/analysis/mention.js"></script>
+
+
