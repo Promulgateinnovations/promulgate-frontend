@@ -51,6 +51,23 @@
 						</div>
 					</li>
 					<li class="nav-item">
+						<a class="nav-link {% if 'leads' in current_url_name %} active {% endif %}" href="{{ url('leads') }}" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="navbar-dashboards">
+							<i class="fa fa-bullhorn"></i>
+							<span class="nav-link-text">Lead Generation</span>
+							<span class="nav-link-icon"><i class="fa fa-caret-down {% if 'leads' in current_url_name %}  fa-caret-up {% endif %}"></i></span>
+						</a>
+						<div class="collapse {% if 'leads' in current_url_name %} show {% endif %} sub-menu">
+							<ul class="nav nav-sm flex-column">
+								<li class="nav-item {% if current_url_name == 'leads' %} active {% endif %}">
+									<a href="{{ url('leads') }}">Leads</a>
+								</li>
+								<li class="nav-item {% if current_url_name == 'broadcasted_leads' %} active {% endif %}">
+									<a href="{{ url('broadcasted_leads') }}">Broadcasted Leads</a>
+								</li>
+							</ul>
+						</div>
+					</li>
+					<li class="nav-item">
 						<a class="nav-link {% if 'analytics_' in current_url_name %} active {% endif %}" href="{{ url('analytics_channels') }}" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="navbar-dashboards">
 							<i class="fa fa-line-chart"></i>
 							<span class="nav-link-text">Analytics</span>

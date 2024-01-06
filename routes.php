@@ -201,4 +201,39 @@ Route::error(function(Request $request, \Exception $exception)
 
 });
 
+Route::group([
+	'prefix'     => '/leads',
+	'middleware' => Promulgate\Middlewares\UserAuth::class,
+], function()
+{
+
+	
+	Route::get('/leads', 'LeadsController@showLeads')
+		->name('leads')
+	;
+
+	Route::get('/broadcasted-leads', 'LeadsController@showBroadcastedLeads')
+		->name('broadcasted_leads')
+	;
+
+	Route::post('/ajax', 'LeadsController@processAjax')->name('leads_ajax')
+	;
+
+	Route::get('/lead_details/{lead_id}', 'LeadsController@showLeadsDetails')
+		->name('lead_details')
+	;
+
+	Route::get('/broadcast', 'LeadsController@showLeadsBroadcast')
+		->name('lead_broadcast')
+	;
+
+	Route::get('/add_templates', 'LeadsController@addNewTemplates')
+		->name('add_templates')
+	;
+
+	Route::get('/upload', 'LeadsController@showUpload')
+	     ->name('lead_upload')
+	;
+});
+
 Route::start();

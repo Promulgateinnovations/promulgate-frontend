@@ -175,6 +175,17 @@ abstract class BaseController
 					return Session::get($key, $second_key);
 				});
 
+				$twig_json_decode_function = new TwigFunction('twig_json_decode', function($json)
+				{
+					return json_decode($json, true);
+				});
+
+				$fun_json_decode = new TwigFunction('json_decode_fun', function($json, $separator = ", ")
+				{
+					return json_decode(json_decode($json, true), true);
+				});
+				$this->Twig->addFunction($fun_json_decode);
+
 				$this->Twig->addFunction($url_function);
 				$this->Twig->addFunction($absolute_url_function);
 				$this->Twig->addFunction($date_function);

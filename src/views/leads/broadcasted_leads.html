@@ -1,0 +1,50 @@
+<link rel="stylesheet" type="text/css" href="/assets/css/leads_section/leads_table.css">
+
+<div class="lead_table_parent">
+    <div class="content_body">
+        <table class="table table-bordered align-middle">
+            <thead>
+                <tr>
+                    <th>Sr no.</th>
+                    <th>Template</th>
+                    <th>Status</th>
+                    <th>Leads</th>
+                    <th>Date Uploaded</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% set counter = 0 %}
+                {% for lead in lead_details %}
+                {% set counter = counter + 1 %}
+                <tr>
+                    <td>{{counter}}</td>
+                    <td>{{lead.wp_template}}</td>
+                    <td>{{lead.status}}</td>
+                    <td>
+                        {% for ld in json_decode_fun(lead.selected_leads) %}
+                        <a href="{{ url('lead_details', {lead_id : ld}) }}" class="link-in-iframe">
+                            {{ld}}
+                        </a>
+                        <br />
+                        {% endfor %}
+                    </td>
+                    <td><i class="fa fa-calendar"></i> {{ get_date(lead.createdAt, 4) }} </td>
+                </tr>
+                {% endfor %}
+                {% if lead_details|length == 0 %}
+                <tr>
+                    <td colspan="10">No Records Found</td>
+                </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    function togglePopup() {
+        const popup = document.getElementById('popup');
+        popup.style.display = (popup.style.display === 'none' || popup.style.display === '') ? 'block' : 'none';
+    }
+</script>

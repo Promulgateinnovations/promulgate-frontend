@@ -248,4 +248,21 @@ class AnalyticsModel extends BaseModel
 			],
 		];
 	}
+
+	public function getSocialMediaConnections($organization_id)
+	{
+
+		if(!$organization_id) {
+			return [
+				'body' => [],
+			];
+		}
+
+		return $this->makeRequest('POST', '/api/v1/getSocialPresence', [
+				'json' => [
+					"orgId" => $organization_id,
+				],
+			]
+		);
+	}
 }

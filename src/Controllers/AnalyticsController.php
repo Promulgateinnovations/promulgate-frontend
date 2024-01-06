@@ -61,9 +61,65 @@ class AnalyticsController extends BaseController
 			'url'   => url('analytics_channels'),
 		]);
 
+		$CampaignController     = new CampaignController([
+			'context' => 'data',
+		]);
+		
+		$configured_connections = $this->analyticsModel->getSocialMediaConnections($this->organizationId)['body'];
+
+		if($configured_connections['status'] == "success") {
+			$all_channels = $configured_connections;
+			foreach ($configured_connections['socialData'] as $k => $sData) {
+
+				$fistVal = 0;
+                $fistValIncStatus = 0; //1-up, 2-down
+                $secondVal = 0;
+                $secondValIncStatus = 0; //1-up, 2-down
+                $thirdval = 0;
+                $thirdvalIncStatus = 0; //1-up, 2-down
+                if(isset($sData)){
+	                foreach ($sData as $ks => $vs) {
+	                	if($vs['totalPosts'] < $fistVal) {
+	                        $fistValIncStatus = 2;
+	                    }
+	                    if($vs['totalPosts'] > $fistVal) {
+	                        $fistValIncStatus = 1;
+	                    }
+	                    if($vs['totalFollowing'] < $secondVal) {
+	                        $secondValIncStatus = 2;
+	                    }
+	                    if($vs['totalFollowing'] > $secondVal) {
+	                        $secondValIncStatus = 1;
+	                    }
+	                    if($vs['totalFollowers'] < $thirdval) {
+	                        $thirdvalIncStatus = 2;
+	                    }
+	                    if($vs['totalFollowers'] > $thirdval) {
+	                        $thirdvalIncStatus = 1;
+	                    }
+	                    $fistVal = $vs['totalPosts'];
+	                    $secondVal = $vs['totalFollowing'];
+	                    $thirdval = $vs['totalFollowers'];
+
+	                    foreach ($all_channels['data'] as $k => $channel) {
+	                    	if($channel['socialMediaPage']['socialMediaConnectionSocalMediaConnectionId'] == $vs['socalMediaConnectionId']) {
+	                    		$all_channels['data'][$k]['totalPosts'] = $fistVal;
+		                        $all_channels['data'][$k]['fistValIncStatus'] = $fistValIncStatus;
+		                        $all_channels['data'][$k]['totalFollowing'] = $secondVal;
+		                        $all_channels['data'][$k]['secondValIncStatus'] = $secondValIncStatus;
+		                        $all_channels['data'][$k]['totalFollowers'] = $thirdval;
+		                        $all_channels['data'][$k]['thirdvalIncStatus'] = $thirdvalIncStatus;
+	                    	}
+	                    }
+					}
+				}
+			}
+		}
+
+		//print_r($all_channels);exit();
 		// $all_campaigns     = $this->campaignModel->getListOfCampaigns($this->organizationId)['body'];
 
-		$organization_channels = $this->analyticsModel->getSubscriptionDetails($this->organizationId)['body'];
+		//$organization_channels = $this->analyticsModel->getSubscriptionDetails($this->organizationId)['body'];
 
 		// $subscriptionDetails = []
 
@@ -75,10 +131,11 @@ class AnalyticsController extends BaseController
 		$this->setViewData('channel_analysis.html',
 			[
 				'form_action'           => url('analytics_ajax'),
-				'organization_channels' => $organization_channels['data'],
+				//'organization_channels' => $organization_channels['data'],
 				'graph_users_count'     => json_encode($users_count_per_day, true),
 				'last_days_users_count' => array_sum(array_column($users_count_per_day, 1)) ?? 0,
 				'page_title'            => "Subscription Analysis",
+				'all_social_medias' => $all_channels
 			]
 		);
 

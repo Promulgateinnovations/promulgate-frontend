@@ -241,6 +241,152 @@ $(document).ready(function () {
         }
     });
 
+    $('.wa_template_preview').click(function () {
+
+        var channel = $(this).attr('data-channel-source');
+        if (channel) {
+            var channelForm = '#curation_channel_' + channel;
+            var previewData = getFormData($(channelForm));
+            var selectedTemplate = $("#wa_template").find(":selected").data("component");
+            var selectedTemplateStatus = $("#wa_template").find(":selected").data("status");
+            var campaignPostAt = getCampaignPostAtDatesList(previewData["when_to_post[]"] || "");
+            var previewContent = '';
+            if(selectedTemplate != undefined) {
+                console.log(selectedTemplate);
+                //previewContent += '<div>';
+                if(selectedTemplateStatus != "APPROVED") {
+                    previewContent += '<p class="warning_note">Note: Only APPROVED templates can  be broadcasted. </p>';
+                }
+                previewContent +=
+                    '<div class="wa_preview">';
+                        for(let t in selectedTemplate) {
+                            if(selectedTemplate[t].type == "HEADER") {
+                                if(selectedTemplate[t].format == "TEXT") {
+                                    previewContent +=
+                                        '<h2 class="wa_preview_header">' +
+                                            selectedTemplate[t].text +
+                                        '</h2>';
+                                } else 
+                                if(selectedTemplate[t].format == "IMAGE") {
+                                    previewContent +=
+                                        '<img class="wa_preview_header_img" src="'+selectedTemplate[t].example.header_handle[0]+'" />' 
+                                        ;
+                                }
+                            } else 
+                            if(selectedTemplate[t].type == "BODY") {
+                                previewContent +=
+                                    '<p class="wa_preview_body">' +
+                                        selectedTemplate[t].text +
+                                    '</p>';
+                            } else 
+                            if(selectedTemplate[t].type == "FOOTER") {
+                                previewContent +=
+                                    '<h3 class="wa_preview_footer">' +
+                                        selectedTemplate[t].text +
+                                    '</h3>';
+                            } else 
+                            if(selectedTemplate[t].type == "BUTTONS") {
+                                previewContent += '<div class="wa_button_section">';
+                                for(let b in selectedTemplate[t].buttons) {
+                                    if(selectedTemplate[t].buttons[b].type == "QUICK_REPLY") {
+                                        previewContent +=
+                                            '<button class="btn btn-promulgate-primary w-100 mb-2">' +
+                                            selectedTemplate[t].buttons[b].text +
+                                            '</button>';
+                                    } else {
+                                        previewContent +=
+                                            '<a class="mb-2" href="#"> <i class="fa fa-link"></i> ' +
+                                                " Link" +
+                                            '</a>';
+                                    }
+                                }
+                                previewContent += '</div>';
+                            }
+                        }
+                previewContent +=
+                    '</div>';
+                if(campaignPostAt != "") {
+                    previewContent +=
+                        '<div class="form-group">' +
+                        '<div class="wa_posting_title">Campaign will be posted at following time(s)</div>' +
+                        '<div class="wa_posting_content mb-2">' + campaignPostAt + '</div>' +
+                        '</div>';
+                }
+            } else {
+                previewContent =
+                '<h3 class="text-center mt-3">Template not selected</h3>';
+            }
+                        
+
+            var channelIcon = $(channelForm + ' .social_icon_block').html() || "";
+
+            Swal.fire({
+                //title: '<span>' + capitalize(channel) + '</span> ',
+                // icon: 'info',
+                iconHtml: channelIcon + '<small>' + capitalize(channel) + '</small>',
+                html: previewContent,
+                showCloseButton: true,
+                showCancelButton: false,
+                showConfirmButton: true,
+                buttonsStyling: true,
+                reverseButtons: false,
+                confirmButtonText: 'Looks fine',
+                focusConfirm: true,
+                showClass: {
+                    popup: 'animate__animated animate__zoomIn'
+                },
+                hideClass: {
+                    popup: 'animate__animated animate__zoomOutDown'
+                }
+            })
+        }
+    });
+
+    $('.wa_add_template_preview').click(function () {
+        var channel = $(this).attr('data-channel-source');
+        if (channel) {
+            var channelForm = '#curation_channel_' + channel;
+            var previewData = getFormData($(channelForm));
+            var previewContent = '';
+            previewContent += '<div class="wa_preview">';
+                if(previewData.file_url != "") {
+                    previewContent += '<img class="wa_preview_header_img mb-2" src="'+previewData.file_url+'" />';
+                }
+
+                if(previewData.campaign_comment != "") {
+                    previewContent += '<p class="wa_preview_body">'+previewData.campaign_comment+'</p>';
+                }
+
+                if(previewData.cta != "") {
+                    previewContent += '<a class="wa_preview_link" href="'+previewData.cta+'"><i class="fa fa-link"></i> Link</a>';
+                }
+            previewContent+= '</div>';
+
+            var channelIcon = $(channelForm + ' .social_icon_block').html() || "";
+
+            Swal.fire({
+                //title: '<span>' + capitalize(channel) + '</span> ',
+                // icon: 'info',
+                iconHtml: channelIcon + '<small>' + capitalize(channel) + '</small>',
+                html: previewContent,
+                showCloseButton: true,
+                showCancelButton: false,
+                showConfirmButton: true,
+                buttonsStyling: true,
+                reverseButtons: false,
+                confirmButtonText: 'Looks fine',
+                focusConfirm: true,
+                showClass: {
+                    popup: 'animate__animated animate__zoomIn'
+                },
+                hideClass: {
+                    popup: 'animate__animated animate__zoomOutDown'
+                }
+            })
+          
+        }
+    });
+
     $('#share_with_captive_members').change(function () {
         changeTargetViewers(this.checked);
     });
@@ -809,7 +955,7 @@ function enableBootstrapValidator() {
             'file_url': {
                 validators: {
                     notEmpty: {
-                        message: 'The Campaign Video Url is required'
+                        message: 'The Campaign File Url is required'
                     },
                     callback: {
                         //message: 'Please provide Campaign Video URL',
@@ -824,6 +970,51 @@ function enableBootstrapValidator() {
 
                             return true;
                         }
+                    }
+                }
+            },
+            'wa_template': {
+                validators: {
+                    choice: {
+                        min: 1,
+                        message: 'Please choose template'
+                    }
+                }
+            },
+            'cta': {
+                validators: {
+                    notEmpty: {
+                        message: 'CTA Url is required'
+                    },
+                    callback: {
+                        //message: 'Please provide Campaign Video URL',
+                        callback: function (value, validator, $field) {
+
+                            if (value && !isUrlValid(value)) {
+                                return {
+                                    valid: false,
+                                    message: 'Please provide valid CTA URL',
+                                };
+                            }
+
+                            return true;
+                        }
+                    }
+                }
+            },
+            "template_name": {
+                validators: {
+                    notEmpty: {
+                        message: 'Please provide template name',
+                    },
+                    stringLength: {
+                        min: 2,
+                        max: 50,
+                        message: 'The templare name must be more than 2 and less than 50 characters long'
+                    },
+                    regexp: {
+                        regexp: /^[a-zA-Z0-9_]+$/,
+                        message: 'The template name can only consist of alphabets & numbers'
                     }
                 }
             },
@@ -916,6 +1107,17 @@ function enableBootstrapValidator() {
                         max: 1,
                         message: 'Please select the page you want to use'
                     }
+                }
+            },
+            'template_body': {
+                validators: {
+                    notEmpty: {
+                        message: 'Please provide information about template body',
+                    },
+                    stringLength: {
+                        min: 5,
+                        message: 'The information must be more than 5 characters long'
+                    },
                 }
             },
         },
@@ -1136,9 +1338,17 @@ function getFormData(element) {
 function processData(formElement) {
 
     var inputData = getFormData($(formElement));
-
     if (inputData["ajax_source"] !== undefined) {
-
+        if(inputData["ajax_source"] == "whatsapp_content_curation") {
+            var selectedTemplateStatus = $("#wa_template").find(":selected").data("status");
+            if(selectedTemplateStatus != "APPROVED") {
+                showErrorMessageToast('Only Approved Templates Can Be Broadcasted', 'Error', {
+                    'positionClass': 'toast-top-right'
+                });
+                return false;
+            }
+        }
+        
         $.ajax({
             url: inputData["ajax_source"],
             type: 'post',
@@ -1390,6 +1600,26 @@ function processExtraAjaxData(extraData, formData, formElement) {
                 }
             });
             break;
+        
+        case 'add_template':
+
+            if (extraData.next_screen !== undefined) {
+                setTimeout(function () {
+                    window.location.href = extraData.next_screen;
+                }, 3000);
+            }
+            break;
+
+        case 'whatsapp_content_curation':
+
+            if (extraData.next_screen !== undefined) {
+                setTimeout(function () {
+                    window.location.href = extraData.next_screen;
+                }, 3000);
+            }
+            break;
+
+            break;
 
 
     }
@@ -1543,6 +1773,32 @@ function showProcessingToast(message) {
             'positionClass': 'toast-top-center',
             'closeButton': false
         });
+}
+
+deleteLeadFromDb = (id) => {
+    var inputData = {
+        'ajax_source': "leads/ajax",
+        'from_ajax': true,
+        'form_source': 'delete_lead',
+        'lead_id': id
+    };
+    showProcessingToast();
+
+    $.ajax({
+        url: "/leads/ajax",
+        type: 'post',
+        dataType: 'json',
+        contentType: "application/json; charset=UTF-8",
+        data: JSON.stringify(inputData),
+        success: function (responseData) {
+            ajaxSuccessResponse(responseData, '', inputData);
+            window.location.reload();
+        },
+        error: function (error) {
+            ajaxFailedResponse(error, '', inputData);
+        }
+    });
+
 }
 
 function showNotifications() {
@@ -2591,4 +2847,34 @@ class configureEmailConnectionClass {
 
     };
 
+}
+
+function checkLeads(source) {
+    checkboxes = document.getElementsByName('lead');
+    for(var i=0, n=checkboxes.length;i<n;i++) {
+      checkboxes[i].checked = source.checked;
+    }
+}
+
+function broadcastLead() {
+    var checkboxes = document.getElementsByName('lead');
+    var isLeadChecked = [];
+    
+    for(var i=0, n=checkboxes.length;i<n;i++) {
+        if(checkboxes[i].checked) {
+            if(checkboxes[i].value != 'all') {
+                if(checkboxes[i].value.split('_')[1] != 0) {
+                    isLeadChecked.push(checkboxes[i].value.split('_')[0])
+                }
+            }
+        }
+    }
+
+    if(isLeadChecked.length > 0) {
+        window.location.href = '/leads/broadcast/?leads='+JSON.stringify(isLeadChecked);
+    }else {
+        showErrorMessageToast('Select atleast one lead to broadcast', 'Error', {
+            'positionClass': 'toast-top-right'
+        });
+    }
 }
