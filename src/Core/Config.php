@@ -70,6 +70,10 @@ final class Config
 			'status'               => true,
 			'js_callback_function' => 'configureFacebookConnection',
 		],
+		'whatsapp' => [
+			'status'               => true,
+			'js_callback_function' => 'configureFacebookConnection',
+		],
 		'youtube'  => [
 			'status'               => true,
 			'js_callback_function' => 'configureYoutubeConnection',
