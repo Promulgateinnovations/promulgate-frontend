@@ -2268,7 +2268,7 @@ class configureFacebookConnectionClass {
     showFacebookLogin = () => {
 
         FB.login(this.processLoginResponse, {
-            scope: 'public_profile,pages_show_list,read_insights,instagram_basic,instagram_content_publish,instagram_manage_insights,whatsapp_business_management,whatsapp_business_messaging',
+            scope: 'public_profile,pages_show_list,read_insights,instagram_basic,instagram_content_publish,instagram_manage_insights,whatsapp_business_messaging',
             return_scopes: true
         });
     }
@@ -2687,7 +2687,7 @@ class configureInstagramConnectionClass {
     showFacebookLogin = () => {
 
         FB.login(this.processLoginResponse, {
-            scope: 'public_profile,pages_show_list,read_insights,instagram_basic,instagram_content_publish,instagram_manage_insights,whatsapp_business_management,whatsapp_business_messaging',
+            scope: 'public_profile,pages_show_list,read_insights,instagram_basic,instagram_content_publish,instagram_manage_insights,whatsapp_business_messaging',
             return_scopes: true
         });
     }
