@@ -48,6 +48,14 @@ class LeadsModel extends BaseModel
         ]);
     }
 
+	public function getLeadLogs($broadcast_id){
+        return $this->makeRequest('POST','/api/v1/getLeadLogs',[
+            'json' => [
+                "broadcast_id" => $broadcast_id,
+            ],
+        ]);
+    }
+
     public function getTemplates($content_to_post)
     {
     	if(!$content_to_post) {

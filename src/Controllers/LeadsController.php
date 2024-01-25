@@ -102,8 +102,6 @@ class LeadsController extends BaseController
 	public function createLeadDetails()
 	{
 		$all_input = input()->all();
-		print_r($all_input);
-		exit();
 	}
 
 	public function showLeadsDetails($lead_id)
@@ -141,6 +139,29 @@ class LeadsController extends BaseController
 				'page_title'            => "leads",
 				'show_only_content'         => true,
 				'lead_contacts' 		=> $lead_contacts['body'] ? $lead_contacts['body']['data'] : []
+			]
+		);
+
+	}
+
+	public function showBroadcastedLeadsDetails($broadcast_id)
+	{
+
+		$this->Breadcrumbs->add([
+			'title' => 'Leads',
+			'url'   => url('leads'),
+		]);
+
+		$lead_logs = $this->leadsModel->getLeadLogs($broadcast_id);
+
+
+
+		$this->setViewData('broadcasted_lead_details.html',
+			[
+				'form_action'           => url('leads_ajax'),
+				'page_title'            => "Broadcasted Lead Details",
+				'show_only_content'         => true,
+				'lead_contacts' 		=> $lead_logs['body'] ? $lead_logs['body']['data'] : []
 			]
 		);
 
@@ -208,12 +229,49 @@ class LeadsController extends BaseController
 				'org_id' => $org_id
 			];
 			$wp_templates = $this->leadsModel->getTemplates($content_to_post)['body'];
+
+			$AdminController  = new AdminController();
+			$CampaignController     = new CampaignController([
+				'context' => 'data',
+			]);
+			$business_details  = $AdminController->getBusinessDetails(Session::get('organization', 'id'));
+			$google_drive_credentials = $business_details['assetCredentials'];
+
+			$google_drive_access_token = "";
+
+			if(isset($google_drive_credentials['access_token'])) {
+
+				// Check for access token validation
+				$access_token_expiry = $google_drive_credentials['created'] + ($google_drive_credentials['expires_in'] - 300);
+
+				// P(date("Y-m-d H:i:s", time()) < date("Y-m-d H:i:s", $access_token_expiry), true);
+				if(!(time() < $access_token_expiry)) {
+
+					// Get credentials By token
+					$GoogleApiClient = new GoogleAPIClient();
+					$user_tokens     = $GoogleApiClient->getTokenByRefreshToken($google_drive_credentials['refresh_token']);
+
+					if(!isset($user_tokens['error'])) {
+
+						$google_drive_credentials = $user_tokens;
+					}
+				}
+				$google_drive_access_token = $google_drive_credentials['access_token'];
+
+			}
+		
 			$this->setViewData('broadcast.html',
 				[
 					'form_action'           => url('leads_ajax'),
 					'wp_templates' 			=> isset($wp_templates['data']) ? $wp_templates['data'] : [],
 					'page_title'            => "templates",
-					'selected_leads' => $all_leads
+					'selected_leads' => $all_leads,
+					'plugins_google_drive_picker'                  => true,
+					'GOOGLE_OAUTH_CLIENT_ID'                       => env('GOOGLE_OAUTH_CLIENT_ID'),
+					'GOOGLE_DRIVE_API_KEY'                         => env('GOOGLE_DRIVE_API_KEY'),
+					'GOOGLE_APP_ID'                                => env('GOOGLE_APP_ID'),
+					'GOOGLE_DRIVE_ACCESS_TOKEN'                    => $google_drive_access_token,
+					'BUSINESS_URL'                                 => url('admin_business')
 				]
 			);
 		}
@@ -229,7 +287,9 @@ class LeadsController extends BaseController
 
 
 		$AdminController  = new AdminController();
-		$CampaignController  = new CampaignController();
+		$CampaignController     = new CampaignController([
+			'context' => 'data',
+		]);
 		$business_details  = $AdminController->getBusinessDetails(Session::get('organization', 'id'));
 		$google_drive_credentials = $business_details['assetCredentials'];
 
@@ -261,7 +321,6 @@ class LeadsController extends BaseController
 			[
 				'form_action'           => url('leads_ajax'),
 				'current_campaign_strategy_definition_details' => $business_details,
-				'selected_social_media_channels_and_content'   => $CampaignController->getContentCurationSocialMediaConnections(),
 				'page_title'            => "add templates",
 				'plugins_google_drive_picker'                  => true,
 				'GOOGLE_OAUTH_CLIENT_ID'                       => env('GOOGLE_OAUTH_CLIENT_ID'),
@@ -407,7 +466,7 @@ class LeadsController extends BaseController
 				'selected_leads'       => $content['selected_leads'],
 				'wa_template'              => $content['wa_template'],
 				'wa_template_lang'               => $content['wa_template_lang'],
-				'wa_file_url'               => $content['wa_file_url'],
+				'file_url'               => $content['wa_file_url'],
 				'postAt'            => $final_posts_at,
 				'agency_id' => $agency_id,
 				'org_id' => $org_id

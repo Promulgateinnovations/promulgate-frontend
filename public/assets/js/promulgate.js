@@ -345,12 +345,18 @@ $(document).ready(function () {
     $('#wa_template').change(function () {
 
         var selectedTemplate = $("#wa_template").find(":selected").data("component");
-        $('#wa_template_lang').val($("#wa_template").find(':selected').data('lang'))
-        if(selectedTemplate[0].format == "IMAGE") {
-            $('#wa_file_url').val(selectedTemplate[0].example.header_handle[0]);
+
+        if(selectedTemplate) {
+            if(selectedTemplate[0].format == "IMAGE") {
+                $('.display_img_picker_for_template').removeClass('d-none');
+            } else {
+                $('.display_img_picker_for_template').addClass('d-none');
+            }
         } else {
-            $('#wa_file_url').val("");
+            $('.display_img_picker_for_template').addClass('d-none');
         }
+
+        $('#wa_template_lang').val($("#wa_template").find(':selected').data('lang'));
     });
 
     $('.wa_add_template_preview').click(function () {
@@ -1359,7 +1365,13 @@ function processData(formElement) {
                 return false;
             }
         }
-        
+
+        if(inputData["form_source"] == "whatsapp_content_curation") {
+            if(!$('.display_img_picker_for_template').hasClass('d-none') && $('#file_url').val() == '') {
+                showErrorMessageToast('Select a file.');
+                return false;
+            }
+        }
         $.ajax({
             url: inputData["ajax_source"],
             type: 'post',

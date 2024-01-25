@@ -110,7 +110,6 @@
                                                     {% endfor %}
                                                 </select>
                                                 <input id="wa_template_lang" type="hidden" name="wa_template_lang" value="" />
-                                                <input id="wa_file_url" type="hidden" name="wa_file_url" value="" />
                                             </div>
                                         </div>
                                         <div class="col-2">
@@ -119,6 +118,17 @@
                                                 </button>
                                         </div>
                                      
+                                    </div>
+                                    <div class="row align-items-center display_img_picker_for_template d-none">
+                                        <div class="col-9">
+                                            <div class="form-group">
+                                                <label>Provide an Image URL</label>
+                                                <input type="text" class="form-control" id="file_url" name="wa_file_url" placeholder="Provide an Image URL">
+                                            </div>
+                                        </div>
+                                        <div class="col-3 text-center">
+                                            <button type="button" data-channel-source="whatsapp" class="btn btn-promulgate-primary btn-sm open-google-drive">Open Google Drive</button>
+                                        </div>
                                     </div>
                                     <div class="row align-center">
                                         <div class="form-group ">

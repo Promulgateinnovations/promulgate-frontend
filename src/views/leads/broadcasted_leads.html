@@ -23,7 +23,7 @@
                     <td>{{lead.status}}</td>
                     <td>
                         {% for ld in json_decode_fun(lead.selected_leads) %}
-                        <a href="{{ url('lead_details', {lead_id : ld}) }}" class="link-in-iframe">
+                        <a href="{{ url('broadcasted_lead_details', {broadcast_id : lead.whatsappBroadcastContnentID}) }}" class="link-in-iframe">
                             {{ld}}
                         </a>
                         <br />
