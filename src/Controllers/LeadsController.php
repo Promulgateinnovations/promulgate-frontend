@@ -167,6 +167,30 @@ class LeadsController extends BaseController
 
 	}
 
+	public function showWhatsappAnalytics()
+	{
+		//overall analytics
+
+		$this->Breadcrumbs->add([
+			'title' => 'Leads',
+			'url'   => url('leads'),
+		]);
+
+		$whatsAppAnalytics = $this->leadsModel->getWhatsAppAnalytics();
+
+
+
+		$this->setViewData('whatsapp_analytics.html',
+			[
+				'form_action'           => url('leads_ajax'),
+				'page_title'            => "WhatsApp Analytics",
+				'show_only_content'         => true,
+				'whatsAppAnalytics' 		=> $whatsAppAnalytics['body'] ? $whatsAppAnalytics['body']['data'] : []
+			]
+		);
+
+	}
+
 	public function showUpload()
 	{
 

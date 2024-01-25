@@ -227,6 +227,10 @@ Route::group([
 		->name('broadcasted_lead_details')
 	;
 
+	Route::get('/whatsapp_analytics', 'LeadsController@showWhatsappAnalytics')
+		->name('whatsapp_analytics')
+	;
+
 	Route::get('/broadcast', 'LeadsController@showLeadsBroadcast')
 		->name('lead_broadcast')
 	;
