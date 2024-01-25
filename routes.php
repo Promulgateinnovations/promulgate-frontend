@@ -223,6 +223,10 @@ Route::group([
 		->name('lead_details')
 	;
 
+	Route::get('/broadcasted_lead_details/{broadcast_id}', 'LeadsController@showBroadcastedLeadsDetails')
+		->name('broadcasted_lead_details')
+	;
+
 	Route::get('/broadcast', 'LeadsController@showLeadsBroadcast')
 		->name('lead_broadcast')
 	;
