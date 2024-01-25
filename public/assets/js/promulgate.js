@@ -347,9 +347,9 @@ $(document).ready(function () {
         var selectedTemplate = $("#wa_template").find(":selected").data("component");
         $('#wa_template_lang').val($("#wa_template").find(':selected').data('lang'))
         if(selectedTemplate[0].format == "IMAGE") {
-            $('#file_url').val(selectedTemplate[0].example.header_handle[0]);
+            $('#wa_file_url').val(selectedTemplate[0].example.header_handle[0]);
         } else {
-            $('#file_url').val("");
+            $('#wa_file_url').val("");
         }
     });
 
