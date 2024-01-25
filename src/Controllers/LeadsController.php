@@ -407,6 +407,7 @@ class LeadsController extends BaseController
 				'selected_leads'       => $content['selected_leads'],
 				'wa_template'              => $content['wa_template'],
 				'wa_template_lang'               => $content['wa_template_lang'],
+				'file_url'               => $content['file_url'],
 				'postAt'            => $final_posts_at,
 				'agency_id' => $agency_id,
 				'org_id' => $org_id

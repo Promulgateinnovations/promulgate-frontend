@@ -103,13 +103,14 @@
                                                 <label for="wa_template">Template</label>
                                                 <select  class="js-select-2 form-control" id="wa_template"
                                                     name="wa_template" data-placeholder--id="0" data
-                                                        -placeholder--text="Whatsapp Template" onchange="$('#wa_template_lang').val($(this).find(':selected').attr('data-lang'))">
+                                                        -placeholder--text="Whatsapp Template">
                                                     <option value="null">Select Template</option>
                                                     {% for tmpl in wp_templates %}
                                                         <option  value="{{ tmpl.name }}" data-component="{{tmpl.components|json_encode()}}" data-status="{{tmpl.status}}" data-lang="{{tmpl.language}}">{{ tmpl.name }} - {{ tmpl.status }}</option>
                                                     {% endfor %}
                                                 </select>
                                                 <input id="wa_template_lang" type="hidden" name="wa_template_lang" value="" />
+                                                <input id="file_url" type="hidden" name="file_url" value="" />
                                             </div>
                                         </div>
                                         <div class="col-2">

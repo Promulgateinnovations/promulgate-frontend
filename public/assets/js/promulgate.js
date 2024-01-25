@@ -342,6 +342,17 @@ $(document).ready(function () {
         }
     });
 
+    $('#wa_template').change(function () {
+
+        var selectedTemplate = $("#wa_template").find(":selected").data("component");
+        $('#wa_template_lang').val($("#wa_template").find(':selected').data('lang'))
+        if(selectedTemplate[0].format == "IMAGE") {
+            $('#file_url').val(selectedTemplate[0].example.header_handle[0]);
+        } else {
+            $('#file_url').val("");
+        }
+    });
+
     $('.wa_add_template_preview').click(function () {
         var channel = $(this).attr('data-channel-source');
         if (channel) {
