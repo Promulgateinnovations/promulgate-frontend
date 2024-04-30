@@ -2709,7 +2709,7 @@ class configureInstagramConnectionClass {
     showFacebookLogin = () => {
 
         FB.login(this.processLoginResponse, {
-            scope: 'public_profile,pages_show_list,read_insights,instagram_basic,instagram_content_publish,pages_read_engagement,pages_manage_posts',
+            scope: 'public_profile,pages_show_list,read_insights,instagram_basic,instagram_content_publish',
             return_scopes: true
         });
     }
