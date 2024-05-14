@@ -32,8 +32,11 @@
 										</label>
 										{% if configured_connections[sub_type.unique_name]['pageName']  and configured_connections[sub_type.unique_name]['isConfigured'] %}									
 									<p class="pageName">
-									
+										{% if sub_type.name == 'WhatsApp' %}
+										<a href="{{ url('connect_whatsapp') }}" target="_blank">{{ configured_connections[sub_type.unique_name]['pageName'] }} </a>
+										{% else %}
 										{{ configured_connections[sub_type.unique_name]['pageName'] }}
+										{% endif %}
 									</p>
 								
 								{% endif %}
@@ -58,6 +61,7 @@
 													data-connection_media_type="{{ sub_type.type }}"
 													data-social_media_connection_id="{{ configured_connections[sub_type.unique_name]['socialMediaConnectionId'] }}"
 													{% if is_already_configured %} checked {% endif %}
+													{% if (sub_type.name == 'WhatsApp') and (is_already_configured == 1) %} disabled {% endif %}
 													data-toggle="toggle"
 													data-onstyle="success"
 													data-offstyle="outline-danger"

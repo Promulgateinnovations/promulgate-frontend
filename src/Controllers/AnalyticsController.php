@@ -5,6 +5,7 @@ namespace Promulgate\Controllers;
 use Josantonius\Session\Session;
 use Promulgate\Models\AnalyticsModel;
 use Promulgate\Models\CampaignModel;
+use Promulgate\Models\LeadsModel;
 
 /**
  * Class AnalyticsController
@@ -15,7 +16,7 @@ class AnalyticsController extends BaseController
 {
 	private $analyticsModel;
 	private $campaignModel;
-
+	private $leadsModel;
 	private $organizationId;
 
 
@@ -27,6 +28,7 @@ class AnalyticsController extends BaseController
 		parent::__construct();
 		$this->analyticsModel = new AnalyticsModel();
 		$this->campaignModel  = new CampaignModel();
+		$this->leadsModel = new LeadsModel();
 
 	}
 
@@ -314,5 +316,91 @@ class AnalyticsController extends BaseController
 		}
 	}
 
+	public function showWhatsappAnalytics()
+	{
+		//overall analytics
+
+		$this->Breadcrumbs->add([
+			'title' => 'Analytics',
+			'url'   => url('analytics_channels'),
+		]);
+		$org_id = Session::get('organization', 'id');
+		$whatsAppAnalytics = $this->leadsModel->getWhatsAppAnalytics($org_id);
+
+
+
+		$this->setViewData('whatsapp_analytics.html',
+			[
+				'form_action'           => url('analytics_ajax'),
+				'page_title'            => "WhatsApp Analytics",
+				// 'show_only_content'         => true,
+				'whatsAppAnalytics' 		=> $whatsAppAnalytics['body'] ? $whatsAppAnalytics['body']['data'] : []
+			]
+		);
+
+	}
+
+	public function showWhatsappGraphAnalytics()
+	{
+		//overall analytics
+
+		$this->Breadcrumbs->add([
+			'title' => 'Analytics',
+			'url'   => url('analytics_channels'),
+		]);
+
+		$org_id = Session::get('organization', 'id');
+		$whatsAppAnalytics = $this->leadsModel->getWhatsAppAnalytics($org_id);
+
+		$waData = $whatsAppAnalytics['body'] ? $whatsAppAnalytics['body']['data'] : [];
+//print_r($waData);exit();
+		//total sent, delivered, read, replied
+		$totalAnalysis = [0, 0, 0, 0];
+
+		//analysis by numbers
+		$uniqueNumbers = [];
+		$indUniqueSentCounts = [];
+		$indUniqueDeliveredCounts = [];
+		$indUniqueReadCounts = [];
+		$indUniqueRepliedCounts = [];
+		foreach ($waData as $k => $waD) {
+			if (!in_array($waD['phone_number'], $uniqueNumbers)) {
+				array_push($uniqueNumbers, $waD['phone_number']);
+				$indUniqueSentCounts[$waD['phone_number']] = $waD['sent'];
+				$indUniqueReadCounts[$waD['phone_number']] = $waD['read'];
+				$indUniqueDeliveredCounts[$waD['phone_number']] = $waD['delivered'];
+				$indUniqueRepliedCounts[$waD['phone_number']] = $waD['replied'];
+			} else {
+				$indUniqueSentCounts[$waD['phone_number']] = $indUniqueSentCounts[$waD['phone_number']] + $waD['sent'];
+				$indUniqueReadCounts[$waD['phone_number']] = $indUniqueReadCounts[$waD['phone_number']] + $waD['read'];
+				$indUniqueDeliveredCounts[$waD['phone_number']] = $indUniqueDeliveredCounts[$waD['phone_number']] + $waD['delivered'];
+				$indUniqueRepliedCounts[$waD['phone_number']] = $indUniqueRepliedCounts[$waD['phone_number']] + $waD['replied'];
+			}
+
+			$totalAnalysis[0] = $totalAnalysis[0]+ $waD['sent'];
+			$totalAnalysis[1] = $totalAnalysis[1]+ $waD['delivered'];
+			$totalAnalysis[2] = $totalAnalysis[2]+ $waD['read'];
+			$totalAnalysis[3] = $totalAnalysis[3]+ $waD['replied'];
+		}
+		$this->setViewData('whatsapp_graph_analytics.html',
+			[
+				'form_action'           => url('analytics_ajax'),
+				'page_title'            => "WhatsApp Analytics",
+				// 'show_only_content'         => true,
+				'whatsAppAnalytics' 		=> $whatsAppAnalytics['body'] ? $whatsAppAnalytics['body']['data'] : [],
+				//analysis by numbers
+				'uniqueNumbers' => json_encode($uniqueNumbers),
+				'indUniqueSentCounts' => json_encode($indUniqueSentCounts),
+				'indUniqueDeliveredCounts' => json_encode($indUniqueDeliveredCounts),
+				'indUniqueReadCounts' => json_encode($indUniqueReadCounts),
+				'indUniqueRepliedCounts' => json_encode($indUniqueRepliedCounts),
+
+
+				//total analysis
+				'totalAnalysis' => json_encode($totalAnalysis)
+			]
+		);
+
+	}
 
 }

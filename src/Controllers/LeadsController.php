@@ -175,8 +175,8 @@ class LeadsController extends BaseController
 			'title' => 'Leads',
 			'url'   => url('leads'),
 		]);
-
-		$whatsAppAnalytics = $this->leadsModel->getWhatsAppAnalytics();
+		$org_id = Session::get('organization', 'id');
+		$whatsAppAnalytics = $this->leadsModel->getWhatsAppAnalytics($org_id);
 
 
 
@@ -235,7 +235,7 @@ class LeadsController extends BaseController
 				Session::set('REDIRECT_MESSAGES', [
 					[
 						'type'          => 'error',
-						'message'       => 'Please connect facebook first...',
+						'message'       => 'Please connect whatsapp first...',
 						'positionClass' => 'toast-top-full-width',
 					],
 				]);

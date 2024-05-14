@@ -56,11 +56,11 @@ class LeadsModel extends BaseModel
         ]);
     }
 
-	public function getWhatsAppAnalytics(){
-        return $this->makeRequest('GET','/api/v1/getWhatsAppAnalytics',[
-            'json' => [
-                
-            ],
+	public function getWhatsAppAnalytics($organization_id){
+        return $this->makeRequest('POST','/api/v1/getWhatsAppAnalytics',[
+			'json' => [
+				"orgId" => $organization_id,
+			],
         ]);
     }
 

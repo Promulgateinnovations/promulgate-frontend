@@ -322,6 +322,33 @@ class AdminController extends BaseController
 		);
 	}
 
+	public function addWhatsapp()
+	{
+
+		$this->Breadcrumbs->add([
+			'title' => 'Whatsapp Connections',
+			'url'   => url('connect_whatsapp'),
+		]);
+
+		$whatsapp_details = $this->adminModel->getWhatsAppConnectionDetails($this->organizationId)['body'];
+
+		if(getValue('status', $whatsapp_details) == 'success') {
+
+			$whatsapp_details = $whatsapp_details['data'];
+
+		} else {
+			$whatsapp_details = [];
+		}
+
+		$this->setViewData('whatsapp_connection.html',
+			[
+				'form_action'                     => url('admin_ajax'),
+				'page_title'                      => "Whatsapp Connections",
+				'whatsapp_details' => $whatsapp_details
+			]
+		);
+	}
+
 
 	public function processAjax()
 	{
@@ -380,6 +407,20 @@ class AdminController extends BaseController
 
 			case 'add_new_user' :
 				$this->addUser($all_input);
+				break;
+			
+			case 'connect_whatsapp' :
+
+				$whatsapp_connection_id = $all_input['whatsapp_connection_id'];
+
+				if($whatsapp_connection_id) {
+
+					$this->updateWhatsappConnectionDetails($whatsapp_connection_id, $all_input);
+
+				} else {
+
+					$this->createWhatsappConnection($all_input);
+				}
 				break;
 
 
@@ -475,6 +516,85 @@ class AdminController extends BaseController
 				'data'   =>
 					[
 						'message' => "Organization details updated successfully",
+					],
+			]);
+
+		}
+
+	}
+
+	private function createWhatsappConnection($whatsapp_details)
+	{
+		$whatsapp_details['user_id']    = Session::get('user', 'id');
+		$whatsapp_details['agencyId']   = Session::get('agency', 'id');
+		$whatsapp_details['org_id'] = Session::get('organization', 'id');
+		$whatsapp_details['status'] = 'ACTIVE';
+
+
+		$add_whatsapp = $this->adminModel->saveWhatsappConnectionDetails($whatsapp_details)['body'];
+
+		if(getValue('status', $add_whatsapp) != 'success') {
+
+			response()->json([
+				'status' => false,
+				'error'  => [
+					'code'    => 20,
+					'message' => $add_whatsapp['message'] ?? "Some problem form API",
+				],
+			]);
+
+		} else {
+
+			response()->json([
+				'status' => true,
+				'data'   =>
+					[
+						'message' => "Whatsapp connection created successfully",
+						'extra'   => [ 'next_screen' => url('admin_connections') ],
+					],
+			]);
+
+		}
+	}
+
+	private function updateWhatsappConnectionDetails($whatsapp_connection_id, $whatsapp_details)
+	{
+
+		if(!$whatsapp_connection_id) {
+
+			response()->json([
+				'status' => false,
+				'error'  => [
+					'code'    => 10,
+					'message' => 'No Whatsapp Connection to update details',
+				],
+			]);
+		}
+
+		$updated_created_organization = $this->adminModel->updateWhatsappConnectionDetails($whatsapp_connection_id, $whatsapp_details)['body'];
+
+		if(getValue('status', $updated_created_organization) != 'success') {
+
+			response()->json([
+				'status' => false,
+				'error'  => [
+					'code'    => 20,
+					'message' => $updated_created_organization['message'] ?? "Some problem form API",
+				],
+			]);
+
+		} else {
+
+			//Update company name
+			Session::set('whatsapp_connection_id', [
+				'id' => $whatsapp_connection_id,
+			]);
+
+			response()->json([
+				'status' => true,
+				'data'   =>
+					[
+						'message' => "Whatsapp Connection details updated successfully",
 					],
 			]);
 

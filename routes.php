@@ -74,6 +74,10 @@ Route::group([
 	     ->name('admin_connections')
 	;
 
+	Route::get('/connect-whatsapp', 'AdminController@addWhatsapp')
+	     ->name('connect_whatsapp')
+	;
+
 });
 
 
@@ -173,6 +177,13 @@ Route::group([
 
 	Route::get('/youtube', 'AnalyticsController@showYoutubeAnalysis')
 	     ->name('analytics_YouTube')
+	;
+	Route::get('/whatsapp', 'AnalyticsController@showWhatsappAnalytics')
+		->name('analytics_whatsapp')
+	;
+
+	Route::get('/whatsapp-graph-analysis', 'AnalyticsController@showWhatsappGraphAnalytics')
+		->name('analytics_graph_whatsapp')
 	;
 
 });

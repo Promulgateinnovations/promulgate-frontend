@@ -409,6 +409,7 @@ $(document).ready(function () {
     });
 
     $('.organization_connection_configuration').change(function () {
+       
 
         var connection_selector = '#' + $(this).attr('data-connection_setting_id');
         var connection_name = $(this).attr('data-connection_setting_name');
@@ -437,6 +438,11 @@ $(document).ready(function () {
             }).then((result) => {
 
                 if (result.isConfirmed) {
+
+                    if(connection_selector == "#connection_whatsapp") {
+                        window.open('/admin/connect-whatsapp', '_blank').focus();
+                        return false;
+                    }            
 
                     var isCustomConnection = parseInt($(this).attr('data-api_connection'));
                     var oauthAuthorizationUrlConstant = $(this).attr('data-oauth_authorization_url_constant');
@@ -1458,6 +1464,15 @@ function processExtraAjaxData(extraData, formData, formElement) {
 
     switch (formData.form_source) {
         case 'currentOrganization':
+
+            if (extraData.next_screen !== undefined) {
+                setTimeout(function () {
+                    window.location.href = extraData.next_screen;
+                }, 3000);
+            }
+            break;
+
+        case 'connect_whatsapp':
 
             if (extraData.next_screen !== undefined) {
                 setTimeout(function () {

@@ -262,6 +262,70 @@ class AdminModel extends BaseModel
 
 	}
 
+	public function saveWhatsappConnectionDetails(array $whatsapp_details): array
+	{
+		if(!$whatsapp_details) {
+			return [
+				'body' => [],
+			];
+		}
+
+		$whatsapp_data = [
+			"phoneNumberId"      => $whatsapp_details['phone_number_id'],
+			"whatsappBusinesAccountId"   => $whatsapp_details['Whatsapp_busines_account_id'],
+			"userId"      => $whatsapp_details['user_id'],
+			"agencyId"    => $whatsapp_details['agencyId'],
+			"orgId"    => $whatsapp_details['org_id'],
+			"status"    => $whatsapp_details['status']
+		];
+
+		return $this->makeRequest('POST', '/api/v1/saveWhatsappDetails', [
+				'json' => $whatsapp_data,
+			]
+		);
+
+	}
+
+	public function getWhatsAppConnectionDetails(string $organization_id = NULL): array
+	{
+
+		if(!$organization_id) {
+			return [
+				'body' => [],
+			];
+		}
+
+
+		return $this->makeRequest('POST', '/api/v1/getWhatsAppDetails', [
+				'json' => [
+					"orgId" => $organization_id,
+				],
+			]
+		);
+
+	}
+
+	public function updateWhatsappConnectionDetails($whatsapp_connection_id, array $whatsapp_details): array
+	{
+		if(!$whatsapp_details || !$whatsapp_connection_id) {
+			return [
+				'body' => [],
+			];
+		}
+
+		$whatsapp_data = [
+			"whatsapp_connection_id"       => $whatsapp_connection_id,
+			"phone_number_id"        => $whatsapp_details['phone_number_id'],
+			"Whatsapp_busines_account_id"   => $whatsapp_details['Whatsapp_busines_account_id']
+		];
+
+		return $this->makeRequest('POST', '/api/v1/updateWhatsappDetails', [
+				'json' => $whatsapp_data,
+			]
+		);
+
+	}
+
 
 	public function saveBusinessDetails(array $business_details): array
 	{
