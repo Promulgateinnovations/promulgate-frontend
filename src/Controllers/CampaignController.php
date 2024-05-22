@@ -713,6 +713,7 @@ class CampaignController extends BaseController
 				'tags'              => $content['curation_tags'],
 				'campaignChannelId' => $campaign_channel_selection_id,
 				'postAt'            => $final_posts_at,
+				'publishVideoAs' => isset($content['publish_video_as']) ? $content['publish_video_as'] : ''
 			];
 
 			if(isset($content['campaign_subject'])) {
@@ -1260,11 +1261,11 @@ class CampaignController extends BaseController
 						'unique_name'         => $unique_name,
 						'campaignSelectionId' => $selected_social_media_connection['campaignSelectionId'],
 						'campaignContents'    => $campaign_contents,
+						'publishVideoAs' => isset($selected_social_media_connection['publishVideoAs']) ? $selected_social_media_connection['publishVideoAs'] : ''
 					];
 				}
 			}
 		}
-
 		return $selected_channels;
 
 	}

@@ -22,3 +22,79 @@
     padding: 0.5rem 1rem;
     text-align: center;
 }
+.no_of_camp_icons {
+    background: #eabfc7;
+    padding: 10px;
+    border-radius: 50%;
+    color: #e66078 !important;
+    margin-top: 0;
+}
+
+.money_of_camp_icons {
+    background: #f9e8c9;
+    padding: 10px;
+    border-radius: 50%;
+    color: orange !important;
+    margin-top: 0;
+}
+
+.whatsapp_analysis_parent .info_content{
+    background: white;
+    border-radius: 20px;
+    box-shadow: 1px 2px 2px 2px #dfd3d3;
+}
+
+.filter_by_campaign {
+    background: white;
+    box-shadow: 0px 2px 2px 1px #dfd3d3;
+    width: max-content;
+    padding: 6px 20px;
+    border-radius: 25px;
+}
+
+.filter_by_campaign .campaign_type {
+    display: inline-block;
+    width: 150px;
+    border: 0;
+    appearance: auto;
+}
+.filter_by_campaign .campaign_type:focus {
+    box-shadow: none;
+}
+
+.total_msg_section {
+    margin-top: 30px;
+}
+
+.total_msgs {
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+.total_msgs span {
+    font-size: 1.5rem;
+}
+
+.whatsapp_analysis_chart {
+    width: 80%;
+    margin: 0 auto;
+    height: 300px;
+}
+
+.whatsapp_analysis_filter .form-control:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+.whatsapp_analysis_filter .date-picker, .whatsapp_analysis_filter .select2-selection{
+    border-radius: 20px;
+}
+
+.whatsapp_analysis_filter .select2-selection {
+    min-height: 38px !important;
+}
+
+.whatsapp_analysis_filter .select2-selection__rendered {
+    min-height: 38px;
+    line-height: 38px !important;
+}

@@ -1,17 +1,86 @@
 {% include '/analytics/tab_bar.html' %}
 <link rel="stylesheet" type="text/css" href="/assets/css/leads_section/leads_details.css">
-<div class="admin_content active">
+<div class="admin_content active" style="height: 100%;">
 	<div class="row content_header">
 		<div class="col-6">
 			<h1 class="title">
-				<i class="fa fa-link"></i> WhatsApp Analysis
+				WhatsApp Analysis
 			</h1>
+		</div>
+        <div class="col-6">
+            <div class="row whatsapp_analysis_filter">
+                <div class="col-4">
+                    <input autocomplete="off" class="form-control date-picker" name="" type="text" placeholder="From date">
+                </div>
+                <div class="col-4">
+                    <input autocomplete="off" class="form-control date-picker" name="" type="text" placeholder="To date">
+                </div>
+                <div class="col-4">
+                    <select id="duration" name="duration" class="js-select-2 form-control"
+                            data-placeholder--id="0"
+                            data-placeholder--text="Duration"
+                    >
+                        <option value="Weekly">Weekly</option>
+                        <option value="Monthly">Monthly</option>
+                        <option value="Quaterly">Quaterly</option>
+                        <option value="Annually">Annually</option>
+                    </select>
+                </div>
+            </div>
 		</div>
 	</div>
 	<div class="container-fluid">
-		<div class="lead_table_parent">
+		<div class="whatsapp_analysis_parent">
             <div class="content_body">
-                <table class="table table-bordered align-middle">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="info_content bottom_gap">
+                            <div class="info_content_box">
+                                <div class="info_content_part_left">
+                                    <i class="fa fa-pie-chart no_of_camp_icons"></i>
+                                </div>
+                                <div class="info_content_part_right">
+                                    <h3 class="box_heading mb-2">Total No. of Campaigns</h3>
+                                    <p class="number_text" id="watch_time">05</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="info_content bottom_gap">
+                            <div class="info_content_box">
+                                <div class="info_content_part_left">
+                                    <i class="fa fa-money money_of_camp_icons"></i>
+                                </div>
+                                <div class="info_content_part_right">
+                                    <h3 class="box_heading mb-2">Money Spent</h3>
+                                    <p class="number_text" id="watch_time">$14,243</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="filter_by_campaign">
+                            <i class="fa fa-pie-chart no_of_camp_icons"></i>
+                            <select id="campaign_type" name="campaign_type" class="form-control campaign_type"
+                                    data-placeholder--id="0"
+                                    data-placeholder--text="Campaign Type"
+                            >
+                                <option value="Weekly">Weekly</option>
+                                <option value="Monthly">Monthly</option>
+                                <option value="Quaterly">Quaterly</option>
+                                <option value="Annually">Annually</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-12 total_msg_section">
+                        <h2 class="total_msgs">Total Messages: <span>1,00.000</span></h2>
+
+                        <div id="whatsappAnalysisChart" class="mt-5 whatsapp_analysis_chart"></div>
+
+                    </div>
+                </div>
+                <!-- <table class="table table-bordered align-middle">
                     <thead>
                         <tr>
                             <th>Sr no.</th>
@@ -22,7 +91,6 @@
                             <th>Delivered</th>
                             <th>Read</th>
                             <th>Replied</th>
-                            <!-- <th>Content</th> -->
                         </tr>
                     </thead>
                     <tbody>
@@ -38,11 +106,6 @@
                             <td>{{analyt.delivered == 1 ? 'Yes' : 'No'}}</td>
                             <td>{{analyt.read == 1 ? 'Yes' : 'No'}}</td>
                             <td>{{analyt.replied == 1 ? 'Yes' : 'No'}}</td>
-                            <!-- <td>
-                                <a href="{{ url('broadcasted_lead_details', {broadcast_id : analyt.whatsappBroadcastContnent.whatsappBroadcastContnentID}) }}" class="link-in-iframe">
-                                    {{analyt.whatsappBroadcastContnent.whatsappBroadcastContnentID}}
-                                </a>
-                            </td> -->
                         </tr>
                         {% endfor %}
                         {% if whatsAppAnalytics|length == 0 %}
@@ -51,9 +114,11 @@
                         </tr>
                         {% endif %}
                     </tbody>
-                </table>
+                </table> -->
             </div>
         </div>
 	</div>
 </div>
 
+<script src="https://cdn.canvasjs.com/canvasjs.min.js"></script>
+<script src="/assets/js/analysis/whatsapp_analysis.js"></script>

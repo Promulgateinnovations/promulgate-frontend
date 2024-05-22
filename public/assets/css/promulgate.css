@@ -1522,3 +1522,30 @@ textarea {
     word-break: break-all;
     flex: 2;
 }
+
+.publish_video_form_group .toggle-group label.btn.btn-primary.btn-sm.toggle-on{
+    color: white;
+}
+
+.publish_video_form_group .toggle-on{
+    background: var(--primary-color);
+    color: white;
+}
+
+.publish_video_form_group .toggle-off{
+    background: var(--secondary-color);
+    color: black;
+}
+
+.publish_video_form_group .toggle {
+    border: 1px solid var(--primary-color);;
+}
+
+.publish_video_form_group .toggle.off {
+    border: 1px solid var(--secondary-color);
+}
+
+.publish_video_form_group .shorts_warning_note {
+    color: var(--secondary-color);
+    margin-top: 10px;
+}

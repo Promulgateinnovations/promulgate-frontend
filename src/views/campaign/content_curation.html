@@ -47,8 +47,26 @@
 								{% set channel_file_label = 'Provide an Image Attachment for the email' %}
 								{% set channel_comment_label = 'Email Content' %}
 							{% endif %}
-
+							{% if channel.name != 'SMS' and channel.name == 'Youtube' %}
+								<div class="row align-items-center">
+									<div class="col-12">
+										<div class="form-group publish_video_form_group">
+											<label>Publish As ?</label>
+											{% if channel.campaignContents.publishVideoAs != '' %}
+											<input class="publish_video_as" data-width="100"  type="checkbox" name="publish_video_as" data-toggle="toggle" data-on="Video" data-off="Shorts" value="{{channel.campaignContents.publishVideoAs}}" disabled data-size="small">
+											<p class="shorts_warning_note">Note: Please upload a video with a 9:16 aspect ratio for Shorts rest all will be treated as Normal Video.</p>
+											{% else %}
+											<input class="publish_video_as" data-width="100"  type="checkbox" name="publish_video_as" data-toggle="toggle" data-on="Video" data-off="Shorts" value="Video" data-size="small">
+											<p class="shorts_warning_note hidden">Note: Please upload a video with a 9:16 aspect ratio for Shorts rest all will be treated as Normal Video.</p>
+											{% endif %}
+										</div>
+										
+										
+									</div>
+								</div>
+								{% endif %}
 							{% if channel.name != 'SMS' %}
+								
 							<div class="row align-items-center">
 								<div class="col-9">
 									<div class="form-group">

@@ -1378,6 +1378,10 @@ function processData(formElement) {
                 return false;
             }
         }
+
+        if(inputData["curation_channel"] == "Youtube") {
+            inputData.publish_video_as = $('.publish_video_as').val();
+        }
         $.ajax({
             url: inputData["ajax_source"],
             type: 'post',
@@ -2915,3 +2919,25 @@ function broadcastLead() {
         });
     }
 }
+
+$(function() {
+    $('.publish_video_as').change(function() {
+        if ($(this).prop('checked')) {
+            $(this).val('Video');
+            $('.shorts_warning_note').hide();
+        } else {
+            $(this).val('Shorts');
+            $('.shorts_warning_note').show();
+        }
+    })
+
+    $('.date-picker').datetimepicker({
+        timepicker: false,
+        // format: 'd/m/Y H:i',
+        // minDate: 0,//yesterday is minimum date(for today use 0 or -1970/01/01)
+        onChangeDateTime: function (dp, $input) {
+            //$($('#' + $input.attr('id')).parent().closest('form')).bootstrapValidator('revalidateField', $input.attr('name'));
+        }
+
+    });
+})
