@@ -15,6 +15,7 @@
 					{% set social_icon_size = 'fa-2x' %}
 					{% for connection_type, connections in supported_social_media_connections %}
 					{% if connections %}
+					{% if connection_type != 'PAID' %}
 					<div class="social_media_connection">
 						<h6 class="title">
 							{% if connection_type == 'ORGANIC' %}
@@ -42,6 +43,7 @@
 							{% endfor %}
 						</div>
 					</div>
+					{% endif %}
 					{% endif %}
 					{% endfor %}
 				</div>
