@@ -301,9 +301,38 @@ class AnalyticsController extends BaseController
 	{
 		$all_input                = input()->all();
 		$all_input['form_source'] = $all_input['form_source'] ?? "";
-
 		switch ($all_input['form_source']) {
+			case 'whatsappLeadsData' :
 
+				$waLeadId = $all_input['wa_lead_id'];
+
+				if($waLeadId) {
+					$org_id = Session::get('organization', 'id');
+					$whatsappLeadDetails = $this->analyticsModel->getWhatsappLeadDetails($waLeadId, $org_id)['body'];
+				}
+				
+				if($whatsappLeadDetails['status'] == 'success') {
+					response()->json([
+						'status' => true,
+						'success'  => [
+							'code'    => 200,
+							'message' => 'Whatsapp Lead Fetched',
+						],
+						'data' => $whatsappLeadDetails
+					]);
+				}
+				 else {
+					response()->json([
+						'status' => false,
+						'error'  => [
+							'code'    => 100,
+							'message' => 'Whatsapp Lead Details Not Fetched',
+							'data' => []
+						],
+					]);
+				 }
+				
+				break;
 			default:
 				response()->json([
 					'status' => false,
@@ -320,21 +349,39 @@ class AnalyticsController extends BaseController
 	{
 		//overall analytics
 
+		// print_r($_GET['start_date']);
+		// exit();
+
 		$this->Breadcrumbs->add([
 			'title' => 'Analytics',
 			'url'   => url('analytics_channels'),
 		]);
 		$org_id = Session::get('organization', 'id');
-		$whatsAppAnalytics = $this->leadsModel->getWhatsAppAnalytics($org_id);
+		$start_date = isset($_GET['start_date']) ? $_GET['start_date'] : null;
+		$end_date = isset($_GET['end_date']) ? $_GET['end_date'] : null;
+		$duration = isset($_GET['duration']) ? $_GET['duration'] : null;
+		$whatsAppAnalytics = $this->leadsModel->getWhatsAppAnalytics($org_id, $start_date, $end_date, $duration);
 
+		$totalLeads = 0;
+		$totalSent = 0;
+		$allLeads = [];
 
+		if (isset($whatsAppAnalytics['body'])) {
+			$allLeads = $whatsAppAnalytics['body']['allLeads'];
+			$totalLeads = $whatsAppAnalytics['body']['totalLeads'];
+			$totalSent = $whatsAppAnalytics['body']['totalWhatsappSent'];
+		}
 
 		$this->setViewData('whatsapp_analytics.html',
 			[
 				'form_action'           => url('analytics_ajax'),
 				'page_title'            => "WhatsApp Analytics",
-				// 'show_only_content'         => true,
-				'whatsAppAnalytics' 		=> $whatsAppAnalytics['body'] ? $whatsAppAnalytics['body']['data'] : []
+				'allLeads' 		=> $allLeads,
+				'totalLeads' 		=> $totalLeads,
+				'totalSent' 		=> $totalSent,
+				'start_date' => isset($_GET['start_date']) ? $_GET['start_date'] : '',
+				'end_date' => isset($_GET['end_date']) ? $_GET['end_date'] : '',
+				'duration' => isset($_GET['duration']) ? $_GET['duration'] : ''
 			]
 		);
 

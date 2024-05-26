@@ -24,325 +24,327 @@
 
 				{% if all_social_medias.status == "success" %}
 				{% for socialMedia in all_social_medias.data %}
-				<div class="col-md-6">
-					<div class="content">
-						<div class="row">
-                            <div class="col-md-6 col-sm-6 col-6">
-								<h3 class="box_heading_name">
-									{{socialMedia.name}}
-								</h3>
+					{% if socialMedia.name != "WhatsApp" %}
+					<div class="col-md-6">
+						<div class="content">
+							<div class="row">
+								<div class="col-md-6 col-sm-6 col-6">
+									<h3 class="box_heading_name">
+										{{socialMedia.name}}
+									</h3>
+									{% if socialMedia.name == 'Instagram' %}
+									<img class="social_img" src="https://upload.wikimedia.org/wikipedia/commons/9/95/Instagram_logo_2022.svg" />
+									{% elseif socialMedia.name == 'LinkedIn' %}
+									<img class="social_img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/LinkedIn_logo_initials.png/800px-LinkedIn_logo_initials.png" />
+									<img width="100px" style="position: absolute;" class="coming_soon" src="https://static.vecteezy.com/system/resources/previews/017/197/459/original/coming-soon-icon-symbol-on-transparent-background-free-png.png"  />
+									{% elseif socialMedia.name == 'Youtube' %}
+									<img class="social_img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Logo_of_YouTube_%282015-2017%29.svg/2560px-Logo_of_YouTube_%282015-2017%29.svg.png" />
+									{% elseif socialMedia.name == 'Facebook' %}
+									<img class="social_img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Facebook_icon.svg/2048px-Facebook_icon.svg.png" />
+									{% elseif socialMedia.name == 'Twitter' %}
+									<img class="social_img" src="https://freelogopng.com/images/all_img/1657045399twitter-icon-png.png" />
+									<img width="100px" style="position: absolute;" class="coming_soon" src="https://static.vecteezy.com/system/resources/previews/017/197/459/original/coming-soon-icon-symbol-on-transparent-background-free-png.png"  />
+									{% endif %}
+								</div>
+								{% if socialMedia.status == 'Active' %}
+								<div class="col-md-6 col-sm-6 col-6">
+									<h3 class="box_heading_status">
+										Status <i class="fa fa-circle"></i>
+									</h3>
+									<h3 class="box_heading_status_label">
+										Connected
+									</h3>
+								</div>
+								{% else %}
+								<div class="col-md-6 col-sm-6 col-6">
+									<h3 class="box_heading_status_not_connected">
+										Status <i class="fa fa-circle"></i>
+									</h3>
+									<h3 class="box_heading_status_label_not_connected">
+										Not Connected
+									</h3>
+								</div>
+								{% endif %}
 								{% if socialMedia.name == 'Instagram' %}
-								<img class="social_img" src="https://upload.wikimedia.org/wikipedia/commons/9/95/Instagram_logo_2022.svg" />
+								<div class="col-md-4 col-sm-4 col-4">
+									{% if(socialMedia.fistValIncStatus == 1) %}
+									<h3 class="social_count inc_num">
+										{{socialMedia.totalPosts ? socialMedia.totalPosts : 0}}
+										<i class="fa fa-arrow-up" style="font-size: 1.4rem;"></i>
+									</h3>
+									{% elseif(socialMedia.fistValIncStatus == 2) %}
+									<h3 class="social_count desc_num">
+										{{socialMedia.totalPosts ? socialMedia.totalPosts : 0}}
+										<i class="fa fa-arrow-down" style="font-size: 1.4rem;"></i>
+									</h3>
+									{% elseif(socialMedia.secondValIncStatus == 0) %}
+									<h3 class="social_count">
+										{{socialMedia.totalPosts ? socialMedia.totalPosts : 0}}
+									</h3>
+									{% endif %}
+									<h3 class="social_label">Posts</h3>
+								</div>
+								<div class="col-md-4 col-sm-4 col-4">
+									{% if(socialMedia.secondValIncStatus == 1) %}
+									<h3 class="social_count inc_num">
+										{{socialMedia.totalFollowing ? socialMedia.totalFollowing : 0}}
+										<i class="fa fa-arrow-up" style="font-size: 1.4rem;"></i>
+									</h3>
+									{% elseif(socialMedia.secondValIncStatus == 2) %}
+									<h3 class="social_count desc_num">
+										{{socialMedia.totalFollowing ? socialMedia.totalFollowing : 0}}
+										<i class="fa fa-arrow-down" style="font-size: 1.4rem;"></i>
+									</h3>
+									{% elseif(socialMedia.secondValIncStatus == 0) %}
+									<h3 class="social_count">
+										{{socialMedia.totalFollowing ? socialMedia.totalFollowing : 0}}
+									</h3>
+									{% endif %}
+									<h3 class="social_label">Following</h3>
+								</div>
+								<div class="col-md-4 col-sm-4 col-4">
+									{% if(socialMedia.thirdvalIncStatus == 1) %}
+									<h3 class="social_count inc_num">
+										{{socialMedia.totalFollowers ? socialMedia.totalFollowers : 0}}
+										<i class="fa fa-arrow-up" style="font-size: 1.4rem;"></i>
+									</h3>
+									{% elseif(socialMedia.thirdvalIncStatus == 2) %}
+									<h3 class="social_count desc_num">
+										{{socialMedia.totalFollowers ? socialMedia.totalFollowers : 0}}
+										<i class="fa fa-arrow-down" style="font-size: 1.4rem;"></i>
+									</h3>
+									{% elseif(socialMedia.thirdvalIncStatus == 0) %}
+									<h3 class="social_count">
+										{{socialMedia.totalFollowers ? socialMedia.totalFollowers : 0}}
+									</h3>
+									{% endif %}
+									<h3 class="social_label">Followers</h3>
+								</div>
 								{% elseif socialMedia.name == 'LinkedIn' %}
-								<img class="social_img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/LinkedIn_logo_initials.png/800px-LinkedIn_logo_initials.png" />
-								<img width="100px" style="position: absolute;" class="coming_soon" src="https://static.vecteezy.com/system/resources/previews/017/197/459/original/coming-soon-icon-symbol-on-transparent-background-free-png.png"  />
+								<div class="col-md-4 col-sm-4 col-4">
+									{% if(socialMedia.fistValIncStatus == 1) %}
+									<h3 class="social_count inc_num">
+										{{socialMedia.totalPosts ? socialMedia.totalPosts : 0}}
+										<i class="fa fa-arrow-up" style="font-size: 1.4rem;"></i>
+									</h3>
+									{% elseif(socialMedia.fistValIncStatus == 2) %}
+									<h3 class="social_count desc_num">
+										{{socialMedia.totalPosts ? socialMedia.totalPosts : 0}}
+										<i class="fa fa-arrow-down" style="font-size: 1.4rem;"></i>
+									</h3>
+									{% elseif(socialMedia.secondValIncStatus == 0) %}
+									<h3 class="social_count">
+										{{socialMedia.totalPosts ? socialMedia.totalPosts : 0}}
+									</h3>
+									{% endif %}
+									<h3 class="social_label">Posts</h3>
+								</div>
+								<div class="col-md-4 col-sm-4 col-4">
+									{% if(socialMedia.secondValIncStatus == 1) %}
+									<h3 class="social_count inc_num">
+										{{socialMedia.totalFollowing ? socialMedia.totalFollowing : 0}}
+										<i class="fa fa-arrow-up" style="font-size: 1.4rem;"></i>
+									</h3>
+									{% elseif(socialMedia.secondValIncStatus == 2) %}
+									<h3 class="social_count desc_num">
+										{{socialMedia.totalFollowing ? socialMedia.totalFollowing : 0}}
+										<i class="fa fa-arrow-down" style="font-size: 1.4rem;"></i>
+									</h3>
+									{% elseif(socialMedia.secondValIncStatus == 0) %}
+									<h3 class="social_count">
+										{{socialMedia.totalFollowing ? socialMedia.totalFollowing : 0}}
+									</h3>
+									{% endif %}
+									<h3 class="social_label">Page Views</h3>
+								</div>
+								<div class="col-md-4 col-sm-4 col-4">
+									{% if(socialMedia.thirdvalIncStatus == 1) %}
+									<h3 class="social_count inc_num">
+										{{socialMedia.totalFollowers ? socialMedia.totalFollowers : 0}}
+										<i class="fa fa-arrow-up" style="font-size: 1.4rem;"></i>
+									</h3>
+									{% elseif(socialMedia.thirdvalIncStatus == 2) %}
+									<h3 class="social_count desc_num">
+										{{socialMedia.totalFollowers ? socialMedia.totalFollowers : 0}}
+										<i class="fa fa-arrow-down" style="font-size: 1.4rem;"></i>
+									</h3>
+									{% elseif(socialMedia.thirdvalIncStatus == 0) %}
+									<h3 class="social_count">
+										{{socialMedia.totalFollowers ? socialMedia.totalFollowers : 0}}
+									</h3>
+									{% endif %}
+									<h3 class="social_label">Followers</h3>
+								</div>
 								{% elseif socialMedia.name == 'Youtube' %}
-								<img class="social_img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Logo_of_YouTube_%282015-2017%29.svg/2560px-Logo_of_YouTube_%282015-2017%29.svg.png" />
+								<div class="col-md-4 col-sm-4 col-4">
+									{% if(socialMedia.fistValIncStatus == 1) %}
+									<h3 class="social_count inc_num">
+										{{socialMedia.totalPosts ? socialMedia.totalPosts : 0}}
+										<i class="fa fa-arrow-up" style="font-size: 1.4rem;"></i>
+									</h3>
+									{% elseif(socialMedia.fistValIncStatus == 2) %}
+									<h3 class="social_count desc_num">
+										{{socialMedia.totalPosts ? socialMedia.totalPosts : 0}}
+										<i class="fa fa-arrow-down" style="font-size: 1.4rem;"></i>
+									</h3>
+									{% elseif(socialMedia.secondValIncStatus == 0) %}
+									<h3 class="social_count">
+										{{socialMedia.totalPosts ? socialMedia.totalPosts : 0}}
+									</h3>
+									{% endif %}
+									<h3 class="social_label">Videos</h3>
+								</div>
+								<div class="col-md-4 col-sm-4 col-4">
+									{% if(socialMedia.secondValIncStatus == 1) %}
+									<h3 class="social_count inc_num">
+										{{socialMedia.totalFollowing ? socialMedia.totalFollowing : 0}}
+										<i class="fa fa-arrow-up" style="font-size: 1.4rem;"></i>
+									</h3>
+									{% elseif(socialMedia.secondValIncStatus == 2) %}
+									<h3 class="social_count desc_num">
+										{{socialMedia.totalFollowing ? socialMedia.totalFollowing : 0}}
+										<i class="fa fa-arrow-down" style="font-size: 1.4rem;"></i>
+									</h3>
+									{% elseif(socialMedia.secondValIncStatus == 0) %}
+									<h3 class="social_count">
+										{{socialMedia.totalFollowing ? socialMedia.totalFollowing : 0}}
+									</h3>
+									{% endif %}
+									<h3 class="social_label">Views</h3>
+								</div>
+								<div class="col-md-4 col-sm-4 col-4">
+									{% if(socialMedia.thirdvalIncStatus == 1) %}
+									<h3 class="social_count inc_num">
+										{{socialMedia.totalFollowers ? socialMedia.totalFollowers : 0}}
+										<i class="fa fa-arrow-up" style="font-size: 1.4rem;"></i>
+									</h3>
+									{% elseif(socialMedia.thirdvalIncStatus == 2) %}
+									<h3 class="social_count desc_num">
+										{{socialMedia.totalFollowers ? socialMedia.totalFollowers : 0}}
+										<i class="fa fa-arrow-down" style="font-size: 1.4rem;"></i>
+									</h3>
+									{% elseif(socialMedia.thirdvalIncStatus == 0) %}
+									<h3 class="social_count">
+										{{socialMedia.totalFollowers ? socialMedia.totalFollowers : 0}}
+									</h3>
+									{% endif %}
+									<h3 class="social_label">Subscribers</h3>
+								</div>
 								{% elseif socialMedia.name == 'Facebook' %}
-								<img class="social_img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Facebook_icon.svg/2048px-Facebook_icon.svg.png" />
+								<div class="col-md-4 col-sm-4 col-4">
+									{% if(socialMedia.fistValIncStatus == 1) %}
+									<h3 class="social_count inc_num">
+										{{socialMedia.totalPosts ? socialMedia.totalPosts : 0}}
+										<i class="fa fa-arrow-up" style="font-size: 1.4rem;"></i>
+									</h3>
+									{% elseif(socialMedia.fistValIncStatus == 2) %}
+									<h3 class="social_count desc_num">
+										{{socialMedia.totalPosts ? socialMedia.totalPosts : 0}}
+										<i class="fa fa-arrow-down" style="font-size: 1.4rem;"></i>
+									</h3>
+									{% elseif(socialMedia.secondValIncStatus == 0) %}
+									<h3 class="social_count">
+										{{socialMedia.totalPosts ? socialMedia.totalPosts : 0}}
+									</h3>
+									{% endif %}
+									<h3 class="social_label">Posts</h3>
+								</div>
+								<div class="col-md-4 col-sm-4 col-4">
+									{% if(socialMedia.secondValIncStatus == 1) %}
+									<h3 class="social_count inc_num">
+										{{socialMedia.totalFollowing ? socialMedia.totalFollowing : 0}}
+										<i class="fa fa-arrow-up" style="font-size: 1.4rem;"></i>
+									</h3>
+									{% elseif(socialMedia.secondValIncStatus == 2) %}
+									<h3 class="social_count desc_num">
+										{{socialMedia.totalFollowing ? socialMedia.totalFollowing : 0}}
+										<i class="fa fa-arrow-down" style="font-size: 1.4rem;"></i>
+									</h3>
+									{% elseif(socialMedia.secondValIncStatus == 0) %}
+									<h3 class="social_count">
+										{{socialMedia.totalFollowing ? socialMedia.totalFollowing : 0}}
+									</h3>
+									{% endif %}
+									<h3 class="social_label">Following</h3>
+								</div>
+								<div class="col-md-4 col-sm-4 col-4">
+									{% if(socialMedia.thirdvalIncStatus == 1) %}
+									<h3 class="social_count inc_num">
+										{{socialMedia.totalFollowers ? socialMedia.totalFollowers : 0}}
+										<i class="fa fa-arrow-up" style="font-size: 1.4rem;"></i>
+									</h3>
+									{% elseif(socialMedia.thirdvalIncStatus == 2) %}
+									<h3 class="social_count desc_num">
+										{{socialMedia.totalFollowers ? socialMedia.totalFollowers : 0}}
+										<i class="fa fa-arrow-down" style="font-size: 1.4rem;"></i>
+									</h3>
+									{% elseif(socialMedia.thirdvalIncStatus == 0) %}
+									<h3 class="social_count">
+										{{socialMedia.totalFollowers ? socialMedia.totalFollowers : 0}}
+									</h3>
+									{% endif %}
+									<h3 class="social_label">Followers</h3>
+								</div>
 								{% elseif socialMedia.name == 'Twitter' %}
-								<img class="social_img" src="https://freelogopng.com/images/all_img/1657045399twitter-icon-png.png" />
-								<img width="100px" style="position: absolute;" class="coming_soon" src="https://static.vecteezy.com/system/resources/previews/017/197/459/original/coming-soon-icon-symbol-on-transparent-background-free-png.png"  />
+								<div class="col-md-4 col-sm-4 col-4">
+									{% if(socialMedia.fistValIncStatus == 1) %}
+									<h3 class="social_count inc_num" id="twitter_media_count">
+										{{socialMedia.totalPosts ? socialMedia.totalPosts : 0}}
+										<i class="fa fa-arrow-up" style="font-size: 1.4rem;"></i>
+									</h3>
+									{% elseif(socialMedia.fistValIncStatus == 2) %}
+									<h3 class="social_count desc_num" id="twitter_media_count">
+										{{socialMedia.totalPosts ? socialMedia.totalPosts : 0}}
+										<i class="fa fa-arrow-down" style="font-size: 1.4rem;"></i>
+									</h3>
+									{% elseif(socialMedia.secondValIncStatus == 0) %}
+									<h3 class="social_count" id="twitter_media_count">
+										{{socialMedia.totalPosts ? socialMedia.totalPosts : 0}}
+									</h3>
+									{% endif %}
+									<h3 class="social_label">Tweets</h3>
+								</div>
+								<div class="col-md-4 col-sm-4 col-4">
+									{% if(socialMedia.secondValIncStatus == 1) %}
+									<h3 class="social_count inc_num" id="twitter_following_count">
+										{{socialMedia.totalFollowing ? socialMedia.totalFollowing : 0}}
+										<i class="fa fa-arrow-up" style="font-size: 1.4rem;"></i>
+									</h3>
+									{% elseif(socialMedia.secondValIncStatus == 2) %}
+									<h3 class="social_count desc_num" id="twitter_following_count">
+										{{socialMedia.totalFollowing ? socialMedia.totalFollowing : 0}}
+										<i class="fa fa-arrow-down" style="font-size: 1.4rem;"></i>
+									</h3>
+									{% elseif(socialMedia.secondValIncStatus == 0) %}
+									<h3 class="social_count" id="twitter_following_count">
+										{{socialMedia.totalFollowing ? socialMedia.totalFollowing : 0}}
+									</h3>
+									{% endif %}
+									<h3 class="social_label">Following</h3>
+								</div>
+								<div class="col-md-4 col-sm-4 col-4">
+									{% if(socialMedia.thirdvalIncStatus == 1) %}
+									<h3 class="social_count inc_num" id="twitter_followers_count">
+										{{socialMedia.totalFollowers ? socialMedia.totalFollowers : 0}}
+										<i class="fa fa-arrow-up" style="font-size: 1.4rem;"></i>
+									</h3>
+									{% elseif(socialMedia.thirdvalIncStatus == 2) %}
+									<h3 class="social_count desc_num" id="twitter_followers_count">
+										{{socialMedia.totalFollowers ? socialMedia.totalFollowers : 0}}
+										<i class="fa fa-arrow-down" style="font-size: 1.4rem;"></i>
+									</h3>
+									{% elseif(socialMedia.secondValIncStatus == 0) %}
+									<h3 class="social_count" id="twitter_followers_count">
+										{{socialMedia.totalFollowers ? socialMedia.totalFollowers : 0}}
+									</h3>
+									{% endif %}
+									<h3 class="social_label">Followers</h3>
+								</div>
 								{% endif %}
 							</div>
-							{% if socialMedia.status == 'Active' %}
-							<div class="col-md-6 col-sm-6 col-6">
-								<h3 class="box_heading_status">
-									Status <i class="fa fa-circle"></i>
-								</h3>
-								<h3 class="box_heading_status_label">
-									Connected
-								</h3>
-							</div>
-							{% else %}
-							<div class="col-md-6 col-sm-6 col-6">
-								<h3 class="box_heading_status_not_connected">
-									Status <i class="fa fa-circle"></i>
-								</h3>
-								<h3 class="box_heading_status_label_not_connected">
-									Not Connected
-								</h3>
-							</div>
-							{% endif %}
-							{% if socialMedia.name == 'Instagram' %}
-							<div class="col-md-4 col-sm-4 col-4">
-								{% if(socialMedia.fistValIncStatus == 1) %}
-								<h3 class="social_count inc_num">
-									{{socialMedia.totalPosts ? socialMedia.totalPosts : 0}}
-									<i class="fa fa-arrow-up" style="font-size: 1.4rem;"></i>
-								</h3>
-								{% elseif(socialMedia.fistValIncStatus == 2) %}
-								<h3 class="social_count desc_num">
-									{{socialMedia.totalPosts ? socialMedia.totalPosts : 0}}
-									<i class="fa fa-arrow-down" style="font-size: 1.4rem;"></i>
-								</h3>
-								{% elseif(socialMedia.secondValIncStatus == 0) %}
-								<h3 class="social_count">
-									{{socialMedia.totalPosts ? socialMedia.totalPosts : 0}}
-								</h3>
-								{% endif %}
-								<h3 class="social_label">Posts</h3>
-							</div>
-							<div class="col-md-4 col-sm-4 col-4">
-								{% if(socialMedia.secondValIncStatus == 1) %}
-								<h3 class="social_count inc_num">
-									{{socialMedia.totalFollowing ? socialMedia.totalFollowing : 0}}
-									<i class="fa fa-arrow-up" style="font-size: 1.4rem;"></i>
-								</h3>
-								{% elseif(socialMedia.secondValIncStatus == 2) %}
-								<h3 class="social_count desc_num">
-									{{socialMedia.totalFollowing ? socialMedia.totalFollowing : 0}}
-									<i class="fa fa-arrow-down" style="font-size: 1.4rem;"></i>
-								</h3>
-								{% elseif(socialMedia.secondValIncStatus == 0) %}
-								<h3 class="social_count">
-									{{socialMedia.totalFollowing ? socialMedia.totalFollowing : 0}}
-								</h3>
-								{% endif %}
-								<h3 class="social_label">Following</h3>
-							</div>
-							<div class="col-md-4 col-sm-4 col-4">
-								{% if(socialMedia.thirdvalIncStatus == 1) %}
-								<h3 class="social_count inc_num">
-									{{socialMedia.totalFollowers ? socialMedia.totalFollowers : 0}}
-									<i class="fa fa-arrow-up" style="font-size: 1.4rem;"></i>
-								</h3>
-								{% elseif(socialMedia.thirdvalIncStatus == 2) %}
-								<h3 class="social_count desc_num">
-									{{socialMedia.totalFollowers ? socialMedia.totalFollowers : 0}}
-									<i class="fa fa-arrow-down" style="font-size: 1.4rem;"></i>
-								</h3>
-								{% elseif(socialMedia.thirdvalIncStatus == 0) %}
-								<h3 class="social_count">
-									{{socialMedia.totalFollowers ? socialMedia.totalFollowers : 0}}
-								</h3>
-								{% endif %}
-								<h3 class="social_label">Followers</h3>
-							</div>
-							{% elseif socialMedia.name == 'LinkedIn' %}
-							<div class="col-md-4 col-sm-4 col-4">
-								{% if(socialMedia.fistValIncStatus == 1) %}
-								<h3 class="social_count inc_num">
-									{{socialMedia.totalPosts ? socialMedia.totalPosts : 0}}
-									<i class="fa fa-arrow-up" style="font-size: 1.4rem;"></i>
-								</h3>
-								{% elseif(socialMedia.fistValIncStatus == 2) %}
-								<h3 class="social_count desc_num">
-									{{socialMedia.totalPosts ? socialMedia.totalPosts : 0}}
-									<i class="fa fa-arrow-down" style="font-size: 1.4rem;"></i>
-								</h3>
-								{% elseif(socialMedia.secondValIncStatus == 0) %}
-								<h3 class="social_count">
-									{{socialMedia.totalPosts ? socialMedia.totalPosts : 0}}
-								</h3>
-								{% endif %}
-								<h3 class="social_label">Posts</h3>
-							</div>
-							<div class="col-md-4 col-sm-4 col-4">
-								{% if(socialMedia.secondValIncStatus == 1) %}
-								<h3 class="social_count inc_num">
-									{{socialMedia.totalFollowing ? socialMedia.totalFollowing : 0}}
-									<i class="fa fa-arrow-up" style="font-size: 1.4rem;"></i>
-								</h3>
-								{% elseif(socialMedia.secondValIncStatus == 2) %}
-								<h3 class="social_count desc_num">
-									{{socialMedia.totalFollowing ? socialMedia.totalFollowing : 0}}
-									<i class="fa fa-arrow-down" style="font-size: 1.4rem;"></i>
-								</h3>
-								{% elseif(socialMedia.secondValIncStatus == 0) %}
-								<h3 class="social_count">
-									{{socialMedia.totalFollowing ? socialMedia.totalFollowing : 0}}
-								</h3>
-								{% endif %}
-								<h3 class="social_label">Page Views</h3>
-							</div>
-							<div class="col-md-4 col-sm-4 col-4">
-								{% if(socialMedia.thirdvalIncStatus == 1) %}
-								<h3 class="social_count inc_num">
-									{{socialMedia.totalFollowers ? socialMedia.totalFollowers : 0}}
-									<i class="fa fa-arrow-up" style="font-size: 1.4rem;"></i>
-								</h3>
-								{% elseif(socialMedia.thirdvalIncStatus == 2) %}
-								<h3 class="social_count desc_num">
-									{{socialMedia.totalFollowers ? socialMedia.totalFollowers : 0}}
-									<i class="fa fa-arrow-down" style="font-size: 1.4rem;"></i>
-								</h3>
-								{% elseif(socialMedia.thirdvalIncStatus == 0) %}
-								<h3 class="social_count">
-									{{socialMedia.totalFollowers ? socialMedia.totalFollowers : 0}}
-								</h3>
-								{% endif %}
-								<h3 class="social_label">Followers</h3>
-							</div>
-							{% elseif socialMedia.name == 'Youtube' %}
-							<div class="col-md-4 col-sm-4 col-4">
-								{% if(socialMedia.fistValIncStatus == 1) %}
-								<h3 class="social_count inc_num">
-									{{socialMedia.totalPosts ? socialMedia.totalPosts : 0}}
-									<i class="fa fa-arrow-up" style="font-size: 1.4rem;"></i>
-								</h3>
-								{% elseif(socialMedia.fistValIncStatus == 2) %}
-								<h3 class="social_count desc_num">
-									{{socialMedia.totalPosts ? socialMedia.totalPosts : 0}}
-									<i class="fa fa-arrow-down" style="font-size: 1.4rem;"></i>
-								</h3>
-								{% elseif(socialMedia.secondValIncStatus == 0) %}
-								<h3 class="social_count">
-									{{socialMedia.totalPosts ? socialMedia.totalPosts : 0}}
-								</h3>
-								{% endif %}
-								<h3 class="social_label">Videos</h3>
-							</div>
-							<div class="col-md-4 col-sm-4 col-4">
-								{% if(socialMedia.secondValIncStatus == 1) %}
-								<h3 class="social_count inc_num">
-									{{socialMedia.totalFollowing ? socialMedia.totalFollowing : 0}}
-									<i class="fa fa-arrow-up" style="font-size: 1.4rem;"></i>
-								</h3>
-								{% elseif(socialMedia.secondValIncStatus == 2) %}
-								<h3 class="social_count desc_num">
-									{{socialMedia.totalFollowing ? socialMedia.totalFollowing : 0}}
-									<i class="fa fa-arrow-down" style="font-size: 1.4rem;"></i>
-								</h3>
-								{% elseif(socialMedia.secondValIncStatus == 0) %}
-								<h3 class="social_count">
-									{{socialMedia.totalFollowing ? socialMedia.totalFollowing : 0}}
-								</h3>
-								{% endif %}
-								<h3 class="social_label">Views</h3>
-							</div>
-							<div class="col-md-4 col-sm-4 col-4">
-								{% if(socialMedia.thirdvalIncStatus == 1) %}
-								<h3 class="social_count inc_num">
-									{{socialMedia.totalFollowers ? socialMedia.totalFollowers : 0}}
-									<i class="fa fa-arrow-up" style="font-size: 1.4rem;"></i>
-								</h3>
-								{% elseif(socialMedia.thirdvalIncStatus == 2) %}
-								<h3 class="social_count desc_num">
-									{{socialMedia.totalFollowers ? socialMedia.totalFollowers : 0}}
-									<i class="fa fa-arrow-down" style="font-size: 1.4rem;"></i>
-								</h3>
-								{% elseif(socialMedia.thirdvalIncStatus == 0) %}
-								<h3 class="social_count">
-									{{socialMedia.totalFollowers ? socialMedia.totalFollowers : 0}}
-								</h3>
-								{% endif %}
-								<h3 class="social_label">Subscribers</h3>
-							</div>
-							{% elseif socialMedia.name == 'Facebook' %}
-							<div class="col-md-4 col-sm-4 col-4">
-								{% if(socialMedia.fistValIncStatus == 1) %}
-								<h3 class="social_count inc_num">
-									{{socialMedia.totalPosts ? socialMedia.totalPosts : 0}}
-									<i class="fa fa-arrow-up" style="font-size: 1.4rem;"></i>
-								</h3>
-								{% elseif(socialMedia.fistValIncStatus == 2) %}
-								<h3 class="social_count desc_num">
-									{{socialMedia.totalPosts ? socialMedia.totalPosts : 0}}
-									<i class="fa fa-arrow-down" style="font-size: 1.4rem;"></i>
-								</h3>
-								{% elseif(socialMedia.secondValIncStatus == 0) %}
-								<h3 class="social_count">
-									{{socialMedia.totalPosts ? socialMedia.totalPosts : 0}}
-								</h3>
-								{% endif %}
-								<h3 class="social_label">Posts</h3>
-							</div>
-							<div class="col-md-4 col-sm-4 col-4">
-								{% if(socialMedia.secondValIncStatus == 1) %}
-								<h3 class="social_count inc_num">
-									{{socialMedia.totalFollowing ? socialMedia.totalFollowing : 0}}
-									<i class="fa fa-arrow-up" style="font-size: 1.4rem;"></i>
-								</h3>
-								{% elseif(socialMedia.secondValIncStatus == 2) %}
-								<h3 class="social_count desc_num">
-									{{socialMedia.totalFollowing ? socialMedia.totalFollowing : 0}}
-									<i class="fa fa-arrow-down" style="font-size: 1.4rem;"></i>
-								</h3>
-								{% elseif(socialMedia.secondValIncStatus == 0) %}
-								<h3 class="social_count">
-									{{socialMedia.totalFollowing ? socialMedia.totalFollowing : 0}}
-								</h3>
-								{% endif %}
-								<h3 class="social_label">Following</h3>
-							</div>
-							<div class="col-md-4 col-sm-4 col-4">
-								{% if(socialMedia.thirdvalIncStatus == 1) %}
-								<h3 class="social_count inc_num">
-									{{socialMedia.totalFollowers ? socialMedia.totalFollowers : 0}}
-									<i class="fa fa-arrow-up" style="font-size: 1.4rem;"></i>
-								</h3>
-								{% elseif(socialMedia.thirdvalIncStatus == 2) %}
-								<h3 class="social_count desc_num">
-									{{socialMedia.totalFollowers ? socialMedia.totalFollowers : 0}}
-									<i class="fa fa-arrow-down" style="font-size: 1.4rem;"></i>
-								</h3>
-								{% elseif(socialMedia.thirdvalIncStatus == 0) %}
-								<h3 class="social_count">
-									{{socialMedia.totalFollowers ? socialMedia.totalFollowers : 0}}
-								</h3>
-								{% endif %}
-								<h3 class="social_label">Followers</h3>
-							</div>
-							{% elseif socialMedia.name == 'Twitter' %}
-							<div class="col-md-4 col-sm-4 col-4">
-								{% if(socialMedia.fistValIncStatus == 1) %}
-								<h3 class="social_count inc_num" id="twitter_media_count">
-									{{socialMedia.totalPosts ? socialMedia.totalPosts : 0}}
-									<i class="fa fa-arrow-up" style="font-size: 1.4rem;"></i>
-								</h3>
-								{% elseif(socialMedia.fistValIncStatus == 2) %}
-								<h3 class="social_count desc_num" id="twitter_media_count">
-									{{socialMedia.totalPosts ? socialMedia.totalPosts : 0}}
-									<i class="fa fa-arrow-down" style="font-size: 1.4rem;"></i>
-								</h3>
-								{% elseif(socialMedia.secondValIncStatus == 0) %}
-								<h3 class="social_count" id="twitter_media_count">
-									{{socialMedia.totalPosts ? socialMedia.totalPosts : 0}}
-								</h3>
-								{% endif %}
-								<h3 class="social_label">Tweets</h3>
-							</div>
-							<div class="col-md-4 col-sm-4 col-4">
-								{% if(socialMedia.secondValIncStatus == 1) %}
-								<h3 class="social_count inc_num" id="twitter_following_count">
-									{{socialMedia.totalFollowing ? socialMedia.totalFollowing : 0}}
-									<i class="fa fa-arrow-up" style="font-size: 1.4rem;"></i>
-								</h3>
-								{% elseif(socialMedia.secondValIncStatus == 2) %}
-								<h3 class="social_count desc_num" id="twitter_following_count">
-									{{socialMedia.totalFollowing ? socialMedia.totalFollowing : 0}}
-									<i class="fa fa-arrow-down" style="font-size: 1.4rem;"></i>
-								</h3>
-								{% elseif(socialMedia.secondValIncStatus == 0) %}
-								<h3 class="social_count" id="twitter_following_count">
-									{{socialMedia.totalFollowing ? socialMedia.totalFollowing : 0}}
-								</h3>
-								{% endif %}
-								<h3 class="social_label">Following</h3>
-							</div>
-							<div class="col-md-4 col-sm-4 col-4">
-								{% if(socialMedia.thirdvalIncStatus == 1) %}
-								<h3 class="social_count inc_num" id="twitter_followers_count">
-									{{socialMedia.totalFollowers ? socialMedia.totalFollowers : 0}}
-									<i class="fa fa-arrow-up" style="font-size: 1.4rem;"></i>
-								</h3>
-								{% elseif(socialMedia.thirdvalIncStatus == 2) %}
-								<h3 class="social_count desc_num" id="twitter_followers_count">
-									{{socialMedia.totalFollowers ? socialMedia.totalFollowers : 0}}
-									<i class="fa fa-arrow-down" style="font-size: 1.4rem;"></i>
-								</h3>
-								{% elseif(socialMedia.secondValIncStatus == 0) %}
-								<h3 class="social_count" id="twitter_followers_count">
-									{{socialMedia.totalFollowers ? socialMedia.totalFollowers : 0}}
-								</h3>
-								{% endif %}
-								<h3 class="social_label">Followers</h3>
-							</div>
-							{% endif %}
 						</div>
 					</div>
-				</div>
+					{% endif %}
 				{% endfor %}
 				{% else %}
 				<div class="col-md-6">

@@ -10,20 +10,18 @@
         <div class="col-6">
             <div class="row whatsapp_analysis_filter">
                 <div class="col-4">
-                    <input autocomplete="off" class="form-control date-picker" name="" type="text" placeholder="From date">
+                    <input autocomplete="off" class="form-control date-picker" name="start_date" type="text" placeholder="From date" value="{{start_date}}">
                 </div>
                 <div class="col-4">
-                    <input autocomplete="off" class="form-control date-picker" name="" type="text" placeholder="To date">
+                    <input autocomplete="off" class="form-control date-picker" name="end_date" type="text" placeholder="To date" value="{{end_date}}">
                 </div>
                 <div class="col-4">
-                    <select id="duration" name="duration" class="js-select-2 form-control"
-                            data-placeholder--id="0"
-                            data-placeholder--text="Duration"
-                    >
-                        <option value="Weekly">Weekly</option>
-                        <option value="Monthly">Monthly</option>
-                        <option value="Quaterly">Quaterly</option>
-                        <option value="Annually">Annually</option>
+                    <select id="duration" name="duration" class="form-control wa_analysis_duration">
+                        <option value="">Select Duration</option>
+                        <option value="Weekly" {% if duration == "Weekly" %} selected {% endif %} >Weekly</option>
+                        <option value="Monthly" {% if duration == "Monthly" %} selected {% endif %}>Monthly</option>
+                        <option value="Quaterly" {% if duration == "Quaterly" %} selected {% endif %}>Quaterly</option>
+                        <option value="Annually" {% if duration == "Annually" %} selected {% endif %}>Annually</option>
                     </select>
                 </div>
             </div>
@@ -41,7 +39,7 @@
                                 </div>
                                 <div class="info_content_part_right">
                                     <h3 class="box_heading mb-2">Total No. of Campaigns</h3>
-                                    <p class="number_text" id="watch_time">05</p>
+                                    <p class="number_text" id="watch_time">{{totalLeads}}</p>
                                 </div>
                             </div>
                         </div>
@@ -53,8 +51,8 @@
                                     <i class="fa fa-money money_of_camp_icons"></i>
                                 </div>
                                 <div class="info_content_part_right">
-                                    <h3 class="box_heading mb-2">Money Spent</h3>
-                                    <p class="number_text" id="watch_time">$14,243</p>
+                                    <h3 class="box_heading mb-2">Total Sent</h3>
+                                    <p class="number_text" id="watch_time">{{totalSent}}</p>
                                 </div>
                             </div>
                         </div>
@@ -62,59 +60,22 @@
                     <div class="col-md-4">
                         <div class="filter_by_campaign">
                             <i class="fa fa-pie-chart no_of_camp_icons"></i>
-                            <select id="campaign_type" name="campaign_type" class="form-control campaign_type"
-                                    data-placeholder--id="0"
-                                    data-placeholder--text="Campaign Type"
-                            >
-                                <option value="Weekly">Weekly</option>
-                                <option value="Monthly">Monthly</option>
-                                <option value="Quaterly">Quaterly</option>
-                                <option value="Annually">Annually</option>
+                            <select id="campaign_type" name="wa_campaign_type" class="form-control wa_campaign_type">   
+                                <option value="all" selected>All Campaiagns</option>                         
+                            {% for index, lead in allLeads %}
+                            <option value="{{lead.leadId}}">
+                                Campaign - {{index+1}} - {{lead.wp_template_name}}
+                            </option>
+                            {% endfor %}
                             </select>
+                            <input type="hidden" value="{{form_action}}" name="wa_leads_form_source" class="wa_leads_form_source" />
                         </div>
                     </div>
                     <div class="col-md-12 total_msg_section">
-                        <h2 class="total_msgs">Total Messages: <span>1,00.000</span></h2>
-
+                        <h2 class="total_msgs">Total Messages: <span></span></h2>
                         <div id="whatsappAnalysisChart" class="mt-5 whatsapp_analysis_chart"></div>
-
                     </div>
                 </div>
-                <!-- <table class="table table-bordered align-middle">
-                    <thead>
-                        <tr>
-                            <th>Sr no.</th>
-                            <th>Mobile No</th>
-                            <th>Template</th>
-                            <th>Created</th>
-                            <th>Sent</th>
-                            <th>Delivered</th>
-                            <th>Read</th>
-                            <th>Replied</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% set counter = 0 %}
-                        {% for analyt in whatsAppAnalytics %}
-                        {% set counter = counter + 1 %}
-                        <tr>
-                            <td>{{counter}}</td>
-                            <td>{{analyt.phone_number}}</td>
-                            <td>{{analyt.whatsappBroadcastContnent.wp_template}}</td>
-                            <td>{{ analyt.createdAt|date('d/m/Y h:m:s') }}</td>
-                            <td>{{analyt.sent == 1 ? 'Yes' : 'No'}}</td>
-                            <td>{{analyt.delivered == 1 ? 'Yes' : 'No'}}</td>
-                            <td>{{analyt.read == 1 ? 'Yes' : 'No'}}</td>
-                            <td>{{analyt.replied == 1 ? 'Yes' : 'No'}}</td>
-                        </tr>
-                        {% endfor %}
-                        {% if whatsAppAnalytics|length == 0 %}
-                        <tr>
-                            <td colspan="5">No Records Found</td>
-                        </tr>
-                        {% endif %}
-                    </tbody>
-                </table> -->
             </div>
         </div>
 	</div>

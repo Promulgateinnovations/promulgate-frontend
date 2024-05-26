@@ -1417,6 +1417,14 @@ function ajaxSuccessResponse(responseData, formElement, formData) {
             processExtraAjaxData(responseData.data.extra, formData, formElement);
         }
 
+        if (responseData.data.allLeads.length > 0) {
+            setWhatsappLeadDetailsGraph(responseData.data);
+        }
+
+        if (responseData.data.allLeads && responseData.data.allLeads.length == 0) {
+            setWhatsappLeadDetailsGraph(responseData.data);
+        }
+
     } else {
 
         // Read error message
@@ -1436,6 +1444,40 @@ function ajaxSuccessResponse(responseData, formElement, formData) {
             processExtraAjaxData(responseData.error.extra, formData, formElement);
         }
     }
+}
+
+function setWhatsappLeadDetailsGraph(whatsappLeadDetails) {
+    if(whatsappLeadDetails.message == "Whatsapp Not Connected") {
+        $('.total_msgs').html("<h2 class='total_msgs text-center'>Whatsapp not connected...</h2>");
+        return false;
+    }
+    $('.total_msgs span').html(whatsappLeadDetails.allLeads.length);
+    var chart = new CanvasJS.Chart("whatsappAnalysisChart", {
+        animationEnabled: true,
+        title:{
+            text: ""
+        },
+        data: [{
+            type: "funnel",
+            indexLabel: "{label}",
+            toolTipContent: "<b>{label}</b>: {y} <b>({percentage}%)</b>",
+            neckWidth: 20,
+            neckHeight: 0,
+            valueRepresents: "area",
+            dataPoints: [
+                { y: whatsappLeadDetails.totalSent, label: `Sent ${whatsappLeadDetails.totalSent}/${whatsappLeadDetails.allLeads.length}`, color: "#1998bf" },
+                { y: whatsappLeadDetails.totalReceived, label: `Received ${whatsappLeadDetails.totalReceived}/${whatsappLeadDetails.totalSent}`, color: "#4469e2"},
+                { y: whatsappLeadDetails.totalRead, label: `Read ${whatsappLeadDetails.totalRead}/${whatsappLeadDetails.totalReceived}`, color: "#f6941c"},
+                { y: whatsappLeadDetails.totalReplied, label: `Replied ${whatsappLeadDetails.totalReplied}/${whatsappLeadDetails.totalRead}`, color: "#f6bd6e"},
+            ]
+        }]
+    });
+    var dataPoint = chart.options.data[0].dataPoints;
+    chart.options.data[0].dataPoints[0].percentage = ((dataPoint[0].y / whatsappLeadDetails.allLeads.length) * 100).toFixed(2);
+    chart.options.data[0].dataPoints[1].percentage = ((dataPoint[1].y / whatsappLeadDetails.totalSent) * 100).toFixed(2);
+    chart.options.data[0].dataPoints[2].percentage = ((dataPoint[2].y / whatsappLeadDetails.totalReceived) * 100).toFixed(2);
+    chart.options.data[0].dataPoints[3].percentage = ((dataPoint[3].y / whatsappLeadDetails.totalRead) * 100).toFixed(2);
+    chart.render(); 
 }
 
 function ajaxFailedResponse(errorData, formElement, formData) {
@@ -2933,11 +2975,65 @@ $(function() {
 
     $('.date-picker').datetimepicker({
         timepicker: false,
-        // format: 'd/m/Y H:i',
+        format: 'd-m-Y',
         // minDate: 0,//yesterday is minimum date(for today use 0 or -1970/01/01)
-        onChangeDateTime: function (dp, $input) {
-            //$($('#' + $input.attr('id')).parent().closest('form')).bootstrapValidator('revalidateField', $input.attr('name'));
+        onSelectDate: function (dp, $input) {
+            // var formattedDate = new Date(dp);
+            // var d = formattedDate.getDate();
+            // var m =  formattedDate.getMonth();
+            // m += 1;  
+            // var y = formattedDate.getFullYear();
+
+            // let dateAfterFormat = d + "-" + m + "-" + y;
+
+            // var currentUrl = window.location.href;
+            // var url = new URL(currentUrl);
+            // url.searchParams.set($input.attr('name'), dateAfterFormat); 
+           
+            // var newUrl = url.href;             
+            // window.location.href = newUrl
         }
 
+    });
+
+    $('.wa_campaign_type').change(function() {
+        var waLeadId = $(this).find(":selected").val();
+        var formSource = $('.wa_leads_form_source').val();
+        var inputData = {
+            'ajax_source': formSource,
+            'from_ajax': true,
+            'form_source': 'whatsappLeadsData',
+            'wa_lead_id': waLeadId
+        };
+    
+        $.ajax({
+            url: inputData["ajax_source"],
+            type: 'post',
+            dataType: 'json',
+            contentType: "application/json; charset=UTF-8",
+            data: JSON.stringify(inputData),
+            success: function (responseData) {
+                ajaxSuccessResponse(responseData, '', inputData);
+            },
+            error: function (error) {
+                console.log(error.data)
+                ajaxFailedResponse(error, '', inputData);
+            }
+        });       
+    })
+
+    $(".wa_campaign_type").change();
+
+    $('.wa_analysis_duration').change(function() {
+        // var currentUrl = window.location.href;
+        // var url = new URL(currentUrl);
+        // if($(this).find(":selected").val()) {
+        //     url.searchParams.set('duration', $(this).find(":selected").val()); 
+        // } else {
+        //     url.searchParams.delete('duration', $(this).find(":selected").val()); 
+        // }
+        
+        // var newUrl = url.href; 
+        // window.location.href = newUrl
     });
 })

@@ -52,13 +52,13 @@
     border-radius: 25px;
 }
 
-.filter_by_campaign .campaign_type {
+.filter_by_campaign .wa_campaign_type {
     display: inline-block;
     width: 150px;
     border: 0;
     appearance: auto;
 }
-.filter_by_campaign .campaign_type:focus {
+.filter_by_campaign .wa_campaign_type:focus {
     box-shadow: none;
 }
 
@@ -86,7 +86,7 @@
     box-shadow: none;
 }
 
-.whatsapp_analysis_filter .date-picker, .whatsapp_analysis_filter .select2-selection{
+.whatsapp_analysis_filter .date-picker, .whatsapp_analysis_filter .wa_analysis_duration{
     border-radius: 20px;
 }
 

@@ -56,10 +56,13 @@ class LeadsModel extends BaseModel
         ]);
     }
 
-	public function getWhatsAppAnalytics($organization_id){
+	public function getWhatsAppAnalytics($organization_id, $start_date, $end_date, $duration){
         return $this->makeRequest('POST','/api/v1/getWhatsAppAnalytics',[
 			'json' => [
 				"orgId" => $organization_id,
+				"startDate" => $start_date,
+				"endDate" => $end_date,
+				"duration" => $duration
 			],
         ]);
     }

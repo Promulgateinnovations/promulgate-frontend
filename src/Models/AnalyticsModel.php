@@ -265,4 +265,22 @@ class AnalyticsModel extends BaseModel
 			]
 		);
 	}
+
+	public function getWhatsappLeadDetails($lead_id, $org_id)
+	{
+
+		if(!$lead_id) {
+			return [
+				'body' => [],
+			];
+		}
+
+		return $this->makeRequest('POST', '/api/v1/getWhatsAppAnalyticsDetails', [
+				'json' => [
+					"leadId" => $lead_id,
+					"orgId" => $org_id
+				],
+			]
+		);
+	}
 }
