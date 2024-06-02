@@ -95,9 +95,20 @@
                                             {% include 'social_icons.html' %}
                                         </span>
                                     </code>
-
-                                    
                                     <div class="row align-center">
+                                        <div class="col-10">
+                                            <div class="form-group mb-4">
+                                                <label for="wa_campaign">Campaign</label>
+                                                <select  class="js-select-2 form-control" id="wa_campaign"
+                                                    name="wa_campaign" data-placeholder--id="0" data
+                                                        -placeholder--text="Whatsapp Template">
+                                                    <option value="null">Select Campaign</option>
+                                                    {% for camps in list_of_campaigns %}
+                                                        <option  value="{{ camps.campaignDefinitionId }}">{{ camps.name }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
                                         <div class="col-10">
                                             <div class="form-group mb-4">
                                                 <label for="wa_template">Template</label>
@@ -154,7 +165,18 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-lg-6">
+                                <div class="col-lg-6 align-middle text-center">
+                                    <br/>
+                                    {% for ld in selected_leads %}
+                                    <div class="form-group">
+                                        <label class="form-label">Selected Leads:</label>
+                                            <p>
+                                                <a href="{{ url('lead_details', {lead_id : ld}) }}" class="link-in-iframe">
+                                                    {{ld}}
+                                                </a>
+                                            </p>
+                                    </div>
+                                    {% endfor %}
                                 </div>
                             </div>							
 						</form>

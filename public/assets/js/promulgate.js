@@ -1004,6 +1004,14 @@ function enableBootstrapValidator() {
                     }
                 }
             },
+            'wa_campaign': {
+                validators: {
+                    choice: {
+                        min: 1,
+                        message: 'Please choose campaign'
+                    }
+                }
+            },
             'cta': {
                 validators: {
                     notEmpty: {

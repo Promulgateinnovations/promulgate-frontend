@@ -253,6 +253,14 @@ class LeadsController extends BaseController
 				'org_id' => $org_id
 			];
 			$wp_templates = $this->leadsModel->getTemplates($content_to_post)['body'];
+			$all_campaigns = $this->campaignModel->getListOfCampaigns($org_id)['body'];
+			$list_of_campaigns = [];
+
+			if(getValue('status', $all_campaigns) == 'success') {
+				$list_of_campaigns = $all_campaigns['data']['campaignList']['rows'];
+			};
+
+			//print_r($list_of_campaigns);exit();
 
 			$AdminController  = new AdminController();
 			$CampaignController     = new CampaignController([
@@ -295,7 +303,8 @@ class LeadsController extends BaseController
 					'GOOGLE_DRIVE_API_KEY'                         => env('GOOGLE_DRIVE_API_KEY'),
 					'GOOGLE_APP_ID'                                => env('GOOGLE_APP_ID'),
 					'GOOGLE_DRIVE_ACCESS_TOKEN'                    => $google_drive_access_token,
-					'BUSINESS_URL'                                 => url('admin_business')
+					'BUSINESS_URL'                                 => url('admin_business'),
+					'list_of_campaigns' 			=> $list_of_campaigns,
 				]
 			);
 		}
@@ -489,6 +498,7 @@ class LeadsController extends BaseController
 				'curation_channel'               => $content['curation_channel'],
 				'selected_leads'       => $content['selected_leads'],
 				'wa_template'              => $content['wa_template'],
+				'wa_campaign'              => $content['wa_campaign'],
 				'wa_template_lang'               => $content['wa_template_lang'],
 				'file_url'               => $content['wa_file_url'],
 				'postAt'            => $final_posts_at,
