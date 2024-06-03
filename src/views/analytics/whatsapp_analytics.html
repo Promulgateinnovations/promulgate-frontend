@@ -61,10 +61,10 @@
                         <div class="filter_by_campaign">
                             <i class="fa fa-pie-chart no_of_camp_icons"></i>
                             <select id="campaign_type" name="wa_campaign_type" class="form-control wa_campaign_type">   
-                                <option value="all" selected>All Campaiagns</option>                         
-                            {% for index, lead in allLeads %}
-                            <option value="{{lead.leadId}}">
-                                Campaign - {{index+1}} - {{lead.wp_template_name}}
+                                <option value="all" selected>All Campaiagns</option>                     
+                            {% for camp in allCampaigns %}
+                            <option value="{{camp.wa_campaign}}">
+                                Campaign - {{camp.wa_campaign_name}}
                             </option>
                             {% endfor %}
                             </select>

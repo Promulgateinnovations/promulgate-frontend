@@ -365,11 +365,14 @@ class AnalyticsController extends BaseController
 		$totalLeads = 0;
 		$totalSent = 0;
 		$allLeads = [];
+		$allCampaigns = [];
+
 
 		if (isset($whatsAppAnalytics['body'])) {
 			$allLeads = $whatsAppAnalytics['body']['allLeads'];
 			$totalLeads = $whatsAppAnalytics['body']['totalLeads'];
 			$totalSent = $whatsAppAnalytics['body']['totalWhatsappSent'];
+			$allCampaigns = $whatsAppAnalytics['body']['getUniqueCampaigns'];
 		}
 
 		$this->setViewData('whatsapp_analytics.html',
@@ -379,6 +382,7 @@ class AnalyticsController extends BaseController
 				'allLeads' 		=> $allLeads,
 				'totalLeads' 		=> $totalLeads,
 				'totalSent' 		=> $totalSent,
+				'allCampaigns' => $allCampaigns,
 				'start_date' => isset($_GET['start_date']) ? $_GET['start_date'] : '',
 				'end_date' => isset($_GET['end_date']) ? $_GET['end_date'] : '',
 				'duration' => isset($_GET['duration']) ? $_GET['duration'] : ''

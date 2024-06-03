@@ -167,9 +167,9 @@
                                 </div>
                                 <div class="col-lg-6 align-middle text-center">
                                     <br/>
+                                    <label class="form-label">Selected Leads:</label>
                                     {% for ld in selected_leads %}
                                     <div class="form-group">
-                                        <label class="form-label">Selected Leads:</label>
                                             <p>
                                                 <a href="{{ url('lead_details', {lead_id : ld}) }}" class="link-in-iframe">
                                                     {{ld}}
