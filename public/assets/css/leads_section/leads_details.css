@@ -50,11 +50,12 @@
     width: max-content;
     padding: 6px 20px;
     border-radius: 25px;
+    min-width: 300px;
 }
 
 .filter_by_campaign .wa_campaign_type {
     display: inline-block;
-    width: 150px;
+    width: fit-content;
     border: 0;
     appearance: auto;
 }

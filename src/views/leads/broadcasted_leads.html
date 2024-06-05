@@ -12,9 +12,11 @@
             <thead>
                 <tr>
                     <th>Sr no.</th>
+                    <th>Campaign</th>
                     <th>Template</th>
                     <th>Status</th>
                     <th>Leads</th>
+                    <th>Total Sent</th>
                     <th>Date Uploaded</th>
                 </tr>
             </thead>
@@ -25,6 +27,7 @@
                 {% set counter = counter + 1 %}
                 <tr>
                     <td>{{counter}}</td>
+                    <td>{{lead.campName}}</td>
                     <td>{{lead.wp_template}}</td>
                     <td>{{lead.status}}</td>
                     <td>
@@ -35,6 +38,7 @@
                         <br />
                         {% endfor %}
                     </td>
+                    <td>{{lead.totalSent}}</td>
                     <td><i class="fa fa-calendar"></i> {{ get_date(lead.createdAt, 4) }} </td>
                 </tr>
                 {% endfor %}
