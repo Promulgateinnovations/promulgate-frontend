@@ -1,0 +1,110 @@
+{% include '/analytics/tab_bar.html' %}
+<link rel="stylesheet" type="text/css" href="/assets/css/leads_section/leads_details.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.dataTables.css" />
+
+<div class="admin_content active" style="height: 100%;">
+	<div class="row content_header">
+		<div class="col-6">
+			<h1 class="title">
+				Social Inbox
+			</h1>
+		</div>
+        <div class="col-6">
+            <div class="row whatsapp_analysis_filter">
+                <div class="col-4">
+                    <input autocomplete="off" class="form-control date-picker" name="start_date" type="text" placeholder="From date" value="{{start_date}}">
+                </div>
+                <div class="col-4">
+                    <input autocomplete="off" class="form-control date-picker" name="end_date" type="text" placeholder="To date" value="{{end_date}}">
+                </div>
+                <div class="col-4">
+                    <select id="duration" name="duration" class="form-control wa_analysis_duration">
+                        <option value="">Select Duration</option>
+                        <option value="Weekly" {% if duration == "Weekly" %} selected {% endif %} >Weekly</option>
+                        <option value="Monthly" {% if duration == "Monthly" %} selected {% endif %}>Monthly</option>
+                        <option value="Quaterly" {% if duration == "Quaterly" %} selected {% endif %}>Quaterly</option>
+                        <option value="Annually" {% if duration == "Annually" %} selected {% endif %}>Annually</option>
+                    </select>
+                </div>
+            </div>
+		</div>
+	</div>
+	<div class="container-fluid">
+		<div class="whatsapp_analysis_parent">
+            <div class="content_body">
+                <div class="row">
+                    <table id="socialInbox">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Sr. No.</th>
+                                <th>Channel Name</th>
+                                <th>Channel ID</th>
+                                <th>Post ID</th>
+                                <th>Message Type</th>
+                                <th>Message</th>
+                                <th>Sent To</th>
+                                <th>Created At</th>
+                                <th>Mark As Read</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for index, sociInbox in socialInbox %}
+                            <tr>
+                                <td>
+                                    <input type="checkbox" name="socialInboxId[]" value="" />
+                                </td>
+                                <td>{{ sociInbox.channelName }}</td>
+                                <td>{{ sociInbox.channelId }}</td>
+                                <td>{{ sociInbox.postID }}</td>
+                                <td>{{ sociInbox.messageType }}</td>
+                                <td>
+                                    <p class="msg_body" data-msg="{{ sociInbox.message }}">{{ sociInbox.message }}</p>
+                                </td>
+                                <td>{{ sociInbox.sentTo }}</td>
+                                <td>{{ sociInbox.createdAt }}</td>
+                                <td>
+                                    <input type="checkbox" name="readInboxId[]" data-toggle="toggle" data-onstyle="success" data-offstyle="light" data-on="Read" data-off="Unread" data-size="small" class="readInboxChange"
+                                    {% if (sociInbox.isRead == 1) %} disabled {% endif %}
+                                    >
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                
+                
+            </div>
+        </div>
+	</div>
+    <div
+      class="modal fade"
+      id="msgPreviewModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="msgPreviewModal"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="msgPreviewModalLabel">Modal title</h5>
+            <button
+              type="button"
+              class="close hide_modal"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+                <i class="fa fa-close"></i>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p class="modal_body_msg"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+
+

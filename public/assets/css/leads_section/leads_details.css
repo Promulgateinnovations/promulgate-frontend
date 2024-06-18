@@ -99,3 +99,18 @@
     min-height: 38px;
     line-height: 38px !important;
 }
+
+#socialInbox {
+    width: 100%;
+}
+
+#socialInbox thead {
+   background: #e6f3f7;
+}
+
+.msg_body {
+    text-overflow: ellipsis;
+    width: 100px;
+    white-space: nowrap;
+    overflow: hidden;
+}

@@ -391,6 +391,28 @@ class AnalyticsController extends BaseController
 
 	}
 
+	public function showSocialInbox()
+	{
+
+		$this->Breadcrumbs->add([
+			'title' => 'Analytics',
+			'url'   => url('analytics_channels'),
+		]);
+		$org_id = Session::get('organization', 'id');
+		$getSocialInbox = $this->leadsModel->getSocialInbox($org_id, null, null, null);
+
+
+
+		$this->setViewData('social_inbox.html',
+			[
+				'form_action'           => url('analytics_ajax'),
+				'page_title'            => "Social Inbox",
+				'socialInbox' 		=> isset($getSocialInbox['body']['data']) ? $getSocialInbox['body']['data'] : []
+			]
+		);
+
+	}
+
 	public function showWhatsappGraphAnalytics()
 	{
 		//overall analytics

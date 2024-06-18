@@ -3044,4 +3044,26 @@ $(function() {
         // var newUrl = url.href; 
         // window.location.href = newUrl
     });
+    $('#socialInbox').DataTable({
+        pageLength: 5,
+        lengthMenu: [5, 10, 20, 50],
+        "paging": true,
+        "searching": true,
+        "ordering": true
+    });
+
+    $('.readInboxChange').change(function() {
+        console.log($(this).is(':checked'));
+    });
+
+    $('.msg_body').click(function() {
+        $('.modal_body_msg').html($(this).data("msg"));
+        $('#msgPreviewModal').modal('toggle');
+    });
+
+    $('.hide_modal').click(function() {
+        $('#msgPreviewModal').modal('toggle');
+    })
+
 })
+
