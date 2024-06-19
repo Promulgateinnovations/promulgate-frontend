@@ -98,7 +98,7 @@
 									<a href="{{ url('analytics_whatsapp') }}">Whatsapp Analysis</a>
 								</li>
 								<li class="nav-item {% if current_url_name == 'social_inbox' %} active {% endif %}">
-									<a href="{{ url('social_inbox') }}">Social Inbox</a>
+									<a href="{{ url('social_inbox', {type : 'incoming'}) }}">Social Inbox</a>
 								</li>
 							</ul>
 						</div>

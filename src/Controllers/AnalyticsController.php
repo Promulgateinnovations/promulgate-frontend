@@ -391,15 +391,14 @@ class AnalyticsController extends BaseController
 
 	}
 
-	public function showSocialInbox()
+	public function showSocialInbox($type)
 	{
-
 		$this->Breadcrumbs->add([
 			'title' => 'Analytics',
 			'url'   => url('analytics_channels'),
 		]);
 		$org_id = Session::get('organization', 'id');
-		$getSocialInbox = $this->leadsModel->getSocialInbox($org_id, null, null, null);
+		$getSocialInbox = $this->leadsModel->getSocialInbox($org_id, null, null, null, $type);
 
 
 
@@ -407,7 +406,8 @@ class AnalyticsController extends BaseController
 			[
 				'form_action'           => url('analytics_ajax'),
 				'page_title'            => "Social Inbox",
-				'socialInbox' 		=> isset($getSocialInbox['body']['data']) ? $getSocialInbox['body']['data'] : []
+				'socialInbox' 		=> isset($getSocialInbox['body']['data']) ? $getSocialInbox['body']['data'] : [],
+				'type' => strtoupper($type)
 			]
 		);
 

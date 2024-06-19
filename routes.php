@@ -182,8 +182,9 @@ Route::group([
 		->name('analytics_whatsapp')
 	;
 
-	Route::get('/social-inbox', 'AnalyticsController@showSocialInbox')
+	Route::get('/social-inbox/{type}', 'AnalyticsController@showSocialInbox')
 	->name('social_inbox')
+	->where(['type' => '[a-zA-z0-9-]+'])
 	;
 
 	Route::get('/whatsapp-graph-analysis', 'AnalyticsController@showWhatsappGraphAnalytics')

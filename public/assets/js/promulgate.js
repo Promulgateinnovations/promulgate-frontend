@@ -3044,6 +3044,15 @@ $(function() {
         // var newUrl = url.href; 
         // window.location.href = newUrl
     });
+    $('.wa_analysis_type').change(function() {
+        if($(this).find(":selected").val() === 'OUTGOING') {
+            let newUrl = window.location.href.replace('incoming', 'outgoing');
+            window.location.href = newUrl
+        } else {
+            let newUrl = window.location.href.replace('outgoing', 'incoming');
+            window.location.href = newUrl
+        }
+    });
     $('#socialInbox').DataTable({
         pageLength: 5,
         lengthMenu: [5, 10, 20, 50],

@@ -11,19 +11,25 @@
 		</div>
         <div class="col-6">
             <div class="row whatsapp_analysis_filter">
-                <div class="col-4">
+                <div class="col-3">
                     <input autocomplete="off" class="form-control date-picker" name="start_date" type="text" placeholder="From date" value="{{start_date}}">
                 </div>
-                <div class="col-4">
+                <div class="col-3">
                     <input autocomplete="off" class="form-control date-picker" name="end_date" type="text" placeholder="To date" value="{{end_date}}">
                 </div>
-                <div class="col-4">
+                <div class="col-3">
                     <select id="duration" name="duration" class="form-control wa_analysis_duration">
                         <option value="">Select Duration</option>
                         <option value="Weekly" {% if duration == "Weekly" %} selected {% endif %} >Weekly</option>
                         <option value="Monthly" {% if duration == "Monthly" %} selected {% endif %}>Monthly</option>
                         <option value="Quaterly" {% if duration == "Quaterly" %} selected {% endif %}>Quaterly</option>
                         <option value="Annually" {% if duration == "Annually" %} selected {% endif %}>Annually</option>
+                    </select>
+                </div>
+                <div class="col-3">
+                    <select id="type" name="type" class="form-control wa_analysis_type">
+                        <option value="INCOMING" {% if type == "INCOMING" %} selected {% endif %} >INCOMING</option>
+                        <option value="OUTGOING" {% if type == "OUTGOING" %} selected {% endif %}>OUTGOING</option>
                     </select>
                 </div>
             </div>
@@ -36,7 +42,6 @@
                     <table id="socialInbox">
                         <thead>
                             <tr>
-                                <th></th>
                                 <th>Sr. No.</th>
                                 <th>Channel Name</th>
                                 <th>Channel ID</th>
@@ -51,9 +56,6 @@
                         <tbody>
                             {% for index, sociInbox in socialInbox %}
                             <tr>
-                                <td>
-                                    <input type="checkbox" name="socialInboxId[]" value="" />
-                                </td>
                                 <td>{{ index+1 }}</td>
                                 <td>{{ sociInbox.channelName }}</td>
                                 <td>{{ sociInbox.channelId }}</td>
