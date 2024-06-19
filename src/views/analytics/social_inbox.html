@@ -48,7 +48,9 @@
                                 <th>Post ID</th>
                                 <th>Message Type</th>
                                 <th>Message</th>
+                                {% if type == "OUTGOING" %}
                                 <th>Sent To</th>
+                                {% endif %}
                                 <th>Created At</th>
                                 <th>Mark As Read</th>
                             </tr>
@@ -71,7 +73,9 @@
                                 <td>
                                     <p class="msg_body" data-msg="{{ sociInbox.message }}">{{ sociInbox.message }}</p>
                                 </td>
+                                {% if type == "OUTGOING" %}
                                 <td>{{ sociInbox.sentTo }}</td>
+                                {% endif %}
                                 <td>{{ sociInbox.createdAt }}</td>
                                 <td>
                                     <input type="checkbox" name="readInboxId[]" data-toggle="toggle" data-onstyle="success" data-offstyle="light" data-on="Read" data-off="Unread" data-size="small" class="readInboxChange"
