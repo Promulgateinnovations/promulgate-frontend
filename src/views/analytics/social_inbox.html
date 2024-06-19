@@ -59,7 +59,14 @@
                                 <td>{{ index+1 }}</td>
                                 <td>{{ sociInbox.channelName }}</td>
                                 <td>{{ sociInbox.channelId }}</td>
-                                <td>{{ sociInbox.postID }}</td>
+                                <td>
+                                    <p style="    text-overflow: ellipsis;
+                                    width: 100px;
+                                    white-space: nowrap;
+                                    overflow: hidden;">
+                                    {{ sociInbox.postID }}
+                                    </p>
+                                </td>
                                 <td>{{ sociInbox.messageType }}</td>
                                 <td>
                                     <p class="msg_body" data-msg="{{ sociInbox.message }}">{{ sociInbox.message }}</p>
