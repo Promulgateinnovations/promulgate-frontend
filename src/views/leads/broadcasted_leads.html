@@ -38,7 +38,7 @@
                         <br />
                         {% endfor %}
                     </td>
-                    <td>{{lead.totalSent}}</td>
+                    <td>{{lead.allBroadcasted}}/{{lead.totalSent}}</td>
                     <td><i class="fa fa-calendar"></i> {{ get_date(lead.createdAt, 4) }} </td>
                 </tr>
                 {% endfor %}
