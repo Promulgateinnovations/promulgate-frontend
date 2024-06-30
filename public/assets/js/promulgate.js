@@ -3282,11 +3282,9 @@ $(function () {
   $(".wa_analysis_filter_by").change(function () {
     var url = window.location.href;
     var to = url.lastIndexOf("/");
-
     if (to + 1 == url.length) {
       url = url.slice(0, url.lastIndexOf("/"));
     }
-
     url = url.replace(/\/[^\/]*$/, "/" + $(this).find(":selected").val());
     window.location.href = url;
   });
