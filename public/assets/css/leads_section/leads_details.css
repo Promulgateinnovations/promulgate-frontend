@@ -87,7 +87,7 @@
     box-shadow: none;
 }
 
-.whatsapp_analysis_filter .date-picker, .whatsapp_analysis_filter .wa_analysis_duration, .wa_analysis_type{
+.whatsapp_analysis_filter .date-picker, .whatsapp_analysis_filter .wa_analysis_duration, .wa_analysis_filter_by, .wa_analysis_type{
     border-radius: 20px;
 }
 

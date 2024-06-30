@@ -67,14 +67,15 @@ class LeadsModel extends BaseModel
         ]);
     }
 
-	public function getSocialInbox($organization_id, $start_date, $end_date, $duration, $type){
+	public function getSocialInbox($organization_id, $start_date, $end_date, $duration, $type, $filterBy){
         return $this->makeRequest('POST','/api/v1/getSocialInbox',[
 			'json' => [
 				"orgId" => $organization_id,
 				"startDate" => $start_date,
 				"endDate" => $end_date,
 				"duration" => $duration,
-				"type" => strtoupper($type)
+				"type" => strtoupper($type),
+				"filterBy" => $filterBy
 			],
         ]);
     }
