@@ -286,13 +286,13 @@ class AdminController extends BaseController
 		}
 
 		
-	 	$LinkedInClient = new \LinkedIn\Client(env('LINKEDIN_CLIENT_ID'), env('LINKEDIN_CLIENT_SECRET'));
+	 	// $LinkedInClient = new \LinkedIn\Client(env('LINKEDIN_CLIENT_ID'), env('LINKEDIN_CLIENT_SECRET'));
 
-		$LinkedInClient->setRedirectUrl(getAbsoluteUrl('oauth_linkedin_callback', NULL, [
-			'source' => 'connection',
-		], [
-			'NO_DEBUG' => false,
-		]));
+		// $LinkedInClient->setRedirectUrl(getAbsoluteUrl('oauth_linkedin_callback', NULL, [
+		// 	'source' => 'connection',
+		// ], [
+		// 	'NO_DEBUG' => false,
+		// ]));
 
 				// P($final_organization_connections);
 		//Saving state in session & validate once we receive authorization code for security
@@ -317,6 +317,7 @@ class AdminController extends BaseController
 				'GOOGLE_OAUTH_CLIENT_ID'          => env('GOOGLE_OAUTH_CLIENT_ID'),
 				'GOOGLE_YOUTUBE_API_KEY'          => env('GOOGLE_YOUTUBE_API_KEY'),
 				'linkedin_oauth_authorization_url' => $LinkedInClient->getLoginUrl(['r_emailaddress', 'r_liteprofile', 'w_member_social', 'rw_organization_admin', 'r_organization_social', 'w_organization_social', 'w_member_social', 'r_1st_connections_size']),
+				//'linkedin_oauth_authorization_url' => [],
 				'CONNECTION_OAUTH_STATUS'          => json_encode(Session::pull('CONNECTION_OAUTH_STATUS') ?? []),
 			]
 		);
@@ -330,7 +331,7 @@ class AdminController extends BaseController
 			'url'   => url('connect_whatsapp'),
 		]);
 
-		$whatsapp_details = $this->adminModel->getWhatsAppConnectionDetails($this->organizationId)['body'];
+		$whatsapp_details = $this->adminModel->getNewConnectionDetails($this->organizationId, 'WhatsApp')['body'];
 
 		if(getValue('status', $whatsapp_details) == 'success') {
 
@@ -345,6 +346,33 @@ class AdminController extends BaseController
 				'form_action'                     => url('admin_ajax'),
 				'page_title'                      => "Whatsapp Connections",
 				'whatsapp_details' => $whatsapp_details
+			]
+		);
+	}
+
+	public function connectGoogleReviews()
+	{
+
+		$this->Breadcrumbs->add([
+			'title' => 'Google Reviews Connections',
+			'url'   => url('connect_google_reviews'),
+		]);
+
+		$google_reviews_data = $this->adminModel->getNewConnectionDetails($this->organizationId, 'Google Reviews')['body'];
+
+		if(getValue('status', $google_reviews_data) == 'success') {
+
+			$google_reviews_data = $google_reviews_data['data'];
+
+		} else {
+			$google_reviews_data = [];
+		}
+
+		$this->setViewData('google_review_connection.html',
+			[
+				'form_action'                     => url('admin_ajax'),
+				'page_title'                      => "Google Reviews Connections",
+				'google_reviews_data' => $google_reviews_data
 			]
 		);
 	}
@@ -420,6 +448,20 @@ class AdminController extends BaseController
 				} else {
 
 					$this->createWhatsappConnection($all_input);
+				}
+				break;
+			
+			case 'connect_google_reviews' :
+
+				$google_reviews_connection_id = $all_input['google_reviews_connection_id'];
+
+				if($google_reviews_connection_id) {
+
+					$this->updateGoogleReviewsConnectionDetails($google_reviews_connection_id, $all_input);
+
+				} else {
+
+					$this->createGoogleReviewsConnection($all_input);
 				}
 				break;
 
@@ -595,6 +637,85 @@ class AdminController extends BaseController
 				'data'   =>
 					[
 						'message' => "Whatsapp Connection details updated successfully",
+					],
+			]);
+
+		}
+
+	}
+
+	private function createGoogleReviewsConnection($google_reviews_data)
+	{
+		$google_reviews_data['user_id']    = Session::get('user', 'id');
+		$google_reviews_data['agencyId']   = Session::get('agency', 'id');
+		$google_reviews_data['org_id'] = Session::get('organization', 'id');
+		$google_reviews_data['status'] = 'ACTIVE';
+
+
+		$add_whatsapp = $this->adminModel->saveGoogleReviewsConnectionDetails($google_reviews_data)['body'];
+
+		if(getValue('status', $add_whatsapp) != 'success') {
+
+			response()->json([
+				'status' => false,
+				'error'  => [
+					'code'    => 20,
+					'message' => $add_whatsapp['message'] ?? "Some problem form API",
+				],
+			]);
+
+		} else {
+
+			response()->json([
+				'status' => true,
+				'data'   =>
+					[
+						'message' => "Google Reviews connection created successfully",
+						'extra'   => [ 'next_screen' => url('admin_connections') ],
+					],
+			]);
+
+		}
+	}
+
+	private function updateGoogleReviewsConnectionDetails($google_reviews_connection_id, $google_reviews_data)
+	{
+
+		if(!$google_reviews_connection_id) {
+
+			response()->json([
+				'status' => false,
+				'error'  => [
+					'code'    => 10,
+					'message' => 'No Whatsapp Connection to update details',
+				],
+			]);
+		}
+
+		$updated_created_organization = $this->adminModel->updateGoogleReviewsConnectionDetails($google_reviews_connection_id, $google_reviews_data)['body'];
+
+		if(getValue('status', $updated_created_organization) != 'success') {
+
+			response()->json([
+				'status' => false,
+				'error'  => [
+					'code'    => 20,
+					'message' => $updated_created_organization['message'] ?? "Some problem form API",
+				],
+			]);
+
+		} else {
+
+			//Update company name
+			Session::set('google_reviews_connection_id', [
+				'id' => $google_reviews_connection_id,
+			]);
+
+			response()->json([
+				'status' => true,
+				'data'   =>
+					[
+						'message' => "Google Reviews Connection details updated successfully",
 					],
 			]);
 

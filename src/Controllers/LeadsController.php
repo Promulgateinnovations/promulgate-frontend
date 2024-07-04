@@ -391,6 +391,12 @@ class LeadsController extends BaseController
 				$this->deleteLead($lead_id);
 				break;
 
+			case 'read_inbox_msg' :
+				$inbox_id = $all_input['inbox_id'];
+				$inbox_read_status = $all_input['inbox_read_status'];
+				$this->readSocialInbox($inbox_id, $inbox_read_status);
+				break;
+
 			case 'add_template' :
 				$this->saveNewWaTemplate($all_input);
 				break;
@@ -578,6 +584,56 @@ class LeadsController extends BaseController
 							'extra'   => [
 								'next_tab'    => true,
 								'next_screen' => url('leads'),
+							],
+						],
+				]);
+
+			}
+		} else {
+
+			response()->json([
+				'status' => false,
+				'error'  => [
+					'code'    => 20,
+					'message' => "Leads Information or User details are missing",
+				],
+			]);
+		}
+	}
+
+	public function readSocialInbox($inbox_id, $inbox_read_status)
+	{
+
+		if($inbox_id && $inbox_read_status) {
+
+			$content_to_post = [
+				'inbox_id'               => $inbox_id,
+				'inbox_read_status' => $inbox_read_status
+			];
+
+			
+			$readSocialInbox = $this->leadsModel->readSocialInbox($content_to_post)['body'];
+
+			if(getValue('status', $readSocialInbox) != 'success') {
+
+				response()->json([
+					'status' => false,
+					'error'  => [
+						'code'    => 20,
+						'message' => "Inbox could not be updated."
+					],
+				]);
+
+			} else {
+
+				response()->json([
+					'status' => true,
+					'data'   =>
+						[
+							'message' => "Inbox updated.",
+							'extra'   => [
+								'next_tab'    => true,
+								'next_screen' => url('social_inbox'),
 							],
 						],
 				]);

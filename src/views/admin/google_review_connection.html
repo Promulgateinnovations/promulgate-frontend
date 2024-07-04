@@ -1,0 +1,56 @@
+<div class="admin_content active">
+	<div class="row content_header">
+		<div class="col-6">
+			<h1 class="title">
+				<i class="fa fa-link"></i> Connect Google Reviews
+			</h1>
+            <p>Get place id from <a href="https://developers.google.com/maps/documentation/places/web-service/place-id" target="_blank">here</a></p>
+		</div>
+	</div>
+	<div class="content_body">
+		<form class="needs-validation" action="{{ form_action }}" novalidate>
+
+			<div class="row">
+				<div class="col-lg-6">
+                    <div class="form-group">
+						<label for="google_place_name" class="form-label">Google Business Place Name</label>
+						<input type="text" class="form-control" name="google_place_name" id="google_place_name" placeholder="Google Business Place Name" value="{{ google_reviews_data.socialMediaHandle|split(':')[0] }}">
+					</div>
+					<div class="form-group">
+						<label for="google_place_id" class="form-label">Google Business Place ID</label>
+						<input type="text" class="form-control" name="google_place_id" id="google_place_id" placeholder="Google Business Place ID"
+                        value="{{ google_reviews_data.socialMediaHandle|split(':')[1] }}">
+					</div>
+				</div>
+				<div class="col-lg-6 align-middle text-center">
+					{% if google_reviews_data.createdAt %}
+					<div class="form-group">
+						<label class="form-label">Created at</label>
+						<p>{{ get_date(google_reviews_data.createdAt, 4) }}</p>
+					</div>
+					{% endif %}
+					{% if google_reviews_data.updatedAt %}
+					<div class="form-group">
+						<label class="form-label">Last Modified at</label>
+						<p>{{ get_date(google_reviews_data.updatedAt, 4) }}</p>
+					</div>
+					{% endif %}
+				</div>
+				<input type="hidden" name="google_reviews_connection_id" id="google_reviews_connection_id" value="{{ google_reviews_data.socalMediaConnectionId }}">
+				<input type="hidden" name="form_source" id="form_source" value="connect_google_reviews">
+			</div>
+			<div class="row">
+				<div class="text-center">
+					<button class="btn btn-min btn-promulgate-primary" type="submit" id="form_main_action_button">
+						{% if google_reviews_data.socalMediaConnectionId %}
+							Update
+						{% else %}
+							Create
+						{% endif %}
+					</button>
+					<button class="btn btn-min btn-outline-danger" type="reset">Ignore Changes</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>

@@ -457,6 +457,9 @@ $(document).ready(function () {
           if (connection_selector == "#connection_whatsapp") {
             window.open("/admin/connect-whatsapp", "_blank").focus();
             return false;
+          } else if (connection_selector == "#connection_google_reviews") {
+            window.open("/admin/connect-google-reviews", "_blank").focus();
+            return false;
           }
 
           var isCustomConnection = parseInt(
@@ -1615,6 +1618,14 @@ function processExtraAjaxData(extraData, formData, formElement) {
       }
       break;
 
+    case "connect_google_reviews":
+      if (extraData.next_screen !== undefined) {
+        setTimeout(function () {
+          window.location.href = extraData.next_screen;
+        }, 3000);
+      }
+      break;
+
     case "organization":
       // Create
       if (extraData.organization_id !== undefined) {
@@ -1986,6 +1997,31 @@ deleteLeadFromDb = (id) => {
     success: function (responseData) {
       ajaxSuccessResponse(responseData, "", inputData);
       window.location.reload();
+    },
+    error: function (error) {
+      ajaxFailedResponse(error, "", inputData);
+    },
+  });
+};
+
+markAsReadSocialInbox = (id, sts) => {
+  var inputData = {
+    ajax_source: "leads/ajax",
+    from_ajax: true,
+    form_source: "read_inbox_msg",
+    inbox_id: id,
+    inbox_read_status: sts,
+  };
+  showProcessingToast();
+
+  $.ajax({
+    url: "/leads/ajax",
+    type: "post",
+    dataType: "json",
+    contentType: "application/json; charset=UTF-8",
+    data: JSON.stringify(inputData),
+    success: function (responseData) {
+      ajaxSuccessResponse(responseData, "", inputData);
     },
     error: function (error) {
       ajaxFailedResponse(error, "", inputData);
@@ -3289,15 +3325,18 @@ $(function () {
     window.location.href = url;
   });
   $("#socialInbox").DataTable({
-    pageLength: 5,
-    lengthMenu: [5, 10, 20, 50],
+    pageLength: 20,
+    lengthMenu: [20, 30, 50, 100],
     paging: true,
     searching: true,
     ordering: true,
   });
 
   $(".readInboxChange").change(function () {
-    console.log($(this).is(":checked"));
+    markAsReadSocialInbox(
+      $(this).attr("data-id"),
+      $(this).is(":checked") ? 1 : 0
+    );
   });
 
   $(".msg_body").click(function () {

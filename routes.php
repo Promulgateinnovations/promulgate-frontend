@@ -77,6 +77,9 @@ Route::group([
 	Route::get('/connect-whatsapp', 'AdminController@addWhatsapp')
 	     ->name('connect_whatsapp')
 	;
+	Route::get('/connect-google-reviews', 'AdminController@connectGoogleReviews')
+	     ->name('connect_google_reviews')
+	;
 
 });
 

@@ -157,4 +157,21 @@ class LeadsModel extends BaseModel
 		);
 
 	}
+
+	public function readSocialInbox($content_to_post)
+	{
+
+		if(!$content_to_post) {
+			return [
+				'body' => [],
+			];
+		}
+
+
+		return $this->makeRequest('POST', '/api/v1/readSocialInbox', [
+				'json' => $content_to_post,
+			]
+		);
+
+	}
 }

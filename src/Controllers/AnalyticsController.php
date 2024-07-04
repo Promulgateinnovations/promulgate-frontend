@@ -398,7 +398,7 @@ class AnalyticsController extends BaseController
 			'url'   => url('analytics_channels'),
 		]);
 		$org_id = Session::get('organization', 'id');
-		$getSocialInbox = $this->leadsModel->getSocialInbox($org_id, null, null, null, $type, $filterBy);
+		$getSocialInbox = $this->leadsModel->getSocialInbox($org_id, null, null, null, $type, str_replace('_', ' ', $filterBy));
 
 
 

@@ -33,7 +33,7 @@
                         <option value="insta-comments" {% if filter_by == "insta-comments" %} selected {% endif %}>Insta Comments</option>
                         <option value="fb-leads" {% if filter_by == "fb-leads" %} selected {% endif %}>FB Leads</option>
                         <option value="WhatsApp" {% if filter_by == "WhatsApp" %} selected {% endif %}>WhatsApp</option>
-                        <option value="google-reviews" {% if filter_by == "google-reviews" %} selected {% endif %}>FB Google Reviews</option>
+                        <option value="Google_Reviews" {% if filter_by == "Google_Reviews" %} selected {% endif %}>Google Reviews</option>
                     </select>
                     {% endif %}
                 </div>
@@ -55,12 +55,15 @@
                             <tr>
                                 <th>Sr. No.</th>
                                 <th>Channel</th>
-                                <th>Channel ID</th>
-                                <th>Post ID</th>
+                                <!-- <th style="width: 80px;">Channel ID</th> -->
+                                <!-- <th>Post ID</th> -->
                                 <th>Message Type</th>
                                 <th>Message</th>
                                 {% if type == "OUTGOING" %}
                                 <th>Sent To</th>
+                                {% endif %}
+                                {% if filter_by == "Google_Reviews" %}
+                                <th>From</th>
                                 {% endif %}
                                 <th>Created At</th>
                                 <th>Mark As Read</th>
@@ -71,15 +74,15 @@
                             <tr>
                                 <td>{{ index+1 }}</td>
                                 <td>{{ sociInbox.channelName }}</td>
-                                <td>{{ sociInbox.channelId }}</td>
-                                <td>
+                                <!-- <td class="channel_id">{{ sociInbox.channelId }}</td> -->
+                                <!-- <td>
                                     <p style="    text-overflow: ellipsis;
                                     width: 100px;
                                     white-space: nowrap;
                                     overflow: hidden;">
                                     {{ sociInbox.postID }}
                                     </p>
-                                </td>
+                                </td> -->
                                 <td>{{ sociInbox.messageType }}</td>
                                 <td>
                                     <p class="msg_body" data-msg="{{ sociInbox.message }}">{{ sociInbox.message }}</p>
@@ -87,10 +90,13 @@
                                 {% if type == "OUTGOING" %}
                                 <td>{{ sociInbox.sentTo }}</td>
                                 {% endif %}
-                                <td>{{ sociInbox.createdAt }}</td>
+                                {% if filter_by == "Google_Reviews" %}
+                                <td>{{ sociInbox.sentTo|split(':')[0] }}</td>
+                                {% endif %}
+                                <td>{{ get_date(sociInbox.createdAt, 4) }}</td>
                                 <td>
-                                    <input type="checkbox" name="readInboxId[]" data-toggle="toggle" data-onstyle="success" data-offstyle="light" data-on="Read" data-off="Unread" data-size="small" class="readInboxChange"
-                                    {% if (sociInbox.isRead == 1) %} disabled {% endif %}
+                                    <input type="checkbox" name="readInboxId[]" data-toggle="toggle" data-onstyle="success" data-offstyle="light" data-on="Read" data-off="Unread" data-size="small" class="readInboxChange" data-id="{{sociInbox.socialInboxID}}" value="{{sociInbox.isRead}}"
+                                    {% if (sociInbox.isRead == 1) %} checked disabled {% endif %}
                                     >
                                 </td>
                             </tr>

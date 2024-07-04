@@ -4,7 +4,7 @@
 	<div class="row content_header">
 		<div class="col-6">
 			<h1 class="title">
-				<i class="fa fa-link"></i> Subscription Analysis (across channels)
+				<i class="fa fa-link"></i> Social Presence (across connections)
 			</h1>
 		</div>
 	</div>
@@ -13,7 +13,6 @@
 			<div class="row">
 				<div class="col-md-12 heading_area">
 					<h3 class="top_heading" style="text-align: right;">
-                        Social Presence
 						<select class="select_filter">
                             <option selected>Weekly</option>
                             <option>Monthly</option>
@@ -24,7 +23,7 @@
 
 				{% if all_social_medias.status == "success" %}
 				{% for socialMedia in all_social_medias.data %}
-					{% if socialMedia.name != "WhatsApp" %}
+					{% if socialMedia.name != "WhatsApp" and  socialMedia.name != "Google Reviews" %}
 					<div class="col-md-6">
 						<div class="content">
 							<div class="row">

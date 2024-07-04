@@ -152,6 +152,11 @@ class AdminModel extends BaseModel
 						],
 						[
 							'id'   => rand(1, 1000),
+							'name' => 'Google Reviews',
+							'type' => 'PAID',
+						],
+						[
+							'id'   => rand(1, 1000),
 							'name' => 'Facebook Ads',
 							'type' => 'PAID',
 						],
@@ -286,7 +291,7 @@ class AdminModel extends BaseModel
 
 	}
 
-	public function getWhatsAppConnectionDetails(string $organization_id = NULL): array
+	public function getNewConnectionDetails(string $organization_id = NULL, $from): array
 	{
 
 		if(!$organization_id) {
@@ -296,9 +301,10 @@ class AdminModel extends BaseModel
 		}
 
 
-		return $this->makeRequest('POST', '/api/v1/getWhatsAppDetails', [
+		return $this->makeRequest('POST', '/api/v1/getNewConnectionDetails', [
 				'json' => [
 					"orgId" => $organization_id,
+					"from" => $from
 				],
 			]
 		);
@@ -321,6 +327,53 @@ class AdminModel extends BaseModel
 
 		return $this->makeRequest('POST', '/api/v1/updateWhatsappDetails', [
 				'json' => $whatsapp_data,
+			]
+		);
+
+	}
+
+	public function saveGoogleReviewsConnectionDetails(array $google_reviews_data): array
+	{
+		if(!$google_reviews_data) {
+			return [
+				'body' => [],
+			];
+		}
+
+		$g_review_data = [
+			"googlePlaceName"      => $google_reviews_data['google_place_name'],
+			"googlePlaceId"   => $google_reviews_data['google_place_id'],
+			"userId"      => $google_reviews_data['user_id'],
+			"agencyId"    => $google_reviews_data['agencyId'],
+			"orgId"    => $google_reviews_data['org_id'],
+			"status"    => $google_reviews_data['status'],
+			"form_source"    => $google_reviews_data['form_source']
+		];
+
+		return $this->makeRequest('POST', '/api/v1/createNewConnectionDetails', [
+				'json' => $g_review_data,
+			]
+		);
+
+	}
+
+	public function updateGoogleReviewsConnectionDetails($google_reviews_connection_id, array $google_review_details): array
+	{
+		if(!$google_review_details || !$google_reviews_connection_id) {
+			return [
+				'body' => [],
+			];
+		}
+
+		$g_rew_data = [
+			"google_reviews_connection_id"       => $google_reviews_connection_id,
+			"googlePlaceName"        => $google_review_details['google_place_name'],
+			"googlePlaceId"   => $google_review_details['google_place_id'],
+			"form_source"    => $google_review_details['form_source']
+		];
+
+		return $this->makeRequest('POST', '/api/v1/updateNewConnectionDetails', [
+				'json' => $g_rew_data,
 			]
 		);
 

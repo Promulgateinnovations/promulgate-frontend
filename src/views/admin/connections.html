@@ -34,6 +34,8 @@
 									<p class="pageName">
 										{% if sub_type.name == 'WhatsApp' %}
 										<a href="{{ url('connect_whatsapp') }}" target="_blank">{{ configured_connections[sub_type.unique_name]['pageName'] }} </a>
+										{% elseif sub_type.name == 'Google Reviews' %}
+										<a href="{{ url('connect_google_reviews') }}" target="_blank">{{ configured_connections[sub_type.unique_name]['pageName'] }} </a>
 										{% else %}
 										{{ configured_connections[sub_type.unique_name]['pageName'] }}
 										{% endif %}
