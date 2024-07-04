@@ -286,13 +286,13 @@ class AdminController extends BaseController
 		}
 
 		
-	 	// $LinkedInClient = new \LinkedIn\Client(env('LINKEDIN_CLIENT_ID'), env('LINKEDIN_CLIENT_SECRET'));
+	 	$LinkedInClient = new \LinkedIn\Client(env('LINKEDIN_CLIENT_ID'), env('LINKEDIN_CLIENT_SECRET'));
 
-		// $LinkedInClient->setRedirectUrl(getAbsoluteUrl('oauth_linkedin_callback', NULL, [
-		// 	'source' => 'connection',
-		// ], [
-		// 	'NO_DEBUG' => false,
-		// ]));
+		$LinkedInClient->setRedirectUrl(getAbsoluteUrl('oauth_linkedin_callback', NULL, [
+			'source' => 'connection',
+		], [
+			'NO_DEBUG' => false,
+		]));
 
 				// P($final_organization_connections);
 		//Saving state in session & validate once we receive authorization code for security
