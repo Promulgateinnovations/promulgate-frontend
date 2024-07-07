@@ -24,18 +24,22 @@ class LeadsModel extends BaseModel
         );
     }
 
-    public function getLeadsDetails()
+    public function getLeadsDetails($org_id)
     {
 		return $this->makeRequest('POST','/api/v1/getLeadDetails',[
-            'json' => [],
+            'json' => [
+				"org_id" => $org_id,
+			],
         ]
       );
 	}
 
-    public function getBroadcastedLeads()
+    public function getBroadcastedLeads($org_id)
     {
 		return $this->makeRequest('POST','/api/v1/getBroadcastedLeads',[
-            'json' => [],
+            'json' => [
+				"org_id" => $org_id,
+			],
         ]
       );
 	}

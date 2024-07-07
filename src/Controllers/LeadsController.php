@@ -67,7 +67,7 @@ class LeadsController extends BaseController
 		$org_id = Session::get('organization', 'id');
 
 
-		$leads_details = $this->leadsModel->getLeadsDetails();
+		$leads_details = $this->leadsModel->getLeadsDetails($org_id);
 		$this->setViewData('leads.html',
 			[
 				'form_action'           => url('analytics_ajax'),
@@ -87,8 +87,8 @@ class LeadsController extends BaseController
 		]);
 
 		
-
-		$leads_details = $this->leadsModel->getBroadcastedLeads();
+		$org_id = Session::get('organization', 'id');
+		$leads_details = $this->leadsModel->getBroadcastedLeads($org_id);
 		$this->setViewData('broadcasted_leads.html',
 			[
 				'form_action'           => url('analytics_ajax'),
