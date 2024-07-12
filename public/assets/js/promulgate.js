@@ -3268,32 +3268,39 @@ $(function () {
   });
 
   $(".wa_campaign_type").change(function () {
-    var waLeadId = $(this).find(":selected").val();
-    var formSource = $(".wa_leads_form_source").val();
-    var inputData = {
-      ajax_source: formSource,
-      from_ajax: true,
-      form_source: "whatsappLeadsData",
-      wa_lead_id: waLeadId,
-    };
+    if ($(this).find(":selected").val() != "") {
+      var waLeadId = $(this).find(":selected").val();
+      var formSource = $(".wa_leads_form_source").val();
+      var inputData = {
+        ajax_source: formSource,
+        from_ajax: true,
+        form_source: "whatsappLeadsData",
+        wa_lead_id: waLeadId,
+      };
 
-    $.ajax({
-      url: inputData["ajax_source"],
-      type: "post",
-      dataType: "json",
-      contentType: "application/json; charset=UTF-8",
-      data: JSON.stringify(inputData),
-      success: function (responseData) {
-        ajaxSuccessResponse(responseData, "", inputData);
-      },
-      error: function (error) {
-        console.log(error.data);
-        ajaxFailedResponse(error, "", inputData);
-      },
-    });
+      $.ajax({
+        url: inputData["ajax_source"],
+        type: "post",
+        dataType: "json",
+        contentType: "application/json; charset=UTF-8",
+        data: JSON.stringify(inputData),
+        success: function (responseData) {
+          $(".total_msg_section").removeClass("d-none");
+          $(".no_msg_section").addClass("d-none");
+          ajaxSuccessResponse(responseData, "", inputData);
+        },
+        error: function (error) {
+          console.log(error.data);
+          ajaxFailedResponse(error, "", inputData);
+        },
+      });
+    } else {
+      $(".total_msg_section").addClass("d-none");
+      $(".no_msg_section").removeClass("d-none");
+    }
   });
 
-  $(".wa_campaign_type").change();
+  // $(".wa_campaign_type").change();
 
   $(".wa_analysis_duration").change(function () {
     // var currentUrl = window.location.href;

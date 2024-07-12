@@ -364,12 +364,10 @@ class AnalyticsController extends BaseController
 
 		$totalLeads = 0;
 		$totalSent = 0;
-		$allLeads = [];
 		$allCampaigns = [];
 
 
 		if (isset($whatsAppAnalytics['body'])) {
-			$allLeads = $whatsAppAnalytics['body']['allLeads'];
 			$totalLeads = $whatsAppAnalytics['body']['totalLeads'];
 			$totalSent = $whatsAppAnalytics['body']['totalWhatsappSent'];
 			$allCampaigns = $whatsAppAnalytics['body']['getUniqueCampaigns'];
@@ -379,7 +377,6 @@ class AnalyticsController extends BaseController
 			[
 				'form_action'           => url('analytics_ajax'),
 				'page_title'            => "WhatsApp Analytics",
-				'allLeads' 		=> $allLeads,
 				'totalLeads' 		=> $totalLeads,
 				'totalSent' 		=> $totalSent,
 				'allCampaigns' => $allCampaigns,

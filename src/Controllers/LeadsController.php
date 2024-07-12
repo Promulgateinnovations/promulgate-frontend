@@ -198,13 +198,14 @@ class LeadsController extends BaseController
 			'title' => 'Upload',
 			'url'   => url('upload'),
 		]);
-		
+		$org_id = Session::get('organization', 'id');
 		$this->setViewData('upload.html',
 			[
 				'form_action'           => url('leads_ajax'),
 				'API_BASE_URL'    => env('API_BASE_URL'),
 				'API_TOKEN' 		=> 'cHJvbXVsZ2F0ZTpwcm9tdWxnYXRl',
 				'page_title'            => "leads",
+				'org_id' => $org_id
 			]
 		);
 	}

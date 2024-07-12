@@ -18,7 +18,8 @@ class LeadsModel extends BaseModel
                 "excel-file" => $all_input['file'],
                 "source" => $all_input['source'],
                 "description" => $all_input['desc'],
-                "broadcast" => $all_input['broadcast']
+                "broadcast" => $all_input['broadcast'],
+				"org_id" => $all_input['org_id']
             ],
           ]
         );
