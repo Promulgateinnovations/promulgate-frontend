@@ -3332,12 +3332,18 @@ $(function () {
     url = url.replace(/\/[^\/]*$/, "/" + $(this).find(":selected").val());
     window.location.href = url;
   });
+  $("input[data-bootstrap-switch]").each(function () {
+    $(this).bootstrapToggle("state", $(this).prop("checked"));
+  });
   $("#socialInbox").DataTable({
     pageLength: 20,
     lengthMenu: [20, 30, 50, 100],
     paging: true,
+    lengthChange: false,
     searching: true,
     ordering: true,
+    info: true,
+    autoWidth: false,
   });
 
   $(".readInboxChange").change(function () {
@@ -3347,12 +3353,17 @@ $(function () {
     );
   });
 
-  $(".msg_body").click(function () {
-    $(".modal_body_msg").html($(this).data("msg"));
-    $("#msgPreviewModal").modal("toggle");
-  });
+  // $(".msg_body").click(function () {
+  //   $(".modal_body_msg").html($(this).data("msg"));
+  //   $("#msgPreviewModal").modal("toggle");
+  // });
 
   $(".hide_modal").click(function () {
     $("#msgPreviewModal").modal("toggle");
   });
 });
+
+showMsgDetails = (that) => {
+  $(".modal_body_msg").html($(that).data("msg"));
+  $("#msgPreviewModal").modal("toggle");
+};
