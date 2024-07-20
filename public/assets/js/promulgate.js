@@ -1538,6 +1538,11 @@ function setWhatsappLeadDetailsGraph(whatsappLeadDetails) {
             color: "#1998bf",
           },
           {
+            y: whatsappLeadDetails.totalFailed,
+            label: `Failed ${whatsappLeadDetails.totalSent}/${whatsappLeadDetails.totalFailed}`,
+            color: "#ff4747",
+          },
+          {
             y: whatsappLeadDetails.totalReceived,
             label: `Received ${whatsappLeadDetails.totalReceived}/${whatsappLeadDetails.totalSent}`,
             color: "#4469e2",
@@ -1562,14 +1567,18 @@ function setWhatsappLeadDetailsGraph(whatsappLeadDetails) {
     100
   ).toFixed(2);
   chart.options.data[0].dataPoints[1].percentage = (
-    (dataPoint[1].y / whatsappLeadDetails.totalSent) *
+    (dataPoint[0].y / whatsappLeadDetails.allLeads.length) *
     100
   ).toFixed(2);
   chart.options.data[0].dataPoints[2].percentage = (
-    (dataPoint[2].y / whatsappLeadDetails.totalReceived) *
+    (dataPoint[1].y / whatsappLeadDetails.totalSent) *
     100
   ).toFixed(2);
   chart.options.data[0].dataPoints[3].percentage = (
+    (dataPoint[2].y / whatsappLeadDetails.totalReceived) *
+    100
+  ).toFixed(2);
+  chart.options.data[0].dataPoints[4].percentage = (
     (dataPoint[3].y / whatsappLeadDetails.totalRead) *
     100
   ).toFixed(2);
