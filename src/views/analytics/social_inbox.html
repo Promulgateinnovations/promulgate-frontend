@@ -3,12 +3,12 @@
 <link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.dataTables.css" />
 
 <div class="admin_content active" style="height: 100%;">
-	<div class="row content_header">
-		<div class="col-6">
-			<h1 class="title">
-				Social Inbox
-			</h1>
-		</div>
+    <div class="row content_header">
+        <div class="col-6">
+            <h1 class="title">
+                Social Inbox
+            </h1>
+        </div>
         <div class="col-6">
             <div class="row whatsapp_analysis_filter">
                 <div class="col-3">
@@ -27,26 +27,29 @@
                     </select> -->
                     {% if type == "INCOMING" %}
                     <select id="filterBy" name="filterBy" class="form-control wa_analysis_filter_by">
-                        <option value="all" {% if filter_by == "all" %} selected {% endif %} >All</option>
-                        <option value="fb-comments" {% if filter_by == "fb-comments" %} selected {% endif %}>FB Comments</option>
-                        <option value="insta-comments" {% if filter_by == "insta-comments" %} selected {% endif %}>Insta Comments</option>
-                        <option value="fb-leads" {% if filter_by == "fb-leads" %} selected {% endif %}>FB Leads</option>
-                        <option value="WhatsApp" {% if filter_by == "WhatsApp" %} selected {% endif %}>WhatsApp</option>
-                        <option value="Google_Reviews" {% if filter_by == "Google_Reviews" %} selected {% endif %}>Google Reviews</option>
+                        <option value="all" {% if filter_by=="all" %} selected {% endif %}>All</option>
+                        <option value="fb-comments" {% if filter_by=="fb-comments" %} selected {% endif %}>FB Comments
+                        </option>
+                        <option value="insta-comments" {% if filter_by=="insta-comments" %} selected {% endif %}>Insta
+                            Comments</option>
+                        <option value="fb-leads" {% if filter_by=="fb-leads" %} selected {% endif %}>FB Leads</option>
+                        <option value="WhatsApp" {% if filter_by=="WhatsApp" %} selected {% endif %}>WhatsApp</option>
+                        <option value="Google_Reviews" {% if filter_by=="Google_Reviews" %} selected {% endif %}>Google
+                            Reviews</option>
                     </select>
                     {% endif %}
                 </div>
                 <div class="col-3">
                     <select id="type" name="type" class="form-control wa_analysis_type">
-                        <option value="INCOMING" {% if type == "INCOMING" %} selected {% endif %} >INCOMING</option>
-                        <option value="OUTGOING" {% if type == "OUTGOING" %} selected {% endif %}>OUTGOING</option>
+                        <option value="INCOMING" {% if type=="INCOMING" %} selected {% endif %}>INCOMING</option>
+                        <option value="OUTGOING" {% if type=="OUTGOING" %} selected {% endif %}>OUTGOING</option>
                     </select>
                 </div>
             </div>
-		</div>
-	</div>
-	<div class="container-fluid">
-		<div class="whatsapp_analysis_parent">
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="whatsapp_analysis_parent">
             <div class="content_body">
                 <div class="row">
                     <table id="socialInbox">
@@ -69,7 +72,7 @@
                                 <th>From</th>
                                 {% endif %}
                                 <th>Created At</th>
-                                <th>Mark As Read</th>
+                                <th>Mark As Closed</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -84,12 +87,13 @@
                                     white-space: nowrap;
                                     overflow: hidden;
                                     margin-bottom: 0;">
-                                    {{ sociInbox.postID }}
+                                        {{ sociInbox.postID }}
                                     </p>
                                 </td>
                                 <td>{{ sociInbox.messageType }}</td>
                                 <td>
-                                    <p title="{{ sociInbox.message }}" onclick="showMsgDetails(this)" class="msg_body" data-msg="{{ sociInbox.message }}">{{ sociInbox.message }}</p>
+                                    <p title="{{ sociInbox.message }}" onclick="showMsgDetails(this)" class="msg_body"
+                                        data-msg="{{ sociInbox.message }}">{{ sociInbox.message }}</p>
                                 </td>
                                 {% if type == "OUTGOING" %}
                                 <td>{{ sociInbox.sentTo }}</td>
@@ -97,12 +101,9 @@
                                 <td>{{ sociInbox.read ? 'Yes' : 'No' }}</td>
                                 <td>{{ sociInbox.replied ? 'Yes' : 'No' }}</td>
                                 <td>
-                                    <p 
-                                        title="{{ sociInbox.repliedMsg ? sociInbox.repliedMsg : 'NA' }}"
-                                        onclick="showMsgDetails(this)"
-                                        class="msg_body"
-                                        data-msg="{{ sociInbox.repliedMsg ? sociInbox.repliedMsg : 'NA' }}"
-                                    >
+                                    <p title="{{ sociInbox.repliedMsg ? sociInbox.repliedMsg : 'NA' }}"
+                                        onclick="showMsgDetails(this)" class="msg_body"
+                                        data-msg="{{ sociInbox.repliedMsg ? sociInbox.repliedMsg : 'NA' }}">
                                         {{ sociInbox.repliedMsg ? sociInbox.repliedMsg : 'NA' }}
                                     </p>
                                 </td>
@@ -112,47 +113,36 @@
                                 {% endif %}
                                 <td>{{ get_date(sociInbox.createdAt, 4) }}</td>
                                 <td>
-                                    <input data-bootstrap-switch type="checkbox" name="readInboxId[]" data-toggle="toggle" data-onstyle="success" data-offstyle="light" data-on="Read" data-off="Unread" data-size="small" class="readInboxChange" data-id="{{sociInbox.socialInboxID}}" value="{{sociInbox.isRead}}"
-                                    {% if (sociInbox.isRead == 1) %} checked disabled {% endif %}
-                                    >
+                                    <input data-bootstrap-switch type="checkbox" name="readInboxId[]"
+                                        data-toggle="toggle" data-onstyle="success" data-offstyle="light"
+                                        data-on="Closed" data-off="Open" data-size="small" class="readInboxChange"
+                                        data-id="{{sociInbox.socialInboxID}}" value="{{sociInbox.isRead}}" {% if
+                                        (sociInbox.isRead==1) %} checked disabled {% endif %}>
                                 </td>
                             </tr>
                             {% endfor %}
                         </tbody>
                     </table>
                 </div>
-                
-                
+
+
             </div>
         </div>
-	</div>
-    <div
-      class="modal fade"
-      id="msgPreviewModal"
-      tabindex="-1"
-      role="dialog"
-      aria-labelledby="msgPreviewModal"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="msgPreviewModalLabel">Modal title</h5>
-            <button
-              type="button"
-              class="close hide_modal"
-              data-dismiss="modal"
-              aria-label="Close"
-            >
-                <i class="fa fa-close"></i>
-            </button>
-          </div>
-          <div class="modal-body">
-            <p class="modal_body_msg"></p>
-          </div>
+    </div>
+    <div class="modal fade" id="msgPreviewModal" tabindex="-1" role="dialog" aria-labelledby="msgPreviewModal"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="msgPreviewModalLabel">Modal title</h5>
+                    <button type="button" class="close hide_modal" data-dismiss="modal" aria-label="Close">
+                        <i class="fa fa-close"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p class="modal_body_msg"></p>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
 </div>
-
-

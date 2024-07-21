@@ -3325,10 +3325,16 @@ $(function () {
   $(".wa_analysis_type").change(function () {
     if ($(this).find(":selected").val() === "OUTGOING") {
       let newUrl = window.location.href.replace("incoming", "outgoing");
+      if (newUrl.endsWith('/')) {
+        newUrl = newUrl.slice(0, -1)
+      }    
       newUrl = newUrl.replace(/\/[^\/]*$/, "/WhatsApp");
       window.location.href = newUrl;
     } else {
       let newUrl = window.location.href.replace("outgoing", "incoming");
+      if (newUrl.endsWith('/')) {
+        newUrl = newUrl.slice(0, -1)
+      }   
       window.location.href = newUrl;
     }
   });
