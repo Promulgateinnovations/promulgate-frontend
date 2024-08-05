@@ -186,12 +186,47 @@ class AnalyticsController extends BaseController
 
 		};
 
+		$CampaignController  = new CampaignController();
+		$CampaignController->setCampaignIdAndDetails($campaign_id);
+		$calendar_events = $CampaignController->getContentCurationSocialMediaConnections([
+			'parse_full_data' => true,
+		]);
+		
+		$final_calendar_events = [];
+
+		foreach($calendar_events as $event) {
+
+			$posts = $event['campaignContents']['campaignContentPosts'] ?? [];
+
+			if($posts) {
+
+				foreach($posts as $post) {
+					$formatted_date = explode('@', get_date($post['postAt'], 5));
+
+					if(!isset($formatted_date[1])) {
+						continue; // TIme is missing means we cant show anything
+					}
+					$final_calendar_events[$formatted_date[0]][] = [
+						'date'                => $formatted_date[0],
+						'time'                => $formatted_date[1],
+						'channel'             => $event['name'],
+						'unique_name'         => $event['unique_name'],
+						'campaignSelectionId' => $event['campaignSelectionId'],
+						'post_id'             => $post['postId'] ?? false,
+						'status'              => strtolower($post['postStatus']),
+					];
+				}
+			}
+		}
+
 		$this->setViewData('campaign_analysis_details.html',
 			[
 				'form_action'               => url('analytics_ajax'),
 				'campaign_analysis_details' => $campaign_analysis_details,
 				'page_title'                => "Analysis of campaign- ".env('SITE_NAME'),
 				'show_only_content'         => true,
+				'current_calendar_events'                      => $final_calendar_events,
+				'campaign_id' => $campaign_id
 			]
 		);
 	}

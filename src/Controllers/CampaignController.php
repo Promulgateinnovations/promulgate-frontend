@@ -904,7 +904,7 @@ class CampaignController extends BaseController
 	/**
 	 * @param mixed  $campaign_id
 	 */
-	private function setCampaignIdAndDetails($campaign_id): void
+	public function setCampaignIdAndDetails($campaign_id): void
 	{
 		$this->campaign_id = $campaign_id;
 		$this->setCampaignDetails();
@@ -912,7 +912,7 @@ class CampaignController extends BaseController
 	}
 
 
-	private function setCampaignDetails()
+	public function setCampaignDetails()
 	{
 
 		$this->campaign_strategy_definition_details = [];
@@ -1224,7 +1224,7 @@ class CampaignController extends BaseController
 	}
 
 
-	private function getContentCurationSocialMediaConnections($options = [])
+	public function getContentCurationSocialMediaConnections($options = [])
 	{
 
 		$parse_full_data = isset($options['parse_full_data']) ? $options['parse_full_data'] : false;
