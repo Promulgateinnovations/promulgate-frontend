@@ -35,6 +35,36 @@
 				<a class="btn btn-promulgate-primary"><i class="fa fa-download"></i> Generate Report</a>
 			</div>
 		</div>
+		<div class="row">
+			<!-- Pie Chart -->
+			<div class="col-6">
+				<div id="paid_campaign_spread_piechart" class="card"></div>
+			</div>
+			<div class="col-6">
+				<table class="spends_table">
+					<thead>
+						<tr>
+							<th>Spend On</th>
+							<th>Amout</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>WhatsApp</td>
+							<td>Rs.
+								<input type="number" class="form-control paid_amt_txt" />
+							</td>
+						</tr>
+						<tr>
+							<td>FB Leads</td>
+							<td>Rs.
+								<input type="number" class="form-control paid_amt_txt" />
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
 		{% if campaign_analysis_details %}
 		<div class="row mt-4 mb-5">
 			<div class="card-deck d-flex flex-wrap justify-content-center">
@@ -146,6 +176,7 @@
 <script type="text/javascript">
 	google.charts.load("current", { packages: ["corechart"] });
 	google.charts.setOnLoadCallback(drawChart);
+	google.charts.setOnLoadCallback(drawPaidChart);
 
 	function drawChart() {
 		var data = google.visualization.arrayToDataTable([
@@ -179,6 +210,40 @@
 
 		var chart = new google.visualization.PieChart(document.getElementById('campaign_spread_piechart'));
 		chart.draw(data, options);
+	}
+
+	function drawPaidChart() {
+		var paid_data = google.visualization.arrayToDataTable([
+			['Task', 'Hours per Day'],
+			['Social', 68],
+			['Paid', 24],
+		]);
+
+		var paid_options = {
+			height: 'auto',
+			width: '100%',
+			pieHole: 0.5,
+			title: "Paid Campaign Spread",
+			titleTextStyle: {
+				color: '#1998bf',
+				fontSize: 20,
+				bold: true,
+				italic: false,
+				alignment: 'center',
+			},
+			legend: {
+				position: 'bottom',
+				textStyle: {
+					color: 'grey', fontSize: 16,
+					bold: true,
+					italic: false
+				},
+				alignment: 'center',
+			},
+		};
+
+		var paid_chart = new google.visualization.PieChart(document.getElementById('paid_campaign_spread_piechart'));
+		paid_chart.draw(paid_data, paid_options);
 	}
 
 	function drawWhatsAppAnalysis(whatsappLeadDetails) {

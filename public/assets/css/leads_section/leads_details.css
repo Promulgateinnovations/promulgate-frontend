@@ -1,4 +1,3 @@
-
 .lead_table_parent {
     box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15) !important;
     border: 1px solid #e3e6f0;
@@ -7,21 +6,23 @@
     height: 100%;
 }
 
-.lead_table_parent table{
+.lead_table_parent table {
     margin-bottom: 0;
 }
 
-.lead_table_parent table th{
+.lead_table_parent table th {
     color: #6c757d;
     background-color: #f2f2f2;
 }
 
-.lead_table_parent table th, .lead_table_parent table td {
+.lead_table_parent table th,
+.lead_table_parent table td {
     font-size: 0.8rem;
     font-weight: normal;
     padding: 0.5rem 1rem;
     text-align: center;
 }
+
 .no_of_camp_icons {
     background: #eabfc7;
     padding: 10px;
@@ -38,7 +39,7 @@
     margin-top: 0;
 }
 
-.whatsapp_analysis_parent .info_content{
+.whatsapp_analysis_parent .info_content {
     background: white;
     border-radius: 20px;
     box-shadow: 1px 2px 2px 2px #dfd3d3;
@@ -59,6 +60,7 @@
     border: 0;
     appearance: auto;
 }
+
 .filter_by_campaign .wa_campaign_type:focus {
     box-shadow: none;
 }
@@ -87,7 +89,10 @@
     box-shadow: none;
 }
 
-.whatsapp_analysis_filter .date-picker, .whatsapp_analysis_filter .wa_analysis_duration, .wa_analysis_filter_by, .wa_analysis_type{
+.whatsapp_analysis_filter .date-picker,
+.whatsapp_analysis_filter .wa_analysis_duration,
+.wa_analysis_filter_by,
+.wa_analysis_type {
     border-radius: 20px;
 }
 
@@ -105,7 +110,7 @@
 }
 
 #socialInbox thead {
-   background: #e6f3f7;
+    background: #e6f3f7;
 }
 
 .msg_body {
@@ -115,49 +120,3 @@
     overflow: hidden;
     margin-bottom: 0;
 }
-
-.empty-state {
-    width: 750px;
-    margin: 40px auto;
-    background: #ffffff;
-    box-shadow: 1px 2px 10px #e1e3ec;
-    border-radius: 4px;
-  }
-  .empty-state__content {
-    padding: 48px;
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-  }
-  .empty-state__content .empty-state__icon {
-    width: 200px;
-    height: 200px;
-    display: flex;
-    align-items: center;
-    border-radius: 200px;
-    justify-content: center;
-    background-color: #f7fafc;
-    box-shadow: 0px 2px 1px #e1e3ec;
-  }
-  .empty-state__content .empty-state__icon img {
-    width: 170px;
-  }
-  .empty-state__content .empty-state__message {
-    color: #38a169;
-    font-size: 1.5rem;
-    font-weight: 500;
-    margin-top: 0.85rem;
-  }
-  .empty-state__content .empty-state__help {
-    color: #a2a5b9;
-    font-size: 0.875rem;
-  }
-  
-  .credit {
-    color: #A2A5B9;
-    font-size: 0.75rem;
-    text-align: center;
-  }
-  .credit a {
-    color: #444;
-  }

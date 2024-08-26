@@ -12,6 +12,8 @@
 <i class="fa fa-reddit-square {{ social_icon_size }}" aria-hidden="true"></i>
 {% elseif social_icon_unique_key == 'linkedin' %}
 <i class="fa fa-linkedin {{ social_icon_size }}" aria-hidden="true"></i>
+{% elseif social_icon_unique_key == 'WhatsApp' %}
+<i class="fa fa-whatsapp {{ social_icon_size }}" aria-hidden="true"></i>
 {% else %}
 <span class="fa text">{{ social_icon_unique_key | getFirstCharactersFromString | upper }}</span>
 {% endif %}

@@ -241,6 +241,14 @@ class CampaignController extends BaseController
 			'parse_full_data' => true,
 		]);
 
+		$organization_id = Session::get('organization', 'id');
+		$campaign_whatsapp_details = $this->campaignModel->getCampaignWhatsAppDetails($organization_id, $campaign_id)['body'];
+		if(getValue('status', $campaign_whatsapp_details) == 'success') {
+
+			$campaign_whatsapp_details = $campaign_whatsapp_details['data'];
+
+		};
+
 		$final_calendar_events = [];
 
 		foreach($calendar_events as $event) {
@@ -266,6 +274,23 @@ class CampaignController extends BaseController
 					];
 				}
 			}
+		}
+
+		foreach($campaign_whatsapp_details as $wa_event) {
+			$formatted_date = explode('@', get_date($wa_event['postAt'], 5));
+
+			if(!isset($formatted_date[1])) {
+				continue; // TIme is missing means we cant show anything
+			}
+			$final_calendar_events[$formatted_date[0]][] = [
+				'date'                => $formatted_date[0],
+				'time'                => $formatted_date[1],
+				'channel'             => 'WhatsApp',
+				'unique_name'         => 'WhatsApp',
+				'campaignSelectionId' => $wa_event['whatsappContentPostID'],
+				'post_id'             => $wa_event['postId'] ?? false,
+				'status'              => strtolower($wa_event['postStatus']),
+			];
 		}
 
 		$this->setViewData('content_calendar.html',

@@ -96,6 +96,25 @@ class CampaignModel extends BaseModel
 		);
 	}
 
+	public function getCampaignWhatsAppDetails($org_id, $campaign_id)
+	{
+
+		if(!$org_id || !$campaign_id) {
+			return [
+				'body' => [],
+			];
+		}
+
+
+		return $this->makeRequest('POST', '/api/v1/getCampaignWhatsAppDetails', [
+				'json' => [
+					"orgId"                => $org_id,
+					"campaignDefinitionId" => $campaign_id,
+				],
+			]
+		);
+	}
+
 
 	public function getTopVideoUrls($organization_id)
 	{
