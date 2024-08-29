@@ -283,4 +283,25 @@ class AnalyticsModel extends BaseModel
 			]
 		);
 	}
+
+	public function savePaidAnalyticsAmount($campaign_id, $orgId, $amt, $amtFor)
+	{
+
+		if(!$orgId || !$campaign_id) {
+			return [
+				'body' => [],
+			];
+		}
+
+
+		return $this->makeRequest('POST', '/api/v1/savePaidAnalyticsAmount', [
+				'json' => [
+					"orgId"       => $orgId,
+					"campaign_id" => $campaign_id,
+					"amt" => $amt,
+					"amtFor" => $amtFor
+				],
+			]
+		);
+	}
 }

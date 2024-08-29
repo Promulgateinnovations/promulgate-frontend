@@ -390,6 +390,39 @@ class AnalyticsController extends BaseController
 				 }
 				
 				break;
+			case 'saveCampaignAnalyticsPaidValues' :
+
+				$campaign_id = $all_input['campaign_id'];
+				$amt = $all_input['amt'];
+				$amtFor = $all_input['amtFor'];
+
+				if($campaign_id) {
+					$org_id = Session::get('organization', 'id');
+					$saveAmount = $this->analyticsModel->savePaidAnalyticsAmount($campaign_id, $org_id, $amt, $amtFor)['body'];
+				}
+				
+				if($saveAmount['status'] == 'success') {
+					response()->json([
+						'status' => true,
+						'success'  => [
+							'code'    => 200,
+							'message' => 'Whatsapp Lead Fetched',
+						],
+						'data' => $saveAmount
+					]);
+				}
+					else {
+					response()->json([
+						'status' => false,
+						'error'  => [
+							'code'    => 100,
+							'message' => 'Whatsapp Lead Details Not Fetched',
+							'data' => []
+						],
+					]);
+					}
+				
+				break;
 			default:
 				response()->json([
 					'status' => false,

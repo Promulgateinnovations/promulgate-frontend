@@ -3382,3 +3382,34 @@ showMsgDetails = (that) => {
   $(".modal_body_msg").html($(that).data("msg"));
   $("#msgPreviewModal").modal("toggle");
 };
+
+$(".paid_amt_txt").blur(function () {
+  var amtFor = $(this).attr('data-amt_for');
+  var amt = parseInt($(this).val());
+  var campaign_id = $(this).attr('data-campaign_id');
+  var formSource = $(this).attr('data-form_action');
+  var inputData = {
+    ajax_source: formSource,
+    from_ajax: true,
+    form_source: "saveCampaignAnalyticsPaidValues",
+    campaign_id,
+    amt,
+    amtFor
+  };
+
+  $.ajax({
+    url: inputData["ajax_source"],
+    type: "post",
+    dataType: "json",
+    contentType: "application/json; charset=UTF-8",
+    data: JSON.stringify(inputData),
+    success: function (responseData) {
+      console.log(responseData);
+      ajaxSuccessResponse(responseData, "", inputData);
+    },
+    error: function (error) {
+      console.log(error.data);
+      ajaxFailedResponse(error, "", inputData);
+    },
+  });
+});
