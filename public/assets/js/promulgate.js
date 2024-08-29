@@ -3413,3 +3413,11 @@ $(".paid_amt_txt").blur(function () {
     },
   });
 });
+
+$('.generate_report').click(function() {
+  $('.generate_report').hide();
+  window.print();
+})
+window.addEventListener('afterprint', () => {
+  $('.generate_report').show();
+});
