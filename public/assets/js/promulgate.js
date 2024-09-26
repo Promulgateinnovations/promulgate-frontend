@@ -2992,7 +2992,7 @@ class configureInstagramConnectionClass {
           this.getInstagramDetails();
         },
       });
-      window.location.realod();
+      //window.location.realod();
     } else {
       disableConfigurationAndDisableActiveConnection(
         this.connection_configuration_toggle_element,
