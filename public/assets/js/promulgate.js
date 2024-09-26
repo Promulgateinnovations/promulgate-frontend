@@ -1757,13 +1757,13 @@ function processExtraAjaxData(extraData, formData, formElement) {
           connection_configuration_toggle_element,
           connection_selector
         );
-        window.location.reload();
+        // window.location.reload();
       } else {
         disableConfigurationAndDisableActiveConnection(
           connection_configuration_toggle_element,
           connection_selector
         );
-        window.location.reload();
+       // window.location.reload();
       }
       break;
 
@@ -2217,7 +2217,7 @@ function disableConfigurationAndDisableActiveConnection(
     },
   });
 
-  window.location.reload();
+  //window.location.reload();
 }
 
 function showOauthConnectionStatus() {
