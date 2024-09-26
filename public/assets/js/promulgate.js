@@ -2921,6 +2921,7 @@ class configureInstagramConnectionClass {
   };
 
   processPagesList = (response) => {
+    console.log('pro', response);
     if (response.data && response.data.length) {
       var userPagesList = {};
       var pagesListOptionsHtml = "";
