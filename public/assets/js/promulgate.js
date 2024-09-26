@@ -1468,7 +1468,6 @@ function processData(formElement) {
 }
 
 function ajaxSuccessResponse(responseData, formElement, formData) {
-  console.log('responseData', responseData);
   toastr.clear();
 
   // Success response read data
@@ -1758,13 +1757,13 @@ function processExtraAjaxData(extraData, formData, formElement) {
           connection_configuration_toggle_element,
           connection_selector
         );
-        // window.location.reload();
+        window.location.reload();
       } else {
         disableConfigurationAndDisableActiveConnection(
           connection_configuration_toggle_element,
           connection_selector
         );
-       // window.location.reload();
+        window.location.reload();
       }
       break;
 
@@ -2218,7 +2217,7 @@ function disableConfigurationAndDisableActiveConnection(
     },
   });
 
-  //window.location.reload();
+  window.location.reload();
 }
 
 function showOauthConnectionStatus() {
@@ -2435,7 +2434,6 @@ class configureFacebookConnectionClass {
   };
 
   processPagesList = (response) => {
-    console.log('res', response);
     if (response.data && response.data.length) {
       var pagesList = {};
       var pagesListOptionsHtml = "";
@@ -2537,8 +2535,6 @@ class configureFacebookConnectionClass {
   };
 
   getFacebookUserPagesList = (response) => {
-    console.log('rs', response);
-
     var accessToken = response.access_token;
     var fbUserId = this.userId;
 
@@ -2921,7 +2917,6 @@ class configureInstagramConnectionClass {
   };
 
   processPagesList = (response) => {
-    console.log('pro', response);
     if (response.data && response.data.length) {
       var userPagesList = {};
       var pagesListOptionsHtml = "";
@@ -2993,7 +2988,7 @@ class configureInstagramConnectionClass {
           this.getInstagramDetails();
         },
       });
-      //window.location.realod();
+      window.location.realod();
     } else {
       disableConfigurationAndDisableActiveConnection(
         this.connection_configuration_toggle_element,
@@ -3006,7 +3001,6 @@ class configureInstagramConnectionClass {
   };
 
   getFacebookUserPagesList = (response) => {
-    console.log('rss', response);
     var accessToken = response.access_token;
     var fbUserId = this.userId;
 
