@@ -1468,6 +1468,7 @@ function processData(formElement) {
 }
 
 function ajaxSuccessResponse(responseData, formElement, formData) {
+  console.log('responseData', responseData);
   toastr.clear();
 
   // Success response read data
@@ -2434,6 +2435,7 @@ class configureFacebookConnectionClass {
   };
 
   processPagesList = (response) => {
+    console.log('res', response);
     if (response.data && response.data.length) {
       var pagesList = {};
       var pagesListOptionsHtml = "";
