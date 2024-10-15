@@ -268,7 +268,6 @@ $(document).ready(function () {
       );
       var previewContent = "";
       if (selectedTemplate != undefined) {
-        console.log(selectedTemplate);
         //previewContent += '<div>';
         if (selectedTemplateStatus != "APPROVED") {
           previewContent +=
@@ -560,7 +559,7 @@ function changeConnectionConfigurationStatusAndActiveSelectorStatus(
       ajaxSuccessResponse(responseData, "", inputData);
     },
     error: function (error) {
-      console.log(error);
+      //console.log(error);
     },
   });
 }
@@ -573,7 +572,6 @@ function enableBootstrapValidator() {
       excluded: ":disabled",
       live: "enabled",
       onError: function (e) {
-        console.log("Some errors occurred", e);
         toastr.clear();
       },
       onSuccess: function (e) {
@@ -1483,7 +1481,7 @@ function ajaxSuccessResponse(responseData, formElement, formData) {
       processExtraAjaxData(responseData.data.extra, formData, formElement);
     }
 
-    if (responseData.data.allLeads.length > 0) {
+    if (responseData.data.allLeads && responseData.data.allLeads.length > 0) {
       setWhatsappLeadDetailsGraph(responseData.data);
     }
 
@@ -1588,7 +1586,6 @@ function setWhatsappLeadDetailsGraph(whatsappLeadDetails) {
 function ajaxFailedResponse(errorData, formElement, formData) {
   toastr.clear();
 
-  console.log(errorData);
 }
 
 function showErrorMessage(messages, formElement) {
@@ -2793,7 +2790,6 @@ class configureInstagramConnectionClass {
 
   setPagesList(pages) {
     this.pagesList = pages || {};
-    console.log(this.pagesList);
   }
 
   logoutFromFacebook = () => {
@@ -3299,7 +3295,6 @@ $(function () {
           ajaxSuccessResponse(responseData, "", inputData);
         },
         error: function (error) {
-          console.log(error.data);
           ajaxFailedResponse(error, "", inputData);
         },
       });
@@ -3347,19 +3342,278 @@ $(function () {
     url = url.replace(/\/[^\/]*$/, "/" + $(this).find(":selected").val());
     window.location.href = url;
   });
-  $("input[data-bootstrap-switch]").each(function () {
-    $(this).bootstrapToggle("state", $(this).prop("checked"));
-  });
+  // $("#socialInbox").DataTable({
+  //   pageLength: 10,
+  //   lengthMenu: [10, 30, 50, 100],
+  //   pageLength: 10,
+  //   paging: true,
+  //   lengthChange: true,
+  //   searching: false,
+  //   ordering: true,
+  //   info: true,
+  //   autoWidth: false,
+  // });
+  var formSource = $(".form_action").val();
+  var inbox_type = $(".type").val();
+  var filter_by = $(".filter_by").val();
+  var page = $(".page").val();
+  var inputData = {
+    ajax_source: formSource,
+    from_ajax: true,
+    form_source: "getSocialInboxData",
+    inbox_type,
+    filterBy: filter_by,
+    page
+  };
+
+  const formData = new FormData();
+  formData.append("org_id", 'ed69c24-4f60-4503-a3a0-1145ece45a5d');
+  formData.append("type", 'OUTGOING');
+  formData.append("filterBy", 'all');
+  var options = { year: 'numeric', month: 'short', day: 'numeric' };
+
+  
   $("#socialInbox").DataTable({
-    pageLength: 20,
-    lengthMenu: [20, 30, 50, 100],
-    paging: true,
-    lengthChange: false,
-    searching: true,
-    ordering: true,
-    info: true,
-    autoWidth: false,
-  });
+    "pagingType": "full_numbers",
+    ajax: {
+      url: inputData["ajax_source"], //baseUrl+"/api/v1/getSocialInbox?page=1", //
+      type: 'POST',
+      // headers: {
+      // 'Authorization': "Basic cHJvbXVsZ2F0ZTpwcm9tdWxnYXRl"
+      // },
+      // body: formData,
+      data: inputData,
+     // dataType: "json",
+      
+     // contentType: "application/json; charset=UTF-8",
+      // data: {
+      //   'orgId': 'ed69c24-4f60-4503-a3a0-1145-ece45a5d',
+      //   'startDate': '',
+      //   'endDate': '',
+      //   'duration': '',
+      //   'type': 'INCOMING',
+      //   'filterBy': 'all'
+      // },
+      //inputData, //JSON.stringify(inputData),
+    //   dataSrc: function (d) {
+    //     // Format API response for DataTables
+    //     var response = d;
+    //     if (typeof d.response != 'undefined') {
+    //         response = d.response;
+    //     }
+    //     console.log(JSON.stringify(response)); // Output from this is below...
+    //     return response;
+    // },
+
+      dataFilter: function(data){
+        var json = jQuery.parseJSON( data );
+        json.recordsTotal = json.recordsTotal;
+        json.recordsFiltered = json.recordsFiltered;
+        json.data = json.data;
+        return JSON.stringify( json.pop() );
+    },
+    // "success" : function(data){
+    //   console.log('data', data);
+    //     str = JSON.stringify(data).data;
+    //     str = JSON.stringify(data.data, null, 4);
+    //     $('tbody').empty();
+    //     $.each(JSON.parse(str), function (i, result) {
+    //         $('tbody').append(
+    //             '<tr>' +
+    //             '<td>' + result[0] + '</td>' +
+    //             '<td>' + result.name + '</td>' +
+    //             '<td>' + result.age + '</td>' +
+    //             '<td>' + result.created_at + '</td>' +
+    //             '<td>' + result.other_info + '</td>' +
+
+    //             '<td>' + result.message + '</td>' +
+
+    //             '</tr>'
+    //         )
+    //     });
+
+    // },
+      // success: function (responseData) {
+      //   console.log('responseData', responseData);
+      // },
+      // error: function (error) {
+      //   console.log('err', error);
+      // },
+    },
+    createdRow: function( row, data, dataIndex ) {
+      // Set the data-status attribute, and add a class
+      $( row ).find('td:eq(0)')
+          //.attr('data-status', data.status ? 'locked' : 'unlocked')
+          .addClass('text-center');
+  },
+    columns: [
+      {data: "channelName" , render : function ( data, type, row, meta ) {
+        return data === 'WhatsApp'  ?
+          '<i class="fa fa-'+data.toLowerCase()+'  fa-2x social_inbox_channel_icon" aria-hidden="true"></i>' :
+          data;
+      }},
+      { data: 'channelId' },
+      {data: "sentTo" , render : function ( data, type, row, meta ) {
+        return row.messageType == "OUTGOING" ? 'To: +'+data : 'From: '+data;
+      }},
+      {data: "message" , render : function ( data, type, row, meta ) {
+        return `<p title="${data}" onclick="showMsgDetails(this)" class="msg_body"data-msg="${data}">${data}</p>`
+      }},
+      {data: "message" , render : function ( data, type, row, meta ) {
+        return `
+          <input data-bootstrap-switch type="checkbox" name="readInboxId[]"
+            data-toggle="toggle" data-onstyle="success" data-offstyle="light"
+            data-on="Closed" data-off="Open" data-size="small" class="readInboxChange"
+            data-id="${row.socialInboxID}" value="${row.isRead}" ${row.isRead == 1 ? 'checked disabled' : ''} />`
+      }},
+      {data: "createdAt" , render : function ( data, type, row, meta ) {
+        var dt  = new Date(row.createdAt);
+        return dt.toLocaleDateString("en-US", options)
+      }}      
+  ],
+  "fnDrawCallback": function() {
+    $("input[data-bootstrap-switch]").each(function () {
+      $(this).bootstrapToggle("state", $(this).prop("checked"));
+    });
+    $(".readInboxChange").change(function () {
+      markAsReadSocialInbox(
+        $(this).attr("data-id"),
+        $(this).is(":checked") ? 1 : 0
+      );
+    });
+  },
+  // "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) { 
+  //   console.log(nRow, aData);               
+  //     if ( aData[3] != aData[4]){
+  //         jQuery(nRow).addClass('red');
+  //     }               
+  // },
+  //   columns: [
+  //     { data: 'first_name' },
+  //     { data: 'last_name' },
+  //     { data: 'position' },
+  //     { data: 'office' },
+  //     { data: 'start_date' },
+  //     { data: 'salary' }
+  // ],
+  //   columnDefs: [
+  //     {
+  //         // The `data` parameter refers to the data for the cell (defined by the
+  //         // `data` option, which defaults to the column being worked with, in
+  //         // this case `data: 0`.
+  //         render: (data, type, row) => data + ' (' + row[3] + ')',
+  //         targets: 0
+  //     },
+  //     { visible: false, targets: [3] }
+  // ],
+    // "columns": [
+    //     { "data": "channelName" },
+    //     { "data": "channelId" },
+    //     { "data": "channelName" },
+    //     { "data": "updatedAt" },
+    //     { "data": "sentTo" },
+    //     { "data": "postID" },
+        
+    // ],
+    // columns: [
+    //   {
+    //       data: 'socialInboxID'
+    //   },
+    //   {
+    //       data: 'channelName',
+    //       render: function (data, type) {
+    //         console.log(data, type);
+    //           if (type === 'display') {
+    //               let link = 'https://datatables.net';
+
+    //               if (data[0] < 'H') {
+    //                   link = 'https://cloudtables.com';
+    //               }
+    //               else if (data[0] < 'S') {
+    //                   link = 'https://editor.datatables.net';
+    //               }
+
+    //               return '<a href="' + link + '">' + data + '</a>';
+    //           }
+
+    //           return data;
+    //       }
+    //   },
+    //   {
+    //       className: 'f32', // used by world-flags-sprite library
+    //       data: 'office',
+    //       render: function (data, type) {
+    //           if (type === 'display') {
+    //               let country = '';
+
+    //               switch (data) {
+    //                   case 'Argentina':
+    //                       country = 'ar';
+    //                       break;
+    //                   case 'Edinburgh':
+    //                       country = '_Scotland';
+    //                       break;
+    //                   case 'London':
+    //                       country = '_England';
+    //                       break;
+    //                   case 'New York':
+    //                   case 'San Francisco':
+    //                       country = 'us';
+    //                       break;
+    //                   case 'Sydney':
+    //                       country = 'au';
+    //                       break;
+    //                   case 'Tokyo':
+    //                       country = 'jp';
+    //                       break;
+    //               }
+
+    //               return '<span class="flag ' + country + '"></span> ' + data;
+    //           }
+
+    //           return data;
+    //       }
+    //   },
+    //   {
+    //       data: 'extn',
+    //       render: function (data, type, row, meta) {
+    //           return type === 'display'
+    //               ? '<progress value="' + data + '" max="9999"></progress>'
+    //               : data;
+    //       }
+    //   },
+    //   {
+    //       data: 'start_date'
+    //   },
+    //   {
+    //       data: 'salary',
+    //       render: function (data, type) {
+    //           var number = DataTable.render
+    //               .number(',', '.', 2, '$')
+    //               .display(data);
+
+    //           if (type === 'display') {
+    //               let color = 'green';
+    //               if (data < 250000) {
+    //                   color = 'red';
+    //               }
+    //               else if (data < 500000) {
+    //                   color = 'orange';
+    //               }
+
+    //               return `<span style="color:${color}">${number}</span>`;
+    //           }
+
+    //           return number;
+    //       }
+    //   }
+    // ],
+  processing: true,
+  serverSide: true
+})
+// .on( 'xhr.dt', function (res) {
+//   console.log(res);
+// });
 
   $(".readInboxChange").change(function () {
     markAsReadSocialInbox(
@@ -3404,11 +3658,9 @@ $(".paid_amt_txt").blur(function () {
     contentType: "application/json; charset=UTF-8",
     data: JSON.stringify(inputData),
     success: function (responseData) {
-      console.log(responseData);
       ajaxSuccessResponse(responseData, "", inputData);
     },
     error: function (error) {
-      console.log(error.data);
       ajaxFailedResponse(error, "", inputData);
     },
   });

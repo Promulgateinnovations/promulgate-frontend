@@ -1670,3 +1670,7 @@ table.spends_table th {
 #paid_campaign_spread_piechart rect {
     fill: transparent
 }
+
+.social_inbox_channel_icon {
+    color: var(--primary-color);
+}

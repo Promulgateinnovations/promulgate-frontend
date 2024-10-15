@@ -2,28 +2,36 @@
 	<div class="uitabs">
 		<ul class="uitabs-container">
 			<li>
-				<a class="{% if current_url_name == 'analytics_channels' %} active {% endif %}" href="{{ url('analytics_channels') }}">Subscription Analysis</a>
+				<a class="{% if current_url_name == 'analytics_channels' %} active {% endif %}"
+					href="{{ url('analytics_channels') }}">Subscription Analysis</a>
 			</li>
 			<li>
-				<a class="{% if current_url_name == 'analytics_campaigns' %} active {% endif %}" href="{{ url('analytics_campaigns') }}">Campaigns Analysis</a>
+				<a class="{% if current_url_name == 'analytics_campaigns' %} active {% endif %}"
+					href="{{ url('analytics_campaigns') }}">Campaigns Analysis</a>
 			</li>
 			<li>
-				<a class="{% if current_url_name == 'analytics_competitors' %} active {% endif %}" href="{{ url('analytics_competitors') }}">Competitor Analysis</a>
+				<a class="{% if current_url_name == 'analytics_competitors' %} active {% endif %}"
+					href="{{ url('analytics_competitors') }}">Competitor Analysis</a>
 			</li>
 			<li>
-				<a class="{% if current_url_name == 'analytics_YouTube' %} active {% endif %}" href="{{ url('analytics_YouTube') }}">YouTube Analysis</a>
+				<a class="{% if current_url_name == 'analytics_YouTube' %} active {% endif %}"
+					href="{{ url('analytics_YouTube') }}">YouTube Analysis</a>
 			</li>
 			<li>
-				<a class=" {% if current_url_name == 'analytics_views' %} active {% endif %}" href="{{ url('analytics_views') }}">Viewership Analysis</a>
+				<a class=" {% if current_url_name == 'analytics_views' %} active {% endif %}"
+					href="{{ url('analytics_views') }}">Viewership Analysis</a>
 			</li>
 			<li>
-				<a class=" {% if current_url_name == 'analytics_mentions' %} active {% endif %}" href="{{ url('analytics_mentions') }}">Sentiment Analysis</a>
+				<a class=" {% if current_url_name == 'analytics_mentions' %} active {% endif %}"
+					href="{{ url('analytics_mentions') }}">Sentiment Analysis</a>
 			</li>
 			<li>
-				<a class=" {% if current_url_name == 'analytics_whatsapp' %} active {% endif %}" href="{{ url('analytics_whatsapp') }}">WhatsApp Analysis</a>
+				<a class=" {% if current_url_name == 'analytics_whatsapp' %} active {% endif %}"
+					href="{{ url('analytics_whatsapp') }}">WhatsApp Analysis</a>
 			</li>
 			<li>
-				<a class=" {% if current_url_name == 'social_inbox' %} active {% endif %}" href="{{ url('social_inbox', {type : 'incoming', filterBy: 'all'}) }}">Social Inbox</a>
+				<a class=" {% if current_url_name == 'social_inbox' %} active {% endif %}"
+					href="{{ url('social_inbox', {type : 'incoming', filterBy: 'all'}) }}">Social Inbox</a>
 			</li>
 		</ul>
 	</div>

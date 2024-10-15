@@ -115,8 +115,8 @@
 
 .msg_body {
     text-overflow: ellipsis;
-    width: 100px;
-    white-space: nowrap;
+    width: 100%;
+    /* white-space: nowrap; */
     overflow: hidden;
     margin-bottom: 0;
 }

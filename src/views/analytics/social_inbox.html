@@ -52,76 +52,40 @@
         <div class="whatsapp_analysis_parent">
             <div class="content_body">
                 <div class="row">
-                    <table id="socialInbox">
+                    <input type="hidden" name="form_action" value="{{form_action}}" class="form_action" />
+                    <input type="hidden" name="filter_by" value="{{filter_by}}" class="filter_by" />
+                    <input type="hidden" name="type" value="{{type}}" class="type" />
+                    <table id="socialInbox" class="display">
                         <thead>
                             <tr>
-                                <th>Sr. No.</th>
                                 <th>Channel</th>
-                                <th style="width: 80px;">Channel ID</th>
-                                <th>Post ID</th>
-                                <th>Message Type</th>
+                                <th style="width: 80px;">Customer ID</th>
+                                <th>Sent</th>
                                 <th>Message</th>
-                                {% if type == "OUTGOING" %}
+                                <!-- {% if type == "OUTGOING" %}
                                 <th>Sent To</th>
                                 <th>Sent</th>
                                 <th>Read</th>
                                 <th>Replied</th>
                                 <th>Replied Msg</th>
-                                {% endif %}
-                                {% if filter_by == "Google_Reviews" %}
+                                {% endif %} -->
+                                <!-- {% if filter_by == "Google_Reviews" %}
                                 <th>From</th>
-                                {% endif %}
-                                <th>Created At</th>
+                                {% endif %} -->
                                 <th>Mark As Closed</th>
+                                <th>Created At</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            {% for index, sociInbox in socialInbox %}
+                        <!-- <tfoot>
                             <tr>
-                                <td>{{ index+1 }}</td>
-                                <td>{{ sociInbox.channelName }}</td>
-                                <td class="channel_id">{{ sociInbox.channelId }}</td>
-                                <td>
-                                    <p title="{{ sociInbox.postID }}" style="    text-overflow: ellipsis;
-                                    width: 100px;
-                                    white-space: nowrap;
-                                    overflow: hidden;
-                                    margin-bottom: 0;">
-                                        {{ sociInbox.postID }}
-                                    </p>
-                                </td>
-                                <td>{{ sociInbox.messageType }}</td>
-                                <td>
-                                    <p title="{{ sociInbox.message }}" onclick="showMsgDetails(this)" class="msg_body"
-                                        data-msg="{{ sociInbox.message }}">{{ sociInbox.message }}</p>
-                                </td>
-                                {% if type == "OUTGOING" %}
-                                <td>{{ sociInbox.sentTo }}</td>
-                                <td>{{ sociInbox.sent ? 'Yes' : 'No' }}</td>
-                                <td>{{ sociInbox.read ? 'Yes' : 'No' }}</td>
-                                <td>{{ sociInbox.replied ? 'Yes' : 'No' }}</td>
-                                <td>
-                                    <p title="{{ sociInbox.repliedMsg ? sociInbox.repliedMsg : 'NA' }}"
-                                        onclick="showMsgDetails(this)" class="msg_body"
-                                        data-msg="{{ sociInbox.repliedMsg ? sociInbox.repliedMsg : 'NA' }}">
-                                        {{ sociInbox.repliedMsg ? sociInbox.repliedMsg : 'NA' }}
-                                    </p>
-                                </td>
-                                {% endif %}
-                                {% if filter_by == "Google_Reviews" %}
-                                <td>{{ sociInbox.sentTo|split(':')[0] }}</td>
-                                {% endif %}
-                                <td>{{ get_date(sociInbox.createdAt, 4) }}</td>
-                                <td>
-                                    <input data-bootstrap-switch type="checkbox" name="readInboxId[]"
-                                        data-toggle="toggle" data-onstyle="success" data-offstyle="light"
-                                        data-on="Closed" data-off="Open" data-size="small" class="readInboxChange"
-                                        data-id="{{sociInbox.socialInboxID}}" value="{{sociInbox.isRead}}" {% if
-                                        (sociInbox.isRead==1) %} checked disabled {% endif %}>
-                                </td>
+                                <th>First name</th>
+                                <th>Last name</th>
+                                <th>Position</th>
+                                <th>Office</th>
+                                <th>Start date</th>
+                                <th>Salary</th>
                             </tr>
-                            {% endfor %}
-                        </tbody>
+                        </tfoot> -->
                     </table>
                 </div>
 

@@ -423,6 +423,32 @@ class AnalyticsController extends BaseController
 					}
 				
 				break;
+			case 'getSocialInboxData' :
+
+				$inbox_type = $all_input['inbox_type'];
+				$filterBy = $all_input['filterBy'];
+				$page = (int)$all_input['draw'];
+
+				$org_id = Session::get('organization', 'id');
+				$getSocialInbox = $this->leadsModel->getSocialInbox($org_id, null, null, null, $inbox_type, str_replace('_', ' ', $filterBy), $page)['body'];
+					// print_r((object) $getSocialInbox);
+				if($getSocialInbox['status'] == 'success') {
+					response()->json([
+						$getSocialInbox
+					]);
+				}
+					else {
+					response()->json([
+						'status' => false,
+						'error'  => [
+							'code'    => 100,
+							'message' => 'Social Inbox Data Not Fetched',
+							'data' => []
+						],
+					]);
+					}
+				
+				break;
 			default:
 				response()->json([
 					'status' => false,
@@ -485,17 +511,16 @@ class AnalyticsController extends BaseController
 			'url'   => url('analytics_channels'),
 		]);
 		$org_id = Session::get('organization', 'id');
-		$getSocialInbox = $this->leadsModel->getSocialInbox($org_id, null, null, null, $type, str_replace('_', ' ', $filterBy));
-
+		// $getSocialInbox = $this->leadsModel->getSocialInbox($org_id, null, null, null, $type, str_replace('_', ' ', $filterBy), $page);
 
 
 		$this->setViewData('social_inbox.html',
 			[
 				'form_action'           => url('analytics_ajax'),
 				'page_title'            => "Social Inbox",
-				'socialInbox' 		=> isset($getSocialInbox['body']['data']) ? $getSocialInbox['body']['data'] : [],
+				// 'socialInbox' 		=> isset($getSocialInbox['body']['data']) ? $getSocialInbox['body']['data']['getSocialInboxData'] : [],
 				'type' => strtoupper($type),
-				'filter_by' => $filterBy
+				'filter_by' => $filterBy,
 			]
 		);
 
