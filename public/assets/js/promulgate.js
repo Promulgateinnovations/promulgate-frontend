@@ -3448,9 +3448,20 @@ $(function () {
   },
     columns: [
       {data: "channelName" , render : function ( data, type, row, meta ) {
-        return data === 'WhatsApp'  ?
-          '<i class="fa fa-'+data.toLowerCase()+'  fa-2x social_inbox_channel_icon" aria-hidden="true"></i>' :
-          data;
+        if (data === 'WhatsApp') {
+          return '<i class="fa fa-'+data.toLowerCase()+'  fa-2x social_inbox_channel_icon" aria-hidden="true"></i>'
+        } else if (data === 'Instagram') {
+          return '<i class="fa fa-'+data.toLowerCase()+'  fa-2x social_inbox_channel_icon" aria-hidden="true"></i>'
+        } else if (data === 'Youtube') {
+          return '<i class="fa fa-'+data.toLowerCase()+'  fa-2x social_inbox_channel_icon" aria-hidden="true"></i>'
+        } else if (data === 'Facebook') {
+          return '<i class="fa fa-'+data.toLowerCase()+'  fa-2x social_inbox_channel_icon" aria-hidden="true"></i>'
+        } else if (data === 'LinkedIn') {
+          return '<i class="fa fa-'+data.toLowerCase()+'  fa-2x social_inbox_channel_icon" aria-hidden="true"></i>'
+        } else {
+          return data;
+        }
+        
       }},
       { data: 'channelId' },
       {data: "sentTo" , render : function ( data, type, row, meta ) {
