@@ -3474,6 +3474,12 @@ $(function () {
         return `
           <input data-bootstrap-switch type="checkbox" name="readInboxId[]"
             data-toggle="toggle" data-onstyle="success" data-offstyle="light"
+            data-on="Sent" data-off="Fresh" data-size="small" class="" />`
+      }},
+      {data: "message" , render : function ( data, type, row, meta ) {
+        return `
+          <input data-bootstrap-switch type="checkbox" name="readInboxId[]"
+            data-toggle="toggle" data-onstyle="success" data-offstyle="light"
             data-on="Closed" data-off="Open" data-size="small" class="readInboxChange"
             data-id="${row.socialInboxID}" value="${row.isRead}" ${row.isRead == 1 ? 'checked disabled' : ''} />`
       }},
