@@ -1674,3 +1674,7 @@ table.spends_table th {
 .social_inbox_channel_icon {
     color: var(--primary-color);
 }
+
+.refreshSocialMediaCron {
+    cursor: pointer;
+}

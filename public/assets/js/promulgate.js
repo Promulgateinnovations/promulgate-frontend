@@ -3474,7 +3474,7 @@ $(function () {
         return `
           <input data-bootstrap-switch type="checkbox" name="readInboxId[]"
             data-toggle="toggle" data-onstyle="success" data-offstyle="light"
-            data-on="Sent" data-off="Fresh" data-size="small" class="" />`
+            data-on="Sent" data-off="Not sent" data-size="small" class="" />`
       }},
       {data: "message" , render : function ( data, type, row, meta ) {
         return `
@@ -3689,4 +3689,28 @@ $('.generate_report').click(function() {
 })
 window.addEventListener('afterprint', () => {
   $('.generate_report').show();
+});
+
+$(".refreshSocialMediaCron").click(function () {
+  var formSource = $(".form_action").val();
+  var inputData = {
+    ajax_source: formSource,
+    from_ajax: true,
+    form_source: "manuallyRunSocialMediaCron"
+  };
+
+  $.ajax({
+    url: inputData["ajax_source"],
+    type: "post",
+    dataType: "json",
+    contentType: "application/json; charset=UTF-8",
+    data: JSON.stringify(inputData),
+    success: function (responseData) {
+      responseData.data.message += ' Page will auto refresh in 2 mins.';
+      ajaxSuccessResponse(responseData, "", inputData);
+    },
+    error: function (error) {
+      ajaxFailedResponse(error, "", inputData);
+    },
+  });
 });

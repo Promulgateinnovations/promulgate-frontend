@@ -423,6 +423,32 @@ class AnalyticsController extends BaseController
 					}
 				
 				break;
+			case 'manuallyRunSocialMediaCron' :
+
+				$runFbCron = $this->analyticsModel->runCronManually()['body'];
+				
+				if($runFbCron['status'] == 'success') {
+					response()->json([
+						'status' => true,
+						'success'  => [
+							'code'    => 200,
+							'message' => 'Cron Started Successfully',
+						],
+						'data' => $runFbCron
+					]);
+				}
+					else {
+					response()->json([
+						'status' => false,
+						'error'  => [
+							'code'    => 100,
+							'message' => 'Cron Not Started.',
+							'data' => []
+						],
+					]);
+					}
+				
+				break;
 			case 'getSocialInboxData' :
 
 				$inbox_type = $all_input['inbox_type'];

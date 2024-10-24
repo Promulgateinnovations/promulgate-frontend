@@ -304,4 +304,13 @@ class AnalyticsModel extends BaseModel
 			]
 		);
 	}
+
+	public function runCronManually()
+	{
+		return $this->makeRequest('POST', '/api/v1/run-cron-manually', [
+				'json' => [
+				],
+			]
+		);
+	}
 }
