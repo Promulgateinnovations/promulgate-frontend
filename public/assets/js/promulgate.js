@@ -3708,6 +3708,9 @@ $(".refreshSocialMediaCron").click(function () {
     success: function (responseData) {
       responseData.data.message += ' Page will auto refresh in 2 mins.';
       ajaxSuccessResponse(responseData, "", inputData);
+      setTimeout(() => {
+        window.location.reload();
+      },120000)
     },
     error: function (error) {
       ajaxFailedResponse(error, "", inputData);
