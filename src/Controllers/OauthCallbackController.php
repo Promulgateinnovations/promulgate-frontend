@@ -70,7 +70,7 @@ class OauthCallbackController extends BaseController
 				$profile_information = $LinkedInClient->api('/v2/me');
 
 				if($profile_information['id'] && $access_token->getToken()) {
-					print_r($profile_information);exit();
+
 					$connection_info = [
 						'connection_name'       => 'LinkedIn',
 						'connection_media_type' => 'ORGANIC',
