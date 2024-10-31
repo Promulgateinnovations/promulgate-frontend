@@ -2581,7 +2581,7 @@ class configureFacebookConnectionClass {
       scope:
         this.connection_selector === "#connection_whatsapp"
           ? "public_profile,pages_show_list,read_insights,whatsapp_business_management"
-          : "public_profile, pages_show_list,pages_manage_posts,read_insights,pages_read_engagement",
+          : "public_profile, pages_show_list,pages_manage_posts,read_insights,pages_read_engagement,pages_read_user_content",
       return_scopes: true,
     });
   };
