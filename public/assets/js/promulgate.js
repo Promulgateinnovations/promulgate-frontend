@@ -2568,7 +2568,7 @@ class configureFacebookConnectionClass {
         fb_exchange_token: loginToken,
       },
       this.getFacebookUserPagesList,
-      console.log('error', errpr)
+      console.log('error', error)
     );
   };
 
