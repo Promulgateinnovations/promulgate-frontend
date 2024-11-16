@@ -2439,7 +2439,6 @@ class configureFacebookConnectionClass {
   };
 
   processPagesList = (response) => {
-    console.log('fb response', response);
     if (response.data && response.data.length) {
       var pagesList = {};
       var pagesListOptionsHtml = "";
@@ -2541,8 +2540,6 @@ class configureFacebookConnectionClass {
   };
 
   getFacebookUserPagesList = (response) => {
-    console.log('responseresponse', response, this.userId);
-
     var accessToken = response.access_token;
     var fbUserId = this.userId;
 
@@ -2561,7 +2558,6 @@ class configureFacebookConnectionClass {
 
     FB.api(
       "/oauth/access_token",
-      "post",
       {
         grant_type: "fb_exchange_token",
         client_id: FACEBOOK_APP_CLIENT_ID,
@@ -2573,7 +2569,6 @@ class configureFacebookConnectionClass {
   };
 
   processLoginResponse = (response, error) => {
-    console.log('fb login', response, error);
     if (response.authResponse) {
       var userId = response.authResponse.userID;
       var accessToken = response.authResponse.accessToken;
@@ -2594,7 +2589,7 @@ class configureFacebookConnectionClass {
       scope:
         this.connection_selector === "#connection_whatsapp"
           ? "public_profile,pages_show_list,read_insights,whatsapp_business_management"
-          : "public_profile, pages_show_list,pages_manage_posts,read_insights,pages_read_engagement,pages_read_user_content",
+          : "public_profile,business_management,pages_show_list,pages_manage_posts,read_insights,pages_read_engagement,pages_read_user_content",
       return_scopes: true,
     });
   };
@@ -2926,7 +2921,6 @@ class configureInstagramConnectionClass {
   };
 
   processPagesList = (response) => {
-    console.log('inst response', response);
     if (response.data && response.data.length) {
       var userPagesList = {};
       var pagesListOptionsHtml = "";
@@ -3011,7 +3005,6 @@ class configureInstagramConnectionClass {
   };
 
   getFacebookUserPagesList = (response) => {
-    console.log('ins ', response, this.userId);
     var accessToken = response.access_token;
     var fbUserId = this.userId;
 
@@ -3030,7 +3023,6 @@ class configureInstagramConnectionClass {
 
     FB.api(
       "/oauth/access_token",
-      "post",
       {
         grant_type: "fb_exchange_token",
         client_id: FACEBOOK_APP_CLIENT_ID,
@@ -3042,7 +3034,6 @@ class configureInstagramConnectionClass {
   };
 
   processLoginResponse = (response) => {
-    console.log('ins login', response);
     if (response.authResponse) {
       var userId = response.authResponse.userID;
       var accessToken = response.authResponse.accessToken;
@@ -3061,7 +3052,7 @@ class configureInstagramConnectionClass {
   showFacebookLogin = () => {
     FB.login(this.processLoginResponse, {
       scope:
-        "public_profile,pages_show_list,read_insights,instagram_basic,instagram_content_publish",
+        "public_profile,business_management,pages_show_list,read_insights,instagram_basic,instagram_content_publish",
       return_scopes: true,
     });
   };
