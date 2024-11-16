@@ -2567,7 +2567,8 @@ class configureFacebookConnectionClass {
         client_secret: FACEBOOK_APP_CLIENT_SECRET,
         fb_exchange_token: loginToken,
       },
-      this.getFacebookUserPagesList
+      this.getFacebookUserPagesList,
+      console.log('error', errpr)
     );
   };
 
