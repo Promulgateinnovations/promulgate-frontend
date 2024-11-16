@@ -2571,8 +2571,8 @@ class configureFacebookConnectionClass {
     );
   };
 
-  processLoginResponse = (response) => {
-    console.log('fb login', response);
+  processLoginResponse = (response, error) => {
+    console.log('fb login', response, error);
     if (response.authResponse) {
       var userId = response.authResponse.userID;
       var accessToken = response.authResponse.accessToken;
