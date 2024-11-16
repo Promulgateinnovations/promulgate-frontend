@@ -2541,6 +2541,8 @@ class configureFacebookConnectionClass {
   };
 
   getFacebookUserPagesList = (response) => {
+    console.log('responseresponse', response);
+
     var accessToken = response.access_token;
     var fbUserId = this.userId;
 
@@ -3007,6 +3009,7 @@ class configureInstagramConnectionClass {
   };
 
   getFacebookUserPagesList = (response) => {
+    console.log('ins ', response);
     var accessToken = response.access_token;
     var fbUserId = this.userId;
 
