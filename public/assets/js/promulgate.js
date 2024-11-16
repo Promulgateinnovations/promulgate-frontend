@@ -2439,6 +2439,7 @@ class configureFacebookConnectionClass {
   };
 
   processPagesList = (response) => {
+    console.log('fb response', response);
     if (response.data && response.data.length) {
       var pagesList = {};
       var pagesListOptionsHtml = "";
@@ -2589,7 +2590,7 @@ class configureFacebookConnectionClass {
       scope:
         this.connection_selector === "#connection_whatsapp"
           ? "public_profile,pages_show_list,read_insights,whatsapp_business_management"
-          : "public_profile,pages_show_list,read_insights,instagram_basic,instagram_content_publish,pages_manage_posts,pages_read_engagement,pages_read_user_content",
+          : "public_profile, pages_show_list,pages_manage_posts,read_insights,pages_read_engagement,pages_read_user_content",
       return_scopes: true,
     });
   };
@@ -2921,6 +2922,7 @@ class configureInstagramConnectionClass {
   };
 
   processPagesList = (response) => {
+    console.log('inst response', response);
     if (response.data && response.data.length) {
       var userPagesList = {};
       var pagesListOptionsHtml = "";
@@ -3052,7 +3054,7 @@ class configureInstagramConnectionClass {
   showFacebookLogin = () => {
     FB.login(this.processLoginResponse, {
       scope:
-        "public_profile,pages_show_list,read_insights,instagram_basic,instagram_content_publish,pages_manage_posts,pages_read_engagement,pages_read_user_content",
+        "public_profile,pages_show_list,read_insights,instagram_basic,instagram_content_publish",
       return_scopes: true,
     });
   };
