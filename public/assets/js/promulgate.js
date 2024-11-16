@@ -2548,6 +2548,7 @@ class configureFacebookConnectionClass {
 
     FB.api(
       "/" + fbUserId + "/accounts",
+      "get",
       {
         access_token: accessToken,
       },
@@ -3016,6 +3017,7 @@ class configureInstagramConnectionClass {
 
     FB.api(
       "/" + fbUserId + "/accounts",
+      "get",
       {
         access_token: accessToken,
       },
