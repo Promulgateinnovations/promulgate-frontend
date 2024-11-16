@@ -2222,7 +2222,7 @@ function disableConfigurationAndDisableActiveConnection(
     },
   });
 
-  window.location.reload();
+ // window.location.reload();
 }
 
 function showOauthConnectionStatus() {
