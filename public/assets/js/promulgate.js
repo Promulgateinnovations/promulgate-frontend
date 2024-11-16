@@ -2541,7 +2541,7 @@ class configureFacebookConnectionClass {
   };
 
   getFacebookUserPagesList = (response) => {
-    console.log('responseresponse', response);
+    console.log('responseresponse', response, this.userId);
 
     var accessToken = response.access_token;
     var fbUserId = this.userId;
