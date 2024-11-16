@@ -2561,7 +2561,7 @@ class configureFacebookConnectionClass {
 
     FB.api(
       "/oauth/access_token",
-      "get",
+      "post",
       {
         grant_type: "fb_exchange_token",
         client_id: FACEBOOK_APP_CLIENT_ID,
@@ -3030,7 +3030,7 @@ class configureInstagramConnectionClass {
 
     FB.api(
       "/oauth/access_token",
-      "get",
+      "post",
       {
         grant_type: "fb_exchange_token",
         client_id: FACEBOOK_APP_CLIENT_ID,
