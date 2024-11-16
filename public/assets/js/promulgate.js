@@ -2572,6 +2572,7 @@ class configureFacebookConnectionClass {
   };
 
   processLoginResponse = (response) => {
+    console.log('fb login', response);
     if (response.authResponse) {
       var userId = response.authResponse.userID;
       var accessToken = response.authResponse.accessToken;
@@ -3009,7 +3010,7 @@ class configureInstagramConnectionClass {
   };
 
   getFacebookUserPagesList = (response) => {
-    console.log('ins ', response);
+    console.log('ins ', response, this.userId);
     var accessToken = response.access_token;
     var fbUserId = this.userId;
 
@@ -3039,6 +3040,7 @@ class configureInstagramConnectionClass {
   };
 
   processLoginResponse = (response) => {
+    console.log('ins login', response);
     if (response.authResponse) {
       var userId = response.authResponse.userID;
       var accessToken = response.authResponse.accessToken;
