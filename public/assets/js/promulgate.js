@@ -1608,6 +1608,14 @@ function processExtraAjaxData(extraData, formData, formElement) {
   toastr.clear();
 
   switch (formData.form_source) {
+    case "delete_user":
+      if (extraData.next_screen !== undefined) {
+        setTimeout(function () {
+          window.location.href = extraData.next_screen;
+        }, 3000);
+      }
+      break;
+
     case "currentOrganization":
       if (extraData.next_screen !== undefined) {
         setTimeout(function () {
@@ -3717,3 +3725,45 @@ $(".refreshSocialMediaCron").click(function () {
     },
   });
 });
+
+$(".deleteAccount").click(function () {
+  var html = "<br /><button type='button' class='btn do_action'>Yes</button><button type='button' class='btn no_action'>No</button>";
+   toastr.info(html,'Are you sure to delete this account?',
+      {
+        allowHtml: true,
+        timeOut: 50000,
+        tapToDismiss: true,
+        extendedTimeOut: 100000,
+        onShown: function (toast) {
+          $(".do_action").click(function(){
+              deleteUserAcc();
+            });
+          $(".no_action").click(function(){
+              //console.log('clicked no_action');
+            });
+        }
+      });
+});
+
+deleteUserAcc = () => {
+  var inputData = {
+    ajax_source: "lead/ajax",
+    from_ajax: true,
+    form_source: "delete_user"
+  };
+  showProcessingToast();
+
+  $.ajax({
+    url: "/leads/ajax",
+    type: "post",
+    dataType: "json",
+    contentType: "application/json; charset=UTF-8",
+    data: JSON.stringify(inputData),
+    success: function (responseData) {
+      ajaxSuccessResponse(responseData, "", inputData);
+    },
+    error: function (error) {
+      ajaxFailedResponse(error, "", inputData);
+    },
+  });
+};

@@ -402,6 +402,11 @@ class LeadsController extends BaseController
 				$this->saveNewWaTemplate($all_input);
 				break;
 
+			case 'delete_user' :
+				$userId = Session::get('user', 'id');
+				$this->deleteUser($userId);
+				break;
+
 			default:
 				response()->json([
 					'status' => false,
@@ -652,4 +657,54 @@ class LeadsController extends BaseController
 		}
 	}
 	
+	public function deleteUser($user_id)
+	{
+
+		if($user_id) {
+
+			$content_to_post = [
+				'user_id'   => $user_id
+			];
+
+			
+			$deleteUser = $this->leadsModel->deleteUser($content_to_post)['body'];
+			if(getValue('status', $deleteUser) != 'success') {
+
+				response()->json([
+					'status' => false,
+					'error'  => [
+						'code'    => 20,
+						'message' => "User could not be deleted."
+					],
+				]);
+
+			} else {
+				Session::destroy('user');
+				Session::destroy('organization');
+				Session::destroy('agency');
+
+				session_write_close();
+				response()->json([
+					'status' => true,
+					'data'   =>
+						[
+							'message' => "User deleted, now you are logged out.",
+							'extra'   => [
+								'next_tab'    => true,
+								'next_screen' => url('user_login'),
+							],
+						],
+				]);
+			}
+		} else {
+
+			response()->json([
+				'status' => false,
+				'error'  => [
+					'code'    => 20,
+					'message' => "User details missing",
+				],
+			]);
+		}
+	}
 }

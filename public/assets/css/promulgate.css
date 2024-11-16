@@ -1678,3 +1678,9 @@ table.spends_table th {
 .refreshSocialMediaCron {
     cursor: pointer;
 }
+
+.deleteAccount {
+    cursor: pointer;
+    float: right;
+    color: var(--primary-color);
+}

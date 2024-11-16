@@ -180,4 +180,20 @@ class LeadsModel extends BaseModel
 		);
 
 	}
+
+	public function deleteUser($content_to_post)
+	{
+
+		if(!$content_to_post) {
+			return [
+				'body' => [],
+			];
+		}
+
+		return $this->makeRequest('POST', '/api/v1/deleteUser', [
+				'json' => $content_to_post,
+			]
+		);
+
+	}
 }
