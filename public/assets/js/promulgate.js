@@ -3364,14 +3364,16 @@ $(function () {
   var formSource = $(".form_action").val();
   var inbox_type = $(".type").val();
   var filter_by = $(".filter_by").val();
-  var page = $(".page").val();
+  var page = 1;
+  
   var inputData = {
     ajax_source: formSource,
     from_ajax: true,
     form_source: "getSocialInboxData",
     inbox_type,
     filterBy: filter_by,
-    page
+    page:$('.page').val(),
+    draw:$('.page').val(),
   };
 
   const formData = new FormData();
@@ -3381,7 +3383,7 @@ $(function () {
   var options = { year: 'numeric', month: 'short', day: 'numeric' };
 
   
-  $("#socialInbox").DataTable({
+ var socialInboxDataTable = $("#socialInbox").DataTable({
     "pagingType": "full_numbers",
     ajax: {
       url: inputData["ajax_source"], //baseUrl+"/api/v1/getSocialInbox?page=1", //
@@ -3390,6 +3392,32 @@ $(function () {
       // 'Authorization': "Basic cHJvbXVsZ2F0ZTpwcm9tdWxnYXRl"
       // },
       // body: formData,
+    //   data: function (d, re) {
+    //     console.log(re);
+    //     // console.log(re.oInstance._fnPageChange());
+    //     // re.oInstance._fnPageChange = (a,b,c) => {
+    //     //   console.log('a', a,b,c);
+    //     // }
+    //     // if (d.order[0].dir == "asc") {
+    //     //   inputData.draw = d.draw;
+    //     // } else {
+    //     //   inputData.draw = d.draw - 1;
+    //     // }
+
+    //     if(document.getElementsByClassName('paginate_button active') && document.getElementsByClassName('paginate_button active')[0]) {
+    //       console.log(document.getElementsByClassName('paginate_button active'));
+
+    //       inputData.draw = document.getElementsByClassName('paginate_button active')[0].value;
+    //       inputData.page = document.getElementsByClassName('paginate_button active')[0].value;
+    //     } else {
+    //       inputData.draw = 1;
+    //     }
+    //     console.log('d', d, inputData)
+        
+    //     //d.extra_search = $('#extra').val();
+    //   //  inputData.draw = d.draw;
+    //     return inputData
+    // },
       data: inputData,
      // dataType: "json",
       
@@ -3466,6 +3494,8 @@ $(function () {
           return '<i class="fa fa-'+data.toLowerCase()+'  fa-2x social_inbox_channel_icon" aria-hidden="true"></i>'
         } else if (data === 'LinkedIn') {
           return '<i class="fa fa-'+data.toLowerCase()+'  fa-2x social_inbox_channel_icon" aria-hidden="true"></i>'
+        } else if (data === 'Website') {
+          return '<i class="fa fa-globe fa-2x social_inbox_channel_icon" aria-hidden="true"></i>'
         } else {
           return data;
         }
@@ -3636,6 +3666,14 @@ $(function () {
   processing: true,
   serverSide: true
 })
+socialInboxDataTable.on('page', function () {
+  inputData.page = socialInboxDataTable.page.info().page;
+});
+
+function getPageNo() {
+  console.log(socialInboxDataTable);
+  return socialInboxDataTable?.page ? socialInboxDataTable?.page.info().page : 0;
+}
 // .on( 'xhr.dt', function (res) {
 //   console.log(res);
 // });
