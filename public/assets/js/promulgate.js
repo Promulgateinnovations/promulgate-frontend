@@ -3114,7 +3114,7 @@ class configureGoogleDriveConnectionClass {
     gapi.auth2
       .getAuthInstance()
       .grantOfflineAccess({
-        scope: "https://www.googleapis.com/auth/drive",
+        scope: "https://www.googleapis.com/auth/drive.file",
         //  prompt: 'none',
         access_type: "offline",
       })
