@@ -1,4 +1,10 @@
 $(document).ready(function () {
+
+  var checkBusinessHubType = $("input[type=radio][name=hub_type]:checked").val();
+  if (checkBusinessHubType && checkBusinessHubType === 'youtube') {
+    $('.competitor_main_section').removeClass('d-none');
+  }
+  
   var isOnline = true;
   setInterval(function () {
     if (isOnline !== navigator.onLine) {
