@@ -525,6 +525,155 @@ $(document).ready(function () {
   });
 });
 
+const platformContent = {
+  Facebook: `
+    <div class="small-text">
+      <h4>Connect Your Facebook Account</h4>
+      <p><strong>Description:</strong><br>
+        Before proceeding, ensure the following:</p>
+      <ol>
+        <li>Your Facebook account is not a <strong>business account</strong>.</li>
+        <li>You'll need to create or select a <strong>Facebook Page</strong> during the connection process.</li>
+      </ol>
+      <p><strong>Instructions for Connecting:</strong></p>
+      <ol>
+        <li>Click the <strong>"Connect to Facebook"</strong> button below.</li>
+        <li>Log in to your personal Facebook account (if not already logged in).</li>
+        <li>Authorize Promulgate to manage your Facebook Page.</li>
+        <li>Select an existing Facebook Page or create a new one.</li>
+      </ol>
+      <p>If you want detailed documentation with images, click the <strong>Download Guide</strong>&nbsp;button.</p>
+    </div>
+  `,
+  Instagram: `
+    <div class="small-text">
+      <h4>Connect Your Instagram Account</h4>
+      <p><strong>Description:</strong><br>
+        Ensure you have a professional or creator Instagram account linked to a Facebook Page.</p>
+      <p><strong>Instructions for Connecting:</strong></p>
+      <ol>
+        <li>Click the <strong>"Connect to Instagram"</strong> button below.</li>
+        <li>Log in to your Instagram account (if not already logged in).</li>
+        <li>Link your Instagram account to a Facebook Page for seamless post management.</li>
+      </ol>
+      <p>If you want detailed documentation with images, click the <strong>Download Guide</strong>&nbsp;button.</p>
+    </div>
+  `,
+  Linkedin: `
+    <div class="small-text">
+      <h4>Connect Your LinkedIn Account</h4>
+      <p><strong>Description:</strong><br>
+        Ensure you have admin access to your LinkedIn company page or profile.</p>
+      <p><strong>Instructions for Connecting:</strong></p>
+      <ol>
+        <li>Click the <strong>"Connect to LinkedIn"</strong> button below.</li>
+        <li>Log in to your LinkedIn account (if not already logged in).</li>
+        <li>Authorize Promulgate to manage your LinkedIn posts.</li>
+        <li>Select your LinkedIn profile or company page to manage posts.</li>
+      </ol>
+      <p>If you want detailed documentation with images, click the <strong>Download Guide</strong>&nbsp;button.</p>
+    </div>
+  `,
+  Youtube: `
+    <div class="small-text">
+      <h4>Connect Your YouTube Channel</h4>
+      <p><strong>Description:</strong><br>
+        Ensure your YouTube channel is verified for the best performance.</p>
+      <p><strong>Instructions for Connecting:</strong></p>
+      <ol>
+        <li>Click the <strong>"Connect to YouTube"</strong> button below.</li>
+        <li>Log in to your Google account (if not already logged in).</li>
+        <li>Authorize Promulgate to manage your YouTube channel.</li>
+        <li>Select your YouTube channel to manage video posts.</li>
+      </ol>
+      <p>If you want detailed documentation with images, click the <strong>Download Guide</strong>&nbsp;button.</p>
+    </div>
+  `,
+  Whatsapp: `
+    <div class="small-text">
+      <h4>Connect Your WhatsApp Account</h4>
+      <p><strong>Description:</strong><br>
+        Make sure you have WhatsApp Business set up for this integration.</p>
+      <p><strong>Instructions for Connecting:</strong></p>
+      <ol>
+        <li>Click the <strong>"Connect to WhatsApp"</strong> button below.</li>
+        <li>Log in to your WhatsApp Business account (if not already logged in).</li>
+        <li>Authorize Promulgate to manage your WhatsApp communications.</li>
+        <li>Select your WhatsApp Business number for integration.</li>
+      </ol>
+      <p>If you want detailed documentation with images, click the <strong>Download Guide</strong>&nbsp;button.</p>
+    </div>
+  `
+};
+
+// Function to show the popup
+function showPopup(platformName) {
+  // Normalize platform name to handle inconsistencies
+  const normalizedPlatformName = platformName.trim().toLowerCase();
+  const formattedPlatformName =
+    normalizedPlatformName.charAt(0).toUpperCase() + normalizedPlatformName.slice(1);
+
+  // Retrieve content for the specified platform
+  const content = platformContent[formattedPlatformName];
+
+  // Define file paths for downloading guides
+  const pdfFilePaths = {
+    Facebook: '/assets/fb.pdf',
+    Instagram: '/assets/insta.pdf',
+    Linkedin: '/assets/Linkedin.pdf',
+    Youtube: '/assets/Youtube.pdf',
+    Whatsapp: '/assets/whatsapp.pdf' // Ensure this path is correct
+  };
+
+  const pdfFilePath = pdfFilePaths[formattedPlatformName];
+
+  // Handle missing content or incorrect platform name
+  if (!content || !pdfFilePath) {
+    Swal.fire({
+      title: 'Error',
+      text: `Platform guide for ${formattedPlatformName} not found. Please check the platform name.`,
+      icon: 'error',
+      confirmButtonText: 'Close'
+    });
+    console.error(`Invalid platform name: ${platformName}`);
+    return;
+  }
+
+  // Show the popup with the appropriate content
+  Swal.fire({
+    position: 'top',
+    title: `${formattedPlatformName} Connection Guide`,
+    html: ` 
+      <div style="text-align: left;">
+        ${content}
+        <button id="downloadBtn" class="btn btn-primary mt-3">
+          <i class="fa fa-download" style="color: white;"></i>&nbsp;Download Guide
+        </button>
+      </div>
+    `,
+    iconHtml: '<i class="fa fa-info-circle"></i>',
+    iconColor: '#1998bf',
+    showCancelButton: false,
+    confirmButtonColor: '#1998bf',
+    confirmButtonText: 'Close',
+    showClass: {
+      popup: 'animate__animated animate__fadeIn'
+    },
+    hideClass: {
+      popup: 'animate__animated animate__fadeOut'
+    }
+  });
+
+  // Add functionality to download the guide
+  $('#downloadBtn').click(function () {
+    // Ensure the PDF exists at the correct path
+    const link = document.createElement('a');
+    link.href = pdfFilePath; // Path to the local PDF
+    link.download = `${formattedPlatformName}_Connection_Guide.pdf`; // Set the file name for the download
+    link.click();
+  });
+}
+
 function changeConnectionConfigurationStatusAndActiveSelectorStatus(
   form_source,
   connection_name,
