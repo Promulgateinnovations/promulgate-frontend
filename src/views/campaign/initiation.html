@@ -53,7 +53,7 @@
 					<td>{{ campaign.user.firstName }}</td>
 					<td>{{ get_date(campaign.createdAt, 4) }}</td>
 					<td class="text-center">
-						<a href="{{ url('campaign_strategy_definition',  {'campaign_id': campaign.campaignDefinitionId}) }}" class="btn btn-sm btn-outline-promulgate-primary">
+						<a href="{{ url('campaign_strategy_definition',  {'campaign_id': campaign.campaignDefinitionId}) }}" class="btn btn-sm btn-outline-promulgate-primary {% if campaign.status == 'COMPLETED' %}disabled{% endif %}">
 							<span><i class="fa fa-edit"></i> Edit</span>
 						</a>
 						<a href="{{ url('analytics_campaign_analysis', {campaign_id : campaign.campaignDefinitionId}) }}" class="link-in-iframe btn btn-sm btn-outline-success">

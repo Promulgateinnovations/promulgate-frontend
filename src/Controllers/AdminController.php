@@ -319,7 +319,8 @@ class AdminController extends BaseController
 				'linkedin_oauth_authorization_url' => $LinkedInClient->getLoginUrl(['r_emailaddress', 'r_liteprofile', 'w_member_social', 'rw_organization_admin', 'r_organization_social', 'w_organization_social', 'w_member_social', 'r_1st_connections_size']),
 				//'linkedin_oauth_authorization_url' => [],
 				'CONNECTION_OAUTH_STATUS'          => json_encode(Session::pull('CONNECTION_OAUTH_STATUS') ?? []),
-			]
+				'organization_name'                => $this->adminModel->getOrganizationDetails($this->organizationId)['body']['data']['name'] ?? '',
+				]
 		);
 	}
 
