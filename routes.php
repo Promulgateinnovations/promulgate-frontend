@@ -263,4 +263,16 @@ Route::group([
 	;
 });
 
+Route::group([
+    'prefix'     => '/reports',
+    'middleware' => Promulgate\Middlewares\UserAuth::class,
+], function() {
+
+	Route::post('/ajax', 'ReportsController@processAjax')->name('reports_ajax');
+
+    Route::get('/reports', 'ReportsController@showReportsOverview')
+         ->name('reports_overview');
+});
+
+
 Route::start();

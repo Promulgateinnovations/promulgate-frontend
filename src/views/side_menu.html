@@ -101,7 +101,17 @@
 									<a href="{{ url('social_inbox', {type : 'incoming', filterBy: 'all'}) }}">Social Inbox</a>
 								</li>
 							</ul>
+							
 						</div>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link {% if 'reports_' in current_url_name %} active {% endif %}" href="{{ url('reports_overview') }}" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="navbar-reports">
+							<i class="fa fa-bullhorn"></i>
+							<span class="nav-link-text">Reports</span>
+							<span class="nav-link-icon">
+								<i class="fa fa-caret-down {% if 'reports_' in current_url_name %} fa-caret-up {% endif %}"></i>
+							</span>
+						</a>
 					</li>
 				</ul>
 			</div>
