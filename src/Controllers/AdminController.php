@@ -156,6 +156,22 @@ class AdminController extends BaseController
 
 	}
 
+	// Helper function to remove duplicates by email
+	public function removeDuplicatesByEmail($teams)
+	{
+		$seen_emails = [];
+		$unique_teams = [];
+
+		foreach ($teams as $team_member) {
+			if (!in_array($team_member['user']['email'], $seen_emails)) {
+				$seen_emails[] = $team_member['user']['email'];
+				$unique_teams[] = $team_member;
+			}
+		}
+
+		return $unique_teams;
+	}
+
 
 	public function showAddTeamMember()
 	{
@@ -193,6 +209,21 @@ class AdminController extends BaseController
 			}
 		}
 
+		$agency_user_list = $this->removeDuplicateEmails($agency_user_list);
+		// Sort agency users alphabetically by email, ensuring trimming and case insensitivity
+		usort($agency_user_list, function ($a, $b) {
+			$emailA = strtolower(trim($a['email']));
+			$emailB = strtolower(trim($b['email']));
+			return strcasecmp($emailA, $emailB);
+		});
+	
+		// Sort organization roles alphabetically by roleName, ensuring trimming and case insensitivity
+		usort($final_organization_roles_list, function ($a, $b) {
+			$roleA = strtolower(trim($a['roleName']));
+			$roleB = strtolower(trim($b['roleName']));
+			return strcasecmp($roleA, $roleB);
+		});
+
 		$this->setViewData('add_new_team_member.html',
 			[
 				'form_action'             => url('admin_ajax'),
@@ -202,6 +233,22 @@ class AdminController extends BaseController
 			]
 		);
 
+	}
+
+	// Helper function to remove duplicates by email
+	public function removeDuplicateEmails($userList){
+		$uniqueUsers = [];
+    	$emails = [];
+		
+		foreach ($userList as $user) {
+			// Convert email to lowercase and trim spaces to ensure uniqueness
+			$email = strtolower(trim($user['email']));
+			if (!in_array($email, $emails)) {
+				$emails[] = $email;
+				$uniqueUsers[] = $user;
+			}
+		}
+		return $uniqueUsers;
 	}
 
 
@@ -1122,6 +1169,28 @@ class AdminController extends BaseController
 				'error'  => [
 					'code'    => 10,
 					'message' => `${$organization_id} ${$agencyId}`,
+				],
+			]);
+		}
+
+		// Ensure user_name is not null
+		if (empty($user_details['user_name']) || $user_details['user_name'] === 'null') {
+			return response()->json([
+				'status' => false,
+				'error'  => [
+					'code'    => 15,
+					'message' => "Please select a valid user",
+				],
+			]);
+		}
+
+		// Ensure user_role is not null
+		if (empty($user_details['user_role']) || $user_details['user_role'] === 'null') {
+			return response()->json([
+				'status' => false,
+				'error'  => [
+					'code'    => 16,
+					'message' => "Please select a valid role",
 				],
 			]);
 		}
