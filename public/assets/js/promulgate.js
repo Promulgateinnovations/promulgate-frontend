@@ -3811,3 +3811,25 @@ deleteUserAcc = () => {
     },
   });
 };
+
+window.addEventListener('beforeprint', () => {
+  document.querySelectorAll('.paid_amt_txt').forEach(input => {
+    const span = document.createElement('span');
+    span.textContent = `${input.value}`;
+    span.className = 'paid_amt_txt_print';
+    input.parentNode.replaceChild(span, input);
+  });
+});
+
+window.addEventListener('afterprint', () => {
+  document.querySelectorAll('.paid_amt_txt_print').forEach(span => {
+    const input = document.createElement('input');
+    input.type = 'number';
+    input.min = '0';
+    input.placeholder = 'eg 500';
+    input.className = 'form-control paid_amt_txt';
+    input.value = span.textContent.replace('Rs. ', '');
+    input.title = 'Enter the amount in rupees and press tab or click outside to save';
+    span.parentNode.replaceChild(input, span);
+  });
+});

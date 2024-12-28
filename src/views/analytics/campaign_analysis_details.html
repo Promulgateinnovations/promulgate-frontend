@@ -1,3 +1,223 @@
+<style>
+	/*Change icons circle size and color here*/
+.social-icons .fa {
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    color: #FFF;
+    color: rgba(255, 255, 255, 0.8);
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -ms-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+}
+
+.social-icons.icon-circle .fa {
+    border-radius: 50%;
+}
+
+.social-icons.icon-rounded .fa {
+    border-radius: 5px;
+}
+
+.social-icons.icon-flat .fa {
+    border-radius: 0;
+}
+
+.social-icons .fa:hover,
+.social-icons .fa:active {
+    color: #FFF;
+    -webkit-box-shadow: 1px 1px 3px #333;
+    -moz-box-shadow: 1px 1px 3px #333;
+    box-shadow: 1px 1px 3px #333;
+}
+
+.social-icons.icon-zoom .fa:hover,
+.social-icons.icon-zoom .fa:active {
+    -webkit-transform: scale(1.1);
+    -moz-transform: scale(1.1);
+    -ms-transform: scale(1.1);
+    -o-transform: scale(1.1);
+    transform: scale(1.1);
+}
+
+.social-icons.icon-rotate .fa:hover,
+.social-icons.icon-rotate .fa:active {
+    -webkit-transform: scale(1.1) rotate(360deg);
+    -moz-transform: scale(1.1) rotate(360deg);
+    -ms-transform: scale(1.1) rotate(360deg);
+    -o-transform: scale(1.1) rotate(360deg);
+    transform: scale(1.1) rotate(360deg);
+}
+
+.social-icons .fa-facebook,
+.social-icons .fa-facebook-square {
+    background-color: #3C599F;
+	color:#fff;
+}
+
+.social-icons .fa-google-plus,
+.social-icons .fa-google-plus-square {
+    background-color: #CF3D2E;
+	color:#fff;
+
+}
+
+.social-icons .fa-instagram {
+    /*background-color: #A1755C;*/
+    background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
+    background: -webkit-radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
+    /*background-clip: text;*/
+    /*-webkit-background-clip: text;*/
+	color:#fff;
+
+}
+
+.social-icons .fa-linkedin,
+.social-icons .fa-linkedin-square {
+    background-color: #0085AE;
+	color:#fff;
+
+}
+
+.social-icons .fa-twitter,
+.social-icons .fa-twitter-square {
+    background-color: #32CCFE;
+}
+
+.social-icons .fa-youtube,
+.social-icons .fa-youtube-play,
+.social-icons .fa-youtube-square {
+    background-color: #C52F30;
+	color:#fff;
+
+}
+
+.social-icons .fa-whatsapp {
+    color: #fff;
+    background: linear-gradient(#25d366, #25d366) 14% 84%/16% 16% no-repeat,
+        radial-gradient(#25d366 58%, transparent 0);
+}
+
+.social-icons .fa-reddit-square {
+    color: #fff;
+    background: orangered;
+}
+
+.social-icons .fa-google {
+    background: conic-gradient(from -45deg, #ea4335 110deg, #4285f4 90deg 180deg, #34a853 180deg 270deg, #fbbc05 270deg) 73% 55%/150% 150% no-repeat;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+}
+@media print {
+    input {
+        display: none; /* Hides input fields during print */
+    }
+    .paid_amt_txt::after {
+        content: "Rs. " attr(data-value); /* Reads the value from data-value */
+        display: inline;
+    }
+}
+.social-icons .fa.text {
+    color: #0076b6;
+    font-size: 50px;
+}
+.calendar_events {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-row-gap: 2em;
+    grid-column-gap: 10px;
+    text-align: center;
+    padding: 20px;
+}
+
+.calendar_events .calendar_date_group {
+    background: white;
+    border-radius: 5px;
+    border: 1px solid #1898bf;
+}
+
+.calendar_events .calendar_card {
+    background: white;
+    border-radius: 5px;
+    margin: 15px 10px
+}
+
+.calendar_events .calendar_card:hover {
+    -webkit-box-shadow: 2px 2px 9px 0px var(--primary-color);
+    -moz-box-shadow: 2px 2px 9px 0px var(--primary-color);
+    box-shadow: 2px 2px 9px 0px var(--primary-color);
+}
+
+.calendar_events .calendar_date_group .header {
+    background: var(--primary-light-color);
+    padding: 5px;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.calendar_events .calendar_card .body {
+    min-height: 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px;
+}
+
+.calendar_events .calendar_card .body .left {
+    text-align: left;
+}
+
+.calendar_events .calendar_card small {
+    font-size: 10px;
+}
+
+.calendar_events .calendar_card.success {
+    background-color: #e9ffe9;
+	box-shadow: inset 20px 20px 20px 40px #e9ffe9;
+}
+
+.calendar_events .calendar_card.failed {
+    background-color: #ffdfdf;
+	box-shadow: inset 20px 20px 20px 40px #ffdfdf;
+
+}
+
+.calendar_events .calendar_card.waiting {
+    background-color: white;
+	box-shadow: inset 10px 10px 15px 20px white;
+
+}
+@media print {
+
+.calendar_events .calendar_card.success .social-icon {
+    color: white;
+	box-shadow: inset 20px 20px 20px 40px #e9ffe9;
+}
+
+.calendar_events .calendar_card.failed .social-icon{
+    color: white;
+	box-shadow: inset 20px 20px 20px 40px #ffdfdf;
+
+}
+
+.calendar_events .calendar_card.waiting .social-icon{
+    color: white;
+	box-shadow: inset 10px 10px 15px 20px white;
+
+}
+}
+.btn-promulgate-primary,
+.bg-promulgate-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: white;
+}
+</style>
 <div class="admin_content active">
 	<div class="row content_header">
 		<div class="col-12 text-center">
