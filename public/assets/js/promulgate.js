@@ -1559,7 +1559,7 @@ function setWhatsappLeadDetailsGraph(whatsappLeadDetails) {
           {
             y: whatsappLeadDetails.totalReplied,
             label: `Replied ${whatsappLeadDetails.totalReplied}/${whatsappLeadDetails.totalRead}`,
-            color: "#f6bd6e",
+            color: "#50d444",
           },
         ],
       },
