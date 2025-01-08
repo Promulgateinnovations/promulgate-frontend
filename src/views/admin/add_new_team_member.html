@@ -27,6 +27,7 @@
 									data-placeholder--text="Select User"
 									data-minimum-results-for-search="5"
 							>
+							<option value="null">Select User</option>
 								{% for role in agency_user_list %}
 								<option value="{{ role.userId }}">{{ role.email }}</option>
 								{% endfor %}
@@ -39,6 +40,7 @@
 									data-placeholder--text="Select Role"
 									data-minimum-results-for-search="5"
 							>
+							<option value="null">Select Role</option>
 								{% for role in organization_roles_list %}
 								<option value="{{ role.roleId }}">{{ role.roleName }}</option>
 								{% endfor %}

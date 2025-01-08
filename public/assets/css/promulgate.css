@@ -987,6 +987,7 @@ textarea {
 .form-status.error {
     background: #ffd1d1;
     border-left: 8px solid #d93025;
+    border-right: 8px solid #d93025;
     color: #d93025;
     font-weight: bold;
 }
