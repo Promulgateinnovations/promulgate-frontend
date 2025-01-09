@@ -1543,7 +1543,7 @@ function setWhatsappLeadDetailsGraph(whatsappLeadDetails) {
           },
           {
             y: whatsappLeadDetails.totalFailed,
-            label: `Failed ${whatsappLeadDetails.totalFailed}/${whatsappLeadDetails.totalSent}`,
+            label: `Failed ${whatsappLeadDetails.totalFailed}/${whatsappLeadDetails.allLeads.length}`,
             color: "#ff4747",
           },
           {
