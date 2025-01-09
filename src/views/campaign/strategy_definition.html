@@ -3,10 +3,13 @@
 {% endif %}
 <div class="campaign_content active">
 	<div class="row content_header">
-		<div class="col-6">
+		<div class="col-9">
 			<h1 class="title">
 				<i class="fa fa-clipboard"></i> Strategy Definition
 			</h1>
+		</div>
+		<div class="col-3 d-flex justify-content-end align-items-center">
+			<span class="required-text">All fields are required</span>
 		</div>
 		{% if current_campaign_strategy_definition_details.campaign_id != 0 %}
 		<div class="col-6 action_buttons">

@@ -1685,3 +1685,7 @@ table.spends_table th {
     float: right;
     color: var(--primary-color);
 }
+
+.required-text {
+    color:red !important; 
+}
