@@ -54,6 +54,10 @@
 										{% set is_already_enabled =
 										(configured_connections[sub_type.unique_name]['status'] == 'Active') %}
 
+										<a class="btn btn-sm info-btn" href="javascript:void(0);" onclick="showPopup('{{ sub_type.name }}')">
+											<i class="fa fa-info-circle"></i>
+										  </a>
+										  
 										<div class="toggle-switch">
 											<input type="checkbox" name="organization_connection_config[]"
 												id="connection_{{ sub_type.unique_name }}_config"

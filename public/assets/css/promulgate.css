@@ -1295,19 +1295,23 @@ textarea {
 .organization_connections .form-group {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    grid-row-gap: 1em;
-    grid-column-gap: 10px;
+    grid-gap: 1em;
+    width: 100%;
+    box-sizing: border-box; 
 }
 
 .organization_connections .connections_listing {
     background-color: white;
     margin: 10px;
-    padding: 15px;
+    padding: 10px;
     border: 1px solid #daecf3;
     border-radius: 10px;
     box-shadow: var(--primary-light-color) 3px 3px 12px 2px;
     -moz-box-shadow: var(--primary-light-color) 3px 3px 12px 2px;
     -webkit-box-shadow: var(--primary-light-color) 3px 3px 12px 2px;
+    width: 100%;
+    overflow: hidden;
+    flex: 1;
 }
 
 .organization_connections .connections_listing .title_block {
@@ -1319,39 +1323,31 @@ textarea {
     color: var(--primary-color);
     font-weight: bold;
     font-size: 18px;
+    word-wrap: break-word;
 }
 
 .organization_connections .connections_listing .connections_settings .form-check {
     display: flex;
     justify-content: space-between;
-    margin: 0 20px 20px 0;
+    margin: 0px 10px 20px 0;
     align-items: center;
+    flex-wrap: wrap;
 }
 
 .organization_connections .connections_listing .connections_settings .form-check .settings {
     display: flex;
     align-items: center;
-    width: 50%;
+    width: 52%;
+    margin-right:45px;
 }
 
 .organization_connections .connections_listing .connections_settings .pageName {
-    /* display: flex;
-    justify-content: flex-end;
-    margin: 0px 10px 0px; */
-    width: 130px;
+    width: auto;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     margin: 0 10px 0;
     color: var(--primary-color);
-}
-
-.organization_connections .connections_listing .connections_settings .pageName span {
-    padding-right: 10px;
-}
-
-.organization_connections .connections_listing .connections_settings .form-check-label {
-    padding-right: 10px;
 }
 
 .organization_connections .connections_listing .connections_settings .pageName span.social-icons .fa {
@@ -1360,15 +1356,59 @@ textarea {
     line-height: 24px;
 }
 
-
 .organization_connections .connections_listing .connections_settings .form-check .settings .toggle-switch {
-    margin-left: 10px;
+    margin-left: 8px;
 }
 
 .organization_connections .connections_listing .connections_settings .form-check .form-check-label {
-    margin-left: 10px;
+    margin-left: 5px;
     font-weight: bold !important;
 }
+
+@media (max-width: 768px) {
+    .organization_connections .form-group {
+        grid-template-columns: 1fr; 
+    }
+
+    .organization_connections .connections_listing .connections_settings .form-check {
+        flex-direction: column;
+        align-items: flex-start;
+        margin: 0 20px 20px 0;
+    }
+
+    .organization_connections .connections_listing .connections_settings .form-check .settings {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .organization_connections .connections_listing .connections_settings .pageName {
+        width: auto;
+        text-overflow: unset;
+        white-space: normal;
+    }
+
+    .organization_connections .connections_listing .connections_settings .form-check .settings .toggle-switch {
+        margin-left: 0;
+    }
+
+    .organization_connections .connections_listing .connections_settings .form-check .form-check-label {
+        margin-left: 0;
+    }
+}
+
+
+.small-text {
+    font-size: 13px;
+}
+
+  .info-btn {
+    color: grey; 
+  }
+
+  .info-btn:hover {
+    color: darkgrey; 
+  }
+
 
 .page_admin_connections div:not('.email_configurations') form .help-block {
     font-size: 20px;
