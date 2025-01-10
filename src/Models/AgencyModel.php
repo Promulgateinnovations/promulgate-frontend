@@ -352,4 +352,20 @@ class AgencyModel extends BaseModel
 
 	}
 
+	public function deleteAgencyEmployeeDetails(string $userId = NULL, string $agencyId = NULL): array
+{
+    if (!$userId || !$agencyId) {
+        return [
+            'body' => [],
+        ];
+    }
+
+    return $this->makeRequest('DELETE', 'api/v1/deleteAgencyEmployeeDetails', [
+        'json' => [
+            "userId"   => $userId,
+            "agencyId" => $agencyId,
+        ],
+    ]);
+}
+
 }
