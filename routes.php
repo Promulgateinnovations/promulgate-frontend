@@ -103,6 +103,9 @@ Route::group([
 	     ->name('connect_google_reviews')
 	;
 
+	Route::post('/delete', 'AdminController@googledrive')
+    ->name('delete_drive');
+
 });
 
 

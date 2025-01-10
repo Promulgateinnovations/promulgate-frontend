@@ -192,7 +192,7 @@
 														data-connection_setting_id="google_drive"
 														data-connection_setting_name="Google Drive"
 														data-connection_media_type="dam_organization_assets"
-														{% if business_details.assetName== 'google_drive' %} checked disabled {% endif %}
+														{% if business_details.assetName== 'google_drive' %} checked {% endif %}
 														data-toggle="toggle"
 														data-onstyle="success"
 														data-offstyle="outline-danger"
@@ -201,6 +201,14 @@
 														data-on="Connected <i class='fa fa-chain'></i>"
 														data-off="Not connected <i class='fa fa-chain-broken'></i>">
 											</div>
+											<input 
+												type="hidden" 
+												class="form-control" 
+												placeholder="Organization Id" 
+												value="{{ organization_id }} "
+												name="dam_organization_id" 
+												id="dam_organization_id" 
+											/>
 										</div>
 
 										<input type="hidden" class="form-control"

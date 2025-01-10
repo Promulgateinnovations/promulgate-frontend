@@ -505,4 +505,26 @@ class AdminModel extends BaseModel
 
 	}
 
+	public function disconnectDriveEndpoint(array $data = null): array
+	{
+
+		if (!$data || !isset($data['orgId'])) {
+			return [
+				'body' => [
+					'status' => 'error',
+					'message' => 'Invalid organization ID.',
+				],
+			];
+		}
+
+		$organization_data = [
+			'orgId' => $data['orgId'],
+		];
+
+		$response = $this->makeRequest('DELETE', '/api/v1/deleteAssestDetails', [
+			'json' => $organization_data,
+		]);
+		return $response;
+	}
+
 }
