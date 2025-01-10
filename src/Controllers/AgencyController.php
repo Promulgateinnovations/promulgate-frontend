@@ -301,6 +301,24 @@ class AgencyController extends BaseController
 			case 'currentOrganization' :
 				$this->setCurrentOrganizationId($all_input);
 				break;
+				
+				case 'deleteAgencyEmployee':
+
+					$userId = $all_input['userId'];
+					$agencyId = $all_input['agencyId'];
+				
+					if ($userId && $agencyId) {
+						$this->deleteAgencyEmployee($userId, $agencyId);
+					} else {
+						return response()->json([
+							'status' => false,
+							'error'  => [
+								'code'    => 10,
+								'message' => 'User ID or Agency ID is missing.',
+							],
+						]);
+					}
+					break;
 
 			default:
 				response()->json([
@@ -578,4 +596,40 @@ class AgencyController extends BaseController
 
 		}
 	}
+
+	public function deleteAgencyEmployee()
+	{
+		$all_input = input()->all();
+	
+		$userId = $all_input['userId'];
+		$agencyId = $all_input['agencyId'];
+	
+		if (!$userId || !$agencyId) {
+			return response()->json([
+				'status' => false,
+				'error'  => [
+					'code'    => 10,
+					'message' => 'User ID or Agency ID is missing.',
+				],
+			]);
+		}
+	
+		$response = $this->agencyModel->deleteAgencyEmployeeDetails($userId, $agencyId);
+	
+		if (isset($response['body']['status']) && $response['body']['status'] === 'success') {
+			return response()->json([
+				'success' => true,
+				'message' => 'Employee deleted successfully.',
+			]);
+		} else {
+			return response()->json([
+				'status' => false,
+				'error'  => [
+					'code'    => 20,
+					'message' => $response['body']['message'] ?? 'Failed to delete employee.',
+				],
+			]);
+		}
+	}
+
 }

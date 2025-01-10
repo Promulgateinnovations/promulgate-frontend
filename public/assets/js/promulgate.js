@@ -1614,7 +1614,7 @@ function processExtraAjaxData(extraData, formData, formElement) {
   toastr.clear();
 
   switch (formData.form_source) {
-    case "delete_user":
+    case "deleteUser":
       if (extraData.next_screen !== undefined) {
         setTimeout(function () {
           window.location.href = extraData.next_screen;
@@ -3833,3 +3833,76 @@ window.addEventListener('afterprint', () => {
     span.parentNode.replaceChild(input, span);
   });
 });
+
+
+$(".deleteUser").click(function () {
+  const userId = $(this).data('user-id');
+  const agencyId = $(this).data('agency-id');
+  // const email = $(this).data('email');
+
+  // Log the values to check if email is correct
+  console.log("User ID:", userId, "Agency ID:", agencyId);
+
+  const confirmationHtml = `
+    <br />
+    <button type='button' class='btn do_action'>Yes</button>
+    <button type='button' class='btn no_action'>No</button>
+  `;
+
+  toastr.info(confirmationHtml, 'Are you sure you want to delete this employee?', {
+    allowHtml: true,
+    timeOut: 50000,
+    tapToDismiss: true,
+    extendedTimeOut: 100000,
+    onShown: function (toast) {
+      $(".do_action").click(function () {
+        if (!userId || !agencyId) {
+          toastr.error("Invalid data: User ID or Agency ID missing.");
+          return;
+        }
+        deleteAgencyEmployee(userId, agencyId);
+      });
+
+      $(".no_action").click(function () {
+        toastr.clear();
+      });
+    },
+  });
+});
+
+deleteAgencyEmployee = (userId, agencyId) => {
+  const inputData = {
+    ajax_source: "agency/ajax",
+    from_ajax: true,
+    form_source: "deleteAgencyEmployee",
+    userId: userId,
+    agencyId: agencyId,
+    // email: email // Include email in the data being sent
+  };
+
+  console.log("Input Data:", inputData); // Debug log for AJAX data
+
+  showProcessingToast();
+
+  $.ajax({
+    url: "/agency/ajax",
+    type: "post",
+    dataType: "json",
+    contentType: "application/json; charset=UTF-8",
+    data: JSON.stringify(inputData),
+    success: function (responseData) {
+      console.log("Response Data:", responseData); // Debug log for success response
+
+      if (responseData.success) {
+        toastr.success(responseData.message || 'Employee deleted successfully.');
+        $(`[data-user-id="${userId}"][data-agency-id="${agencyId}"]`).closest('tr').remove();
+      } else {
+        toastr.error(responseData.message || 'Failed to delete the employee.');
+      }
+    },
+    error: function (error) {
+      console.error("AJAX Error:", error); // Debug log for AJAX error
+      toastr.error('An error occurred while deleting the employee.');
+    },
+  });
+};
