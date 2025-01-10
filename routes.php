@@ -15,6 +15,28 @@ Route::get('/homepage', 'IndexController@showHomePage', [
 ])->name('homepage')
 ;
 
+Route::group([
+    'prefix'     => '/super',
+    'middleware' => Promulgate\Middlewares\UserAuth::class,
+], function () {
+    Route::post('/ajax', 'SuperController@processAjax')->name('super_ajax');
+	
+	Route::get('/agencyList', 'SuperController@showAgencyList')
+		->name('super_agency_list');
+
+	Route::get('/addAgency', 'SuperController@showAddAgency')
+        ->name('super_add_new_agency');
+		
+	Route::get('/employeeList', 'SuperController@showEmployeeList')
+    	->name('super_employee_list');
+
+	Route::get('addEmployee', 'SuperController@showAddEmployee')
+		->name('super_add_new_employee');
+
+	Route::get('/updateAgency', 'SuperController@showAgencyToUpdate')
+		->name('super_upadate_agency');
+});
+
 Route::get('/', 'IndexController@showHomePage', [
 	'middleware' => Promulgate\Middlewares\UserAuth::class,
 ])->name('homepage')

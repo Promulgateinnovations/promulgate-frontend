@@ -8,7 +8,7 @@
 		<div class="d-flex align-items-center">
 			{% if logged_in_user %}
 			<div class="top-nav-menus">
-				<a class="nav-link" href="{{ url('/homepage') }}">
+				<a class="nav-link" href="{% if logged_in_user.username == 'admin' %}{{ url('super_agency_list') }}{% else %}{{ url('/homepage') }}{% endif %}">
 					<i class="fa fa-home"></i>
 					<span class="nav-link-text">Home</span>
 				</a>
