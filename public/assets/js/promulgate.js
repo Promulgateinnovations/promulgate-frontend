@@ -1755,6 +1755,30 @@ function processExtraAjaxData(extraData, formData, formElement) {
       }
       break;
 
+    case "add_new_employee":
+      if (extraData.next_screen !== undefined) {
+        setTimeout(function () {
+          window.location.href = extraData.next_screen;
+        }, 1000);
+      }
+      break;
+
+    case "add_new_agency":
+      if (extraData.next_screen !== undefined) {
+        setTimeout(function () {
+          window.location.href = extraData.next_screen;
+        }, 1000);
+      }
+      break;
+
+    case "update_agency":
+      if (extraData.next_screen !== undefined) {
+        setTimeout(function () {
+          window.location.href = extraData.next_screen;
+        }, 1000);
+      }
+      break;
+
     case "connection_configuration":
       var connection_selector = formData.connection_selector;
       var connection_configuration_toggle_element_selector =

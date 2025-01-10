@@ -1,0 +1,45 @@
+{% include '/super/tab_bar.html' %}
+<div class="admin_content active">
+<div class="row content_header">
+            <div class="col-6">
+                <h1 class="title">
+                    <i class="fa fa-building"></i> Agency
+                </h1>
+            </div>
+            <div class="col-6 action_buttons">
+                <a class="btn btn-promulgate-primary btn-sm" href="{{ url('super_add_new_agency') }}">
+                    <span>Add Agency</span>
+                    <i class="fa fa-user-plus"></i>
+                </a>
+            </div>
+        </div>
+        <div class="content_body">
+            <div class="row">
+            <table class="table data-table table-hover table-bordered align-middle size">
+                <thead>
+                    <tr class="text-center">
+                        <th>Agency Name</th>
+                        <th>Agency Email</th>
+                        <th>Description</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for team in agency_list %}
+                    <tr>
+                        <td>{{ team.name }}</td>
+                        <td>{{ team.email }}</td>
+                        <td>{{ team.description }}</td>
+                        <td class="text-center">
+                            <input type="hidden" name="form_source" id="form_source" value="{{ team.agencyId }}">
+                            <a href="{{ url('super_upadate_agency') }}?agencyId={{ team.agencyId }}" class="btn btn-outline-primary">
+                                <span><i class="fa fa-edit"></i></span>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+            </table>
+        </div>
+    </div>
+    </div>

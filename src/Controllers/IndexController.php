@@ -251,13 +251,14 @@ class IndexController extends BaseController
 						]);
 					}
 
+					$next_screen = ($user_details['email'] === 'admin@promulgate.in') ? url('super_agency_list') : url('homepage');
 					response()->json([
 						'status' => true,
 						'data'   =>
 							[
 								'message' => 'You are successfully logged in',
 								'extra'   => [
-									'next_screen' => url('homepage'),
+									'next_screen' => $next_screen,
 								],
 							],
 					]);
