@@ -1,6 +1,7 @@
 {% include '/reports/tab_bar.html' %}
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+<script src="https://kit.fontawesome.com/f74abea1e2.js" crossorigin="anonymous"></script>
 
 <style>
     :root {
@@ -466,7 +467,7 @@
             margin-bottom: 10px;
         }
 
-        .event {
+        /* .event {
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -500,7 +501,7 @@
         .event i {
             font-size: 1.2rem;
             margin-left: 10px;
-        }
+        } */
 
         .post-adjust3 {
             display: flex;
@@ -522,25 +523,18 @@
             max-height: 350px;
         }
 
-        .stats-cards-wrapper3 {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-            margin-bottom: 24px;
-        }
-
-        .stats-card3 {
+        /* .stats-card3 {
             background: white;
             border-radius: 25px;
             width: 100px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
-        }
+        } */
 
         .stats-title3 {
             color: #1e293b;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 600;
-            padding: 10px;
+            padding: 8px;
             border-bottom: 1px solid #e5e7eb;
             text-align: center;
         }
@@ -553,7 +547,7 @@
         }
 
         .stats-number3 {
-            font-size: 18px;
+            font-size: 13px;
             font-weight: 600;
             color: #1e293b;
             margin-bottom: 5px;
@@ -561,7 +555,7 @@
 
         .stats-label3 {
             color: #94a3b8;
-            font-size: 16px;
+            font-size: 13px;
             font-weight: 500;
         }
 
@@ -578,18 +572,10 @@
             margin-right: 20px;
         }
 
-        .stats-cards-wrapper3 {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-            margin-bottom: 24px;
-        }
-
-
         .stats-card3 {
             background: white;
-            border-radius: 25px;
-            width: 200px;
+            border-radius: 15px;
+            width: 130px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
         }
 
@@ -1240,10 +1226,8 @@
     </section>
 
     <section class="section">
-        <div class="container3 mt-1">
+        <div class="mt-1">
             <h2>Posts Online</h2>
-            <div class="d-flex">
-                <div class="metrics-container3">
                     <div class="stats-cards-wrapper3">
                         <div class="stats-card3">
                             <div class="stats-title3">Instagram</div>
@@ -1272,10 +1256,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-
-                    <div class="stats-cards-wrapper3">
                         <div class="stats-card3">
                             <div class="stats-title3">Youtube</div>
                             <div class="stats-content-wrapper3 post-adjust3">
@@ -1299,8 +1280,6 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="stats-cards-wrapper3">
                         <div class="stats-card3">
                             <div class="stats-title3">Whats app</div>
                             <div class="stats-content-wrapper3">
@@ -1319,44 +1298,93 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="stats-card3">
-                        <div class="stats-title3">X</div>
-                        <div class="stats-content-wrapper3">
-                            <div class="stats-content3">
-                                <div class="stats-number3">34</div>
-                                <div class="stats-label3">Tweets</div>
+                        <div class="stats-card3">
+                            <div class="stats-title3">X</div>
+                            <div class="stats-content-wrapper3">
+                                <div class="stats-content3">
+                                    <div class="stats-number3">34</div>
+                                    <div class="stats-label3">Tweets</div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
                 <!-- Calendar Section -->
-                <div class="side-card-post3">
-                    <h2>Calendar</h2>
-                    <div class="post-calendar-grid3">
-                        <div class="post-calendar-card3">
-                            <h3>17th Dec 24</h3>
-                            <div class="event success">
-                                <p><span>7:24 PM</span> Success <i class="fab fa-instagram"></i></p>
-                            </div>
-                            <div class="event success">
-                                <p><span>8:24 PM</span> Success <i class="fab fa-facebook"></i></p>
-                            </div>
-                            <div class="event failed">
-                                <p><span>7:24 PM</span> Failed <i class="fab fa-linkedin"></i></p>
-                            </div>
-                        </div>
-                        <div class="post-calendar-card3">
-                            <h3>18th Dec 24</h3>
-                            <div class="event waiting">
-                                <p><span>5:24 PM</span> Waiting <i class="fab fa-instagram"></i></p>
-                            </div>
-                        </div>
+                <div class="row content_header">
+                    <div class="col-6">
+                        <h2 class="title mb-0 mt-2">Calendar
+                        </h2>
                     </div>
                 </div>
-            </div>
+                <div class="content_body">
+                    <div class="row">
+                            <div class="calendar_events">
+                                <div class="calendar_date_group">
+                                    <div class="header">17th December'24</div>
+                                    <div class="date_events">
+                                        <div class="calendar_card success">
+                                            <div class="body">
+                                                <div class="left">
+                                                    <h3>7:24 PM</h3>
+                                                    <small class="text-muted">
+                                                        <b>SUCCESS</b>
+                                                    </small>
+                                                </div>
+                                                <span class="social-icons icon-rounded icon-zoom">
+                                                    <i class="fa fa-instagram fa-2x" aria-hidden="true"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="calendar_card success">
+                                            <div class="body">
+                                                <div class="left">
+                                                    <h3>8:24 PM</h3>
+                                                    <small class="text-muted">
+                                                        <b>SUCCESS</b>
+                                                    </small>
+                                                </div>
+                                                <span class="social-icons icon-rounded icon-zoom">
+                                                    <i class="fa fa-facebook fa-2x" aria-hidden="true"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="calendar_card failed">
+                                            <div class="body">
+                                                <div class="left">
+                                                    <h3>7:24 PM</h3>
+                                                    <small class="text-muted">
+                                                        <b>FAILED</b>
+                                                    </small>
+                                                </div>
+                                                <span class="social-icons icon-rounded icon-zoom">
+                                                    <i class="fa fa-linkedin fa-2x" aria-hidden="true"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="calendar_date_group">
+                                    <div class="header">18th December'24</div>
+                                    <div class="date_events">
+                                        <div class="calendar_card waiting">
+                                            <div class="body">
+                                                <div class="left">
+                                                    <h3>5:24 PM</h3>
+                                                    <small class="text-muted">
+                                                        <b>WAITING</b>
+                                                    </small>
+                                                </div>
+                                                <span class="social-icons icon-rounded icon-zoom">
+                                                    <i class="fa fa-instagram fa-2x" aria-hidden="true"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                </div>
         </div>
     </section>
 
