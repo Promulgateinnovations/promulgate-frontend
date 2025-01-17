@@ -434,11 +434,13 @@ $(document).ready(function () {
   });
 
   $(".organization_connection_configuration").change(function () {
-    var connection_selector = "#" + $(this).attr("data-connection_setting_id");
-    var connection_name = $(this).attr("data-connection_setting_name");
+    const connection_selector = "#" + $(this).attr("data-connection_setting_id");
+    const connection_name = $(this).attr("data-connection_setting_name");
+    const isConnected = $(this).prop("checked");
+    const orgId = $("#dam_organization_id").val();
 
     //If config connection is enabled then enable active checkbox
-    if ($(this).prop("checked")) {
+    if (isConnected) {
       Swal.fire({
         position: "top",
         title: "Connect your account",
@@ -493,7 +495,63 @@ $(document).ready(function () {
           }
         }
       });
-    } else {
+    } else if (isConnected===false && connection_name === "Google Drive") {
+      Swal.fire({
+          title: "Disconnect your account",
+          text: "Are you sure you want to disconnect your " + connection_name + " account?",
+          iconHtml: '<i class="fa fa-chain-broken"></i>',
+          iconColor: "#1998bf",
+          showCancelButton: true,
+          confirmButtonColor: "#1998bf",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Yes, disconnect",
+      }).then((result) => {
+          if (result.isConfirmed) {
+            // Disconnect API call via AJAX
+              const requestBody = {
+                ajax_source: "admin/ajax",
+                from_ajax: true,
+                form_source: "googledrive",
+                orgId: orgId,
+              };
+
+              $.ajax({
+                  url: "/admin/ajax",
+                  type: "POST",
+                  dataType: "json",
+                  contentType: "application/json; charset=UTF-8",
+                  data: JSON.stringify(requestBody),
+                  success: function (response) {
+                      if (response.status) {
+                          Swal.fire({
+                              title: "Disconnected!",
+                              text: "Your account has been disconnected.",
+                              icon: "success",
+                              timer: 2000,
+                          });
+                          $(connection_selector).prop("checked", false);
+                      } 
+                      else {
+                          Swal.fire({
+                              title: "Error",
+                              text: "Failed to disconnect. Please try again.",
+                              icon: "error",
+                          });
+                      }
+                  },
+                  error: function () {
+                      Swal.fire({
+                          title: "Error",
+                          text: "An error occurred while disconnecting.",
+                          icon: "error",
+                      });
+                  },
+              });
+          } else {
+              $(connection_selector).prop("checked", true);
+          }
+      });
+  } else {
       changeConnectionConfigurationStatusAndActiveSelectorStatus(
         "update_connection_configuration",
         connection_name,

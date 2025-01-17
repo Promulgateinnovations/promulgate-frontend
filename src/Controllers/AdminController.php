@@ -276,6 +276,7 @@ class AdminController extends BaseController
 				'GOOGLE_YOUTUBE_API_KEY'    => env('GOOGLE_YOUTUBE_API_KEY'),
 				'GOOGLE_DRIVE_API_KEY'        => env('GOOGLE_DRIVE_API_KEY'),
 				'CONNECTION_OAUTH_STATUS'     => json_encode(Session::pull('CONNECTION_OAUTH_STATUS') ?? []),
+				'organization_id'				=>Session::get('organization', 'id'),
 			]
 		);
 	}
@@ -432,6 +433,17 @@ class AdminController extends BaseController
 		$all_input['form_source'] = $all_input['form_source'] ?? "";
 
 		switch ($all_input['form_source']) {
+
+			case 'googledrive':
+				$organization_id = $all_input['orgId'] ?? null;
+
+				if ($organization_id) {
+
+					$this->googledrive($organization_id);
+				} else {
+					$this->adminModel->saveBusinessDetails($all_input);
+				}
+				break;
 
 			case 'organization' :
 
@@ -873,6 +885,40 @@ class AdminController extends BaseController
 		}
 	}
 
+	public function googledrive()
+	{
+		$all_input = input()->all();	
+		
+		$organization_id = $all_input['orgId'] ?? null;
+
+		if (!$organization_id) {
+			return response()->json([
+				'status' => false,
+				'error' => [
+					'code' => 10,
+					'message' => 'Organization ID is required to disconnect Google Drive.',
+				],
+			]);
+		}
+
+		$response = $this->adminModel->disconnectDriveEndpoint(['orgId' => $organization_id]);
+
+
+		if (isset($response['body']['status']) && $response['body']['status'] === 'success') {
+			return response()->json([
+				'status' => true,
+				'message' => 'Google Drive disconnected successfully.',
+			]);
+		}
+
+		return response()->json([
+			'status' => false,
+			'error' => [
+				'code' => 20,
+				'message' => $response['body']['message'] ?? 'Failed to disconnect Google Drive.',
+			],
+		]);
+	}
 
 	private function updateBusinessDetails($business_id, $business_details)
 	{
