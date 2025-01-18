@@ -68,12 +68,14 @@
 						</div>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link {% if 'analytics_' in current_url_name %} active {% endif %}" href="{{ url('analytics_channels') }}" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="navbar-dashboards">
+						<a class="nav-link {% if 'analytics_' in current_url_name or current_url_name == 'social_inbox' %} active {% endif %}" href="{{ url('analytics_channels') }}" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="navbar-dashboards">
 							<i class="fa fa-line-chart"></i>
 							<span class="nav-link-text">Analytics</span>
-							<span class="nav-link-icon"><i class="fa fa-caret-down {% if 'analytics_' in current_url_name %}  fa-caret-up {% endif %}"></i></span>
+							<span class="nav-link-icon">
+								<i class="fa fa-caret-down {% if 'analytics_' in current_url_name or current_url_name == 'social_inbox' %} fa-caret-up {% endif %}"></i>
+							</span>
 						</a>
-						<div class="collapse {% if 'analytics_' in current_url_name %} show {% endif %} sub-menu">
+						<div class="collapse {% if 'analytics_' in current_url_name or current_url_name == 'social_inbox' %} show {% endif %} sub-menu">
 							<ul class="nav nav-sm flex-column">
 								<li class="nav-item {% if current_url_name == 'analytics_channels' %} active {% endif %}">
 									<a href="{{ url('analytics_channels') }}">Subscription Analysis</a>
@@ -84,7 +86,6 @@
 								<li class="nav-item {% if current_url_name == 'analytics_competitors' %} active {% endif %}">
 									<a href="{{ url('analytics_competitors') }}">Competitor Analysis</a>
 								</li>
-							
 								<li class="nav-item {% if current_url_name == 'analytics_YouTube' %} active {% endif %}">
 									<a href="{{ url('analytics_YouTube') }}">YouTube Analysis</a>
 								</li>
@@ -101,16 +102,15 @@
 									<a href="{{ url('social_inbox', {type : 'incoming', filterBy: 'all'}) }}">Social Inbox</a>
 								</li>
 							</ul>
-							
 						</div>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link {% if 'reports_' in current_url_name %} active {% endif %}" href="{{ url('reports_overview') }}" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="navbar-reports">
-							<i class="fa fa-bullhorn"></i>
+						<a class="nav-link {% if 'reports_' in current_url_name %} active {% endif %}" href="{{ url('reports_overview') }}" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="navbar-dashboards">
+							<i class="fa fa-clipboard"></i>		
 							<span class="nav-link-text">Reports</span>
-							<span class="nav-link-icon">
+							<!-- <span class="nav-link-icon">
 								<i class="fa fa-caret-down {% if 'reports_' in current_url_name %} fa-caret-up {% endif %}"></i>
-							</span>
+							</span> -->
 						</a>
 					</li>
 				</ul>

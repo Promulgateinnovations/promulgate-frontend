@@ -128,6 +128,9 @@ Route::group([
 	Route::get('/addMember', 'AgencyController@showAddAgencyMember')
 			->name('agency_add_new_member')
 	;
+	Route::get('/delete', 'AgencyController@deleteUser')
+	        ->name('admin_delete');
+
 
 });
 
