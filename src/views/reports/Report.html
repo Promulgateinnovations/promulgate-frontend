@@ -28,6 +28,7 @@
     .dashboard-container {
         max-width: 1400px;
         margin: 0 auto;
+        background-color: #e8f4fc; /* Light blue background */
     }
 
     .section {
@@ -861,7 +862,7 @@
     gap: 10px;
 }
 
-.print-btn,
+.reportSection,
 .download-btn {
     display: flex;
     align-items: center;
@@ -881,12 +882,12 @@
     color: #ffffff;
 }
 
-.print-btn i,
+.reportSection i,
 .download-btn i {
     margin-right: 5px;
 }
 
-.print-btn:hover {
+.reportSection:hover {
     background-color: #f2f2f2;
 }
 
@@ -896,7 +897,7 @@
 
 
 </style>
-<div id="section-to-preview">
+<div id="reportSection">
     <div class="dashboard-container">
     {% if user_organization.id %}
     <header>
@@ -927,7 +928,7 @@
                 <button class="arrow-btn right-arrow">→</button>
             </div>
             <div class="action-buttons">
-                <a href="#" class="print-btn" id="print-btn">
+                <a class="link-in-iframe1">
                     <i class="fas fa-print"></i> Print
                 </a>
             
@@ -1939,10 +1940,93 @@ const xTweets=`{{reports.data.reachSocialIndexByChannel.xTweets}}`;
 // });
 
 
+document.querySelector('.download-btn').addEventListener('click', () => {
+    const element = document.getElementById('reportSection'); 
+
+    html2canvas(element, { scale: 2 }).then(canvas => {
+        const imgData = canvas.toDataURL('image/png');
+        const { jsPDF } = window.jspdf;
+
+        const pdf = new jsPDF('p', 'mm', 'a4');
+
+        const pageWidth = pdf.internal.pageSize.getWidth();
+        const pageHeight = pdf.internal.pageSize.getHeight();
+        const canvasWidth = canvas.width;
+        const canvasHeight = canvas.height;
+
+        const scale = pageWidth / canvasWidth;
+        const scaledHeight = canvasHeight * scale;
+
+        let position = 0;
+
+        while (position < scaledHeight) {
+            const canvasPage = document.createElement('canvas');
+            canvasPage.width = canvasWidth;
+            canvasPage.height = pageHeight / scale;
+
+            const ctx = canvasPage.getContext('2d');
+            ctx.drawImage(
+                canvas,
+                0,
+                position / scale,
+                canvasWidth,
+                canvasPage.height,
+                0,
+                0,
+                canvasWidth,
+                canvasPage.height
+            );
+
+            const pageData = canvasPage.toDataURL('image/png');
+            pdf.addImage(pageData, 'PNG', 0, 0, pageWidth, pageHeight);
+
+            position += pageHeight;
+
+            if (position < scaledHeight) {
+                pdf.addPage();
+            }
+        }
+
+        pdf.save('report.pdf');
+    });
+});
+
+
+document.querySelector('.link-in-iframe1').addEventListener('click', () => {
+    const element = document.getElementById('reportSection');
+
+    const totalWidth = element.scrollWidth;
+    const totalHeight = element.scrollHeight;
+
+    html2canvas(element, {
+        scale: 2,
+        width: totalWidth,
+        height: totalHeight,
+        x: 0,
+        y: 0,
+        useCORS: true
+    }).then(canvas => {
+        const imgData = canvas.toDataURL('image/png');
+
+        const printWindow = window.open('', '', 'height=600,width=800');
+
+        printWindow.document.write('<html><head><title>Print Report</title></head><body>');
+        printWindow.document.write('<img src="' + imgData + '" style="width: 100%; height: auto;" />');
+
+        printWindow.document.write('</body></html>');
+        printWindow.document.close();
+
+        setTimeout(function() {
+            printWindow.print();
+        }, 500);
+    });
+});
 
 
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 <script type="text/javascript" src="{{ js_path }}/lib/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
