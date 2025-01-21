@@ -298,6 +298,12 @@ class AgencyController extends BaseController
 				$this->addUser($all_input);
 				break;
 
+			case 'update_employee' :
+				$agency_id = $all_input['agency_id'];
+				$userId = $all_input['user_id'];
+				$this->updateEmployee($userId, $agency_id, $all_input);
+				break;
+
 			case 'currentOrganization' :
 				$this->setCurrentOrganizationId($all_input);
 				break;
@@ -628,6 +634,79 @@ class AgencyController extends BaseController
 					'code'    => 20,
 					'message' => $response['body']['message'] ?? 'Failed to delete employee.',
 				],
+			]);
+		}
+	}
+
+	public function showEmployeeToUpdate()
+	{
+        
+		$this->Breadcrumbs->add([
+			'title' => 'Update Employee',
+			'url'   => url('agency_upadate_employee'),
+		]);
+
+		$userId = request()->getInputHandler()->value('userId');
+
+		$employee_details = $this->agencyModel->getEmployeeDetails($userId)['body'];
+
+		if(getValue('status', $employee_details) == 'success') {
+
+			$employee_details = $employee_details['data'];
+
+		} else {
+			$employee_details = [];
+		}
+
+		$this->setViewData('update_agency_member.html',
+			[
+				'form_action'          => url('agency_ajax'),
+				'employee_details' => $employee_details,
+				'page_title'           => "Update Employee",
+				'hide_side_menu' => true,
+			]
+		);
+	}
+
+
+	private function updateEmployee($userId, $agency_id, $employee_details)
+	{
+
+		if(!$agency_id) {
+
+			response()->json([
+				'status' => false,
+				'error'  => [
+					'code'    => 10,
+					'message' => 'No Agency to update details',
+				],
+			]);
+
+		}
+
+		$updated_created_employee = $this->agencyModel->updateEmployeeDetails($userId, $agency_id, $employee_details)['body'];
+
+		if(getValue('status', $updated_created_employee) != 'success') {
+
+			response()->json([
+				'api_log' => api_log(true),
+				'status' => false,
+				'error'  => [
+					'code'    => 20,
+					'message' => $updated_created_employee['message'] ?? "Some problem form API",
+				],
+			]);
+
+		} else {
+			response()->json([
+				'status' => true,
+				'data'   =>
+					[
+						'message' => "Agency Employee Updated Succesfully",
+                        'extra'   => [
+							'next_screen' => url('agency_team_members'),
+						],
+					],
 			]);
 		}
 	}
