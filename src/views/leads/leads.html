@@ -1,4 +1,5 @@
     <link rel="stylesheet" type="text/css" href="/assets/css/leads_section/leads_table.css">
+    <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <div class="row">
         <div class="col-12 action_buttons text_right">
             <a class="btn btn-promulgate-primary btn-sm" href="{{ url('lead_upload') }}">
@@ -13,16 +14,16 @@
                 <span>Sample</span>
                 <i class="fa fa-download"></i>
             </a>
-            <span class="search_span">
+            <!-- <span class="search_span">
                 <a href="#">
                     <i class="fa fa-search" style="margin-left: 0;color: black;"></i>
                 </a>
-            </span>
+            </span> -->
         </div>
     </div>
-    <div class="lead_table_parent">
+    <div class="lead_table_parent" style="padding:10px;">
         <div class="content_body">
-            <table class="table table-bordered align-middle">
+            <table class="table table-bordered align-middle" id="userTable">
                 <thead>
                     <tr>
                         <th><input type="checkbox" name="lead" value="all" onClick="checkLeads(this)"></th>
@@ -97,4 +98,19 @@
                   }
                 });
         }
+        $(document).ready(function() {
+        // Initialize DataTable
+        var userTable = $('#userTable').DataTable({
+            "paging": true,
+            "searching": true,  // Enables DataTable's internal search box
+            "ordering": true,
+            "info": true
+        });
+
+        // Use the custom input search field to trigger the DataTable search
+        $('#searchInput').on('keyup', function() {
+            userTable.search(this.value).draw();  // Use DataTable's internal search
+        });
+    });
+
     </script>
