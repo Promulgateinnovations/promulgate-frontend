@@ -4,21 +4,21 @@
 
 <div class="admin_content active" style="height: 100%;">
     <div class="row content_header">
-        <div class="col-6">
+        <div class="col-3">
             <h1 class="title">
                 Social Inbox &nbsp;
                 <i class="fa fa-refresh refreshSocialMediaCron"></i>
             </h1>
         </div>
-        <div class="col-6">
-            <div class="row whatsapp_analysis_filter">
+        <div class="col-9">
+            <div class="row whatsapp_analysis_filter"style="margin-left:110px; width: 150%; max-width: 550px;">
                 <div class="col-3">
                     <!-- <input autocomplete="off" class="form-control date-picker" name="start_date" type="text" placeholder="From date" value="{{start_date}}"> -->
                 </div>
                 <div class="col-3">
                     <!-- <input autocomplete="off" class="form-control date-picker" name="end_date" type="text" placeholder="To date" value="{{end_date}}"> -->
                 </div>
-                <div class="col-3">
+                <div class="col-3 position-relative">
                     <!-- <select id="duration" name="duration" class="form-control wa_analysis_duration">
                         <option value="">Select Duration</option>
                         <option value="Weekly" {% if duration == "Weekly" %} selected {% endif %} >Weekly</option>
@@ -42,13 +42,15 @@
                         <option value="Google_Reviews" {% if filter_by=="Google_Reviews" %} selected {% endif %}>Google
                             Reviews</option>
                     </select>
+                    <i class="fa fa-chevron-down dropdown-icon"></i> <!-- Add your icon class -->
                     {% endif %}
                 </div>
-                <div class="col-3">
+                <div class="col-3 position-relative">
                     <select id="type" name="type" class="form-control wa_analysis_type">
                         <option value="INCOMING" {% if type=="INCOMING" %} selected {% endif %}>INCOMING</option>
                         <option value="OUTGOING" {% if type=="OUTGOING" %} selected {% endif %}>OUTGOING</option>
                     </select>
+                    <i class="fa fa-chevron-down dropdown-icon"></i> <!-- Add your icon class -->
                 </div>
             </div>
         </div>
