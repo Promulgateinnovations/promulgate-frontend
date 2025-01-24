@@ -1,0 +1,82 @@
+<div class="admin_content active">
+	<div class="row content_header">
+		<div class="col-6">
+			<h1 class="title">
+				<i class="fa fa-user-plus"></i> Update Employee
+			</h1>
+		</div>
+		<div class="col-6 action_buttons">
+			<a class="btn btn-promulgate-primary btn-sm" href="{{ url('agency_team_members') }}">
+				Team
+				<i class="fa fa-users"></i>
+			</a>
+		</div>
+	</div>
+	<div class="content_body">
+		{% if user_agency.id %}
+		<div class="row">
+			<form class="needs-validation" action="{{ form_action }}" novalidate>
+				<div class="row">
+					<div class="col-6">
+						<div class="form-group">
+							<label for="first_name" class="form-label">Firstname</label>
+							<input type="text" class="form-control" name="first_name" id="first_name" placeholder="FirstName" value="{{ employee_details.firstName }}">
+						</div>
+						<div class="form-group">
+							<label for="last_name" class="form-label">Lastname</label>
+							<input type="text" class="form-control" name="last_name" id="last_name" placeholder="Lastname" value="{{ employee_details.lastName }}">
+						</div>
+					</div>
+					<div class="col-6">
+						<div class="form-group">
+							<label for="email" class="form-label">Email</label>
+							<input type="email" class="form-control" name="email" id="email" placeholder="Email" value="{{ employee_details.email }}">
+						</div>
+						<div class="form-group">
+							<label for="username" class="form-label">Username</label>
+							<input type="text" class="form-control" name="username" id="username" placeholder="Username" value="{{ employee_details.userName }}">
+						</div>
+					</div>
+				</div>
+				<!-- <div class="col-6">
+					<div class="form-group">
+						<label for="password" class="form-label">Password</label>
+						<input type="password" class="form-control" name="password" id="password" placeholder="Password">
+					</div>
+				</div> -->
+
+				<div class="row">
+					<div class="text-center">
+						<button class="btn btn-min btn-promulgate-primary" type="submit">Update</button>
+						<button class="btn btn-min btn-outline-danger" type="reset">Ignore Changes</button>
+					</div>
+				</div>
+                <input type="hidden" name="agency_id" id="agency_id" value="{{employee_details.agency.agencyId}}">
+                <input type="hidden" name="user_id" id="user_id" value="{{employee_details.userId}}">
+                <input type="hidden" name="form_source" id="form_source" value="update_employee">
+				
+			</form>
+		</div>
+		{% elseif not user_agency.id %}
+		<div class="row mt-5">
+			<div class="text-center">
+				<h3 class="page-data-needed-block animate__animated animate__pulse">Please create Agency for adding team members {{agency_roles_list.length}}</h3>
+				<h5 class="mt-5">
+					<a href="{{ url('agency_details') }}" class="btn btn-promulgate-secondary">
+						Create Agency
+					</a>
+				</h5>
+			</div>
+		</div>
+		{% else %}
+		<div class="row">
+			<div class="mt-5">
+				<div class="text-center">
+					<h3 class="page-data-needed-block animate__animated animate__pulse">Please add some roles for the organization</h3>
+					<p class="text-muted mt-5 fs-5">Contact our team for adding Roles to your organization</p>
+				</div>
+			</div>
+		</div>
+		{% endif %}
+	</div>
+</div>

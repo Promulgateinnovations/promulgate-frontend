@@ -368,4 +368,42 @@ class AgencyModel extends BaseModel
     ]);
 }
 
+	public function getEmployeeDetails(string $userId = NULL): array
+	{
+		if (!$userId) {
+			return [
+				'body' => [],
+			];
+		}
+
+		return $this->makeRequest('POST', '/api/v1/getEmpDetailbyEmpID', [
+			'json' => [
+				"userId" => $userId,
+			],
+		]);
+	}
+
+	public function updateEmployeeDetails($userId, $agencyId, array $employee_details): array
+    {
+		if(!$employee_details || !$agencyId) {
+			return [
+				'body' => [],
+			];
+		}
+
+		$employee_data = [
+			"agencyId"       => $agencyId,
+			"userId"       => $userId,
+			"firstName"    => $employee_details['first_name'],
+			"lastName"   => $employee_details['last_name'],
+			"email"   => $employee_details['email'],
+			"userName"   => $employee_details['username']
+		];
+
+		return $this->makeRequest('POST', '/api/v1/agency/updateAgencyEmpDetails', [
+				'json' => $employee_data,
+			]
+		);
+	}
+
 }
