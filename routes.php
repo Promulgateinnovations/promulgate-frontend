@@ -35,6 +35,18 @@ Route::group([
 
 	Route::get('/updateAgency', 'SuperController@showAgencyToUpdate')
 		->name('super_upadate_agency');
+
+	Route::get('/details/{agency_id}', 'SuperController@showDetails')
+		->name('agency_details')
+		->where(['agency_id' => '[a-zA-Z0-9-]+']);
+
+	Route::get('/Empdetails', 'SuperController@showEmpDetails')
+    	->name('agency_Empdetails');
+
+	Route::get('/campaigndetails/{organization_id}', 'SuperController@showCampaignDetails')
+    	->name('get_campaigns')
+    	->where(['organization_id' => '[a-zA-Z0-9-]+']);
+	
 });
 
 Route::get('/', 'IndexController@showHomePage', [

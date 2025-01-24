@@ -127,6 +127,39 @@ class SuperModel extends BaseModel
 
 	}
 
+    public function getTeamsList(string $agencyId = NULL): array
+	{
+		if(!$agencyId) {
+			return [
+				'body' => [],
+			];
+		}
+
+		return $this->makeRequest('POST', '/api/v1/agency/getTeamDetails', [
+			'json' => [
+				"agencyId" => $agencyId,
+			],
+		]);
+
+	}
+
+    public function getListOfCampaigns($organization_id, $options = [])
+    {
+    if (!$organization_id) {
+        return [
+            'body' => [],
+        ];
+    }
+
+    $options['pageSize'] = $options['page_size'] ?? 100;
+
+    return $this->makeRequest('POST', '/api/v1/getCampaignListing?pageSize=' . $options['pageSize'], [
+        'json' => [
+            "orgId" => $organization_id,
+        ],
+    ]);
+    }
+
 
 }
 
