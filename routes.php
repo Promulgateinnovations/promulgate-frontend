@@ -37,7 +37,7 @@ Route::group([
 		->name('super_upadate_agency');
 
 	Route::get('/details/{agency_id}', 'SuperController@showDetails')
-		->name('agency_details')
+		->name('super_agency_details')
 		->where(['agency_id' => '[a-zA-Z0-9-]+']);
 
 	Route::get('/Empdetails', 'SuperController@showEmpDetails')
