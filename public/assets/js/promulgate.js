@@ -1746,27 +1746,27 @@ function setWhatsappLeadDetailsGraph(whatsappLeadDetails) {
           {
             y: whatsappLeadDetails.totalSent,
             label: `Sent ${whatsappLeadDetails.totalSent}/${whatsappLeadDetails.allLeads.length}`,
-            color: "#1998bf",
+            color: "#40C9E8",
           },
           {
             y: whatsappLeadDetails.totalFailed,
             label: `Failed ${whatsappLeadDetails.totalFailed}/${whatsappLeadDetails.allLeads.length}`,
-            color: "#ff4747",
+            color: "#3AA6D1",
           },
           {
             y: whatsappLeadDetails.totalReceived,
             label: `Received ${whatsappLeadDetails.totalReceived}/${whatsappLeadDetails.totalSent}`,
-            color: "#4469e2",
+            color: "#4D83B3",
           },
           {
             y: whatsappLeadDetails.totalRead,
             label: `Read ${whatsappLeadDetails.totalRead}/${whatsappLeadDetails.totalReceived}`,
-            color: "#f6941c",
+            color: "#325F8A",
           },
           {
             y: whatsappLeadDetails.totalReplied,
             label: `Replied ${whatsappLeadDetails.totalReplied}/${whatsappLeadDetails.totalRead}`,
-            color: "#50d444",
+            color: "#2B4377",
           },
         ],
       },
