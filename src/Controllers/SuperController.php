@@ -322,6 +322,90 @@ class SuperController extends BaseController
         }
     }
 
+    public function showDetails($agency_id)
+    {
+        $params = [
+            'agencyId' => $agency_id,
+        ];
+    
+        $response = $this->agencyModel->getListOfOrg($agency_id)['body'];
+    
+        $list_of_organizations = [];
+    
+        if ($response['status'] == 'success') {
+            $list_of_organizations = $response['data'];
+        }
+    
+        $employeeDetailsUrl = url('agency_Empdetails') . '?agencyId=' . $agency_id;
+    
+        $this->setViewData('AgencyDetails.html', [
+            'form_action' => url('super_ajax'),
+            'organizations_list' => $list_of_organizations,
+            'page_title' => "Details",
+            'hide_side_menu' => true,
+            'agency_id' => $agency_id,
+            'employee_details_url' => $employeeDetailsUrl,
+            'current_url_name' => 'agency_details',
+        ]);
+    }
+    
+    public function showEmpDetails()
+    {
+        $agencyId = $_GET['agencyId'] ?? null;
+    
+        $this->Breadcrumbs->add([
+            'title' => 'SuperTeam',
+            'url'   => url('agency_Empdetails') . '?agencyId=' . $agencyId,
+        ]);
+    
+        $employee_list = $this->superModel->getTeamsList($agencyId)['body'];
+    
+        if (getValue('status', $employee_list) != 'success') {
+            $employee_list = [];
+        } else {
+            $employee_list = $employee_list['data'];
+        }
+    
+        $this->setViewData('EmpDetails.html', [
+            'employee_list' => $employee_list,
+            'page_title'    => "Super Employee",
+            'hide_side_menu' => true,
+            'agency_id'     => $agencyId,
+            'current_agency_id' => $agencyId,
+            'current_url_name' => 'agency_Empdetails',
+        ]);
+    }
+    
+    public function showCampaignDetails($organization_id)
+    {
+        $list_of_campaigns = [];
+        $total_no_of_campaigns = 0;
+        $current_page = 1;
+        $no_of_campaigns_in_current_page = 0;
+    
+        $all_campaigns = $this->superModel->getListOfCampaigns($organization_id)['body'];
+    
+        if (getValue('status', $all_campaigns) == 'success') {
+            $list_of_campaigns = $all_campaigns['data']['campaignList']['rows'] ?? [];
+            $total_no_of_campaigns = $all_campaigns['data']['campaignList']['count'] ?? 0;
+            $current_page = $all_campaigns['data']['currentPage'] ?? 1;
+            $no_of_campaigns_in_current_page = $all_campaigns['data']['pageSize'] ?? 0;
+        }
+    
+        $this->setViewData('campaigndetails.html', [
+            'campaigns_list' => $list_of_campaigns,
+            'hide_side_menu' => true,
+            'filters' => [
+                'status' => array_unique(array_column($list_of_campaigns ?? [], 'status')),
+            ],
+            'page_title' => "Campaign Details",
+            'total_no_of_campaigns' => $total_no_of_campaigns,
+            'current_page' => $current_page,
+            'no_of_campaigns_in_current_page' => $no_of_campaigns_in_current_page,
+        ]);
+    }
+    
+
 
 
 }

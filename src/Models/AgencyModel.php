@@ -406,4 +406,21 @@ class AgencyModel extends BaseModel
 		);
 	}
 
+	public function getListOfOrg($agencyId): array
+	{
+		if( !$agencyId) {
+			return [
+				'body' => [],
+			];
+		}
+
+		return $this->makeRequest('POST', '/api/v1/getOrgListbyAgencyID', [
+			'json' => [
+				"agencyId" => $agencyId,
+			],
+		]
+	);
+	}
+
+
 }

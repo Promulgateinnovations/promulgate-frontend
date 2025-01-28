@@ -32,9 +32,17 @@
                         <td>{{ team.description }}</td>
                         <td class="text-center">
                             <input type="hidden" name="form_source" id="form_source" value="{{ team.agencyId }}">
+                            <div class="d-inline-flex justify-content-center align-items-center gap-2">
                             <a href="{{ url('super_upadate_agency') }}?agencyId={{ team.agencyId }}" class="btn btn-outline-primary">
                                 <span><i class="fa fa-edit"></i></span>
                             </a>
+                            <a href="{{ url('agency_details', {agency_id : team.agencyId}) }}" class="btn btn-outline-success">
+                                <span>View&nbsp;Details</span>
+                            </a>
+                            <!-- <a href="{{ url('agency_Empdetails', {agency_id : team.agencyId}) }}" class="link-in-iframe btn btn-sm btn-outline-success">
+                                <span><i class="fa fa-eye"></i> View Emp</span>
+                            </a> -->
+                            </div>
                         </td>
                     </tr>
                     {% endfor %}

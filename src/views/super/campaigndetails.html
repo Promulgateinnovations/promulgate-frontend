@@ -1,0 +1,87 @@
+<!-- {% include '/super/tab_bar1.html' %} -->
+
+<div class="admin_content active">
+    <div class="row content_header">
+        <div class="col-6">
+            <h1 class="title">
+                <i class="fa fa-folder"></i> {{ page_title }}
+            </h1>
+        </div>
+        <!-- Additional buttons can be added here if needed -->
+    </div>
+
+    <div class="content_body">
+        <!-- Filters Section -->
+        <div class="row">
+            <div class="col-12">
+                <h3>Filters</h3>
+                <label for="status">Status: </label>
+                <select id="status" class="form-control" onchange="filterCampaigns()">
+                    <option value="">All Statuses</option>
+                    {% for status in filters.status %}
+                        <option value="{{ status }}" {% if status == selected_status %}selected{% endif %}>{{ status }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+
+        <!-- Campaigns List Section -->
+        <div class="row mt-4">
+            <table class="table data-table table-hover table-bordered align-middle size">
+                <thead>
+                    <tr class="text-center">
+                        <th>Campaign Name</th>
+                        <th>Campaign Type</th>
+                        <th>User First Name</th>
+                        <th>User Last Name</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if campaigns_list is not empty %}
+                        {% for campaign in campaigns_list %}
+                        <tr>
+                            <td>{{ campaign.name }}</td>
+                            <td>{{ campaign.campaignTypes }}</td> <!-- Campaign Type -->
+                        <td>{{ campaign.user.firstName }}</td> <!-- User First Name -->
+                        <td>{{ campaign.user.lastName }}</td> <!-- User Last Name -->
+                        <td>{{ campaign.status }}</td> <!-- Campaign Status -->
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="4" class="text-center">No campaigns found.</td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination Section -->
+        <div class="row mt-4">
+            <div class="col-12 text-center">
+                <h3>Page {{ current_page }} of {{ (total_no_of_campaigns / no_of_campaigns_in_current_page)|round(0, 'ceil') }}</h3>
+                <div class="pagination">
+                    <a href="?page={{ current_page - 1 }}&status={{ selected_status }}"
+                       class="btn btn-sm btn-outline-primary {% if current_page <= 1 %}disabled{% endif %}">
+                        Previous
+                    </a>
+                    <a href="?page={{ current_page + 1 }}&status={{ selected_status }}"
+                       class="btn btn-sm btn-outline-primary {% if current_page * no_of_campaigns_in_current_page >= total_no_of_campaigns %}disabled{% endif %}">
+                        Next
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Function to handle filter changes
+    function filterCampaigns() {
+        var status = document.getElementById('status').value;
+        var url = new URL(window.location.href);
+        url.searchParams.set('status', status);  // Update status in the URL
+        window.location.href = url.toString();  // Reload with the new filter
+    }
+</script>
