@@ -216,56 +216,86 @@ class SuperController extends BaseController
         ]);
     }
 
+    public function processAjax()
+    {
+        $all_input = input()->all();
+        $formSource = $all_input['form_source'] ?? '';
 
+        switch ($formSource) {
+            case 'add_new_employee' :
+                $this->addEmployee($all_input);
+                break;
 
+            case 'add_new_agency' :
+                $this->addAgency($all_input);
+                break;
 
+            case 'deleteEmployee':
+                $userId = $all_input['userId'];
+                $agencyId = $all_input['agencyId'];
+                    
+                if ($userId && $agencyId) {
+                    $this->deleteEmployee($userId, $agencyId);
+                } else {
+                    return response()->json([
+                        'status' => false,
+                        'error'  => [
+                            'code'    => 10,
+                            'message' => 'User ID or Agency ID is missing.',
+                        ],
+                    ]);
+                }
+                break;
     
+            case 'updateEmployeeDetails':
+                $this->updateEmployeeDetails($all_input);
+                break;
+                
+            case 'updatedAgencyDetails':
+                $this->updatedAgencyDetails($all_input);
+                break;
 
-    public function showAgencyToUpdate()
+            default:
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Invalid form source.',
+                ]);
+        }
+    }
+
+    public function updateEmployeeDetails($update_Details)
 	{
-        $edit_agencyId = request()->getInputHandler()->value('agencyId');
-
-		$this->Breadcrumbs->add([
-			'title' => 'Update Agency',
-			'url'   => url('super_upadate_agency', ['agencyId' => $edit_agencyId]),
-		]);
-
-		$agency_details = $this->superModel->getAgencyDetails($edit_agencyId)['body'];
-
-		if(getValue('status', $agency_details) == 'success') {
-
-			$agency_details = $agency_details['data'];
-
-		} else {
-			$agency_details = [];
-		}
-
-		$this->setViewData('update_agency.html',
-			[
-				'form_action'          => url('super_ajax'),
-				'agency_details' => $agency_details,
-				'page_title'           => "Update Agency",
-				'hide_side_menu' => true,
-			]
-		);
-	}
-
-    private function updateAgency($agency_id, $agency_details)
-	{
-
-		if(!$agency_id) {
+        $all_input = input()->all();
+	
+		$response_data = $this->superModel->updatesuperEmployeeDetails($update_Details)['body'];
+	
+		if(getValue('status', $response_data) != 'success') {
 
 			response()->json([
 				'status' => false,
 				'error'  => [
-					'code'    => 10,
-					'message' => 'No Agency to update details',
+					'code'    => 20,
+					'message' => $response_data['message'] ?? "Some problem form API",
 				],
 			]);
+		} else {
+            response()->json([
+				'status' => true,
+				'data'   =>
+					[
+                        'message' => "Employee Updated successfully",
+						'extra'   => [
+                            'next_screen'=> url('super_employee_list'),
+						],
+					],
+			]);
+        }
+	}
 
-		}
-
-		$updated_created_agency = $this->superModel->updateAgencyModel($agency_id, $agency_details)['body'];
+    public function updatedAgencyDetails($updated_agency)
+	{
+        $all_input = input()->all();
+        $updated_created_agency = $this->superModel->updateSuperAgencyDetails($updated_agency)['body'];
 
 		if(getValue('status', $updated_created_agency) != 'success') {
 
@@ -293,34 +323,41 @@ class SuperController extends BaseController
 		}
 
 	}
-
-
-    public function processAjax()
-    {
-        $all_input = input()->all();
-        $formSource = $all_input['form_source'] ?? '';
-
-        switch ($formSource) {
-            case 'add_new_employee' :
-                $this->addEmployee($all_input);
-                break;
-
-            case 'add_new_agency' :
-                $this->addAgency($all_input);
-                break;
-            
-            case 'update_agency' :
-                $agency_id = $all_input['agency_id'];
-                $this->updateAgency($agency_id, $all_input);
-                break;
-
-            default:
-                return response()->json([
-                    'status' => false,
-                    'message' => 'Invalid form source.',
-                ]);
-        }
-    }
+    
+    public function deleteEmployee()
+	{
+		$all_input = input()->all();
+	
+		$userId = $all_input['userId'];
+		$agencyId = $all_input['agencyId'];
+	
+		if (!$userId || !$agencyId) {
+			return response()->json([
+				'status' => false,
+				'error'  => [
+					'code'    => 10,
+					'message' => 'User ID or Agency ID is missing.',
+				],
+			]);
+		}
+	
+		$response = $this->superModel->deleteEmployeeDetails($userId, $agencyId);
+	
+		if (isset($response['body']['status']) && $response['body']['status'] === 'success') {
+			return response()->json([
+				'success' => true,
+				'message' => 'Employee deleted successfully.',
+			]);
+		} else {
+			return response()->json([
+				'status' => false,
+				'error'  => [
+					'code'    => 20,
+					'message' => $response['body']['message'] ?? 'Failed to delete employee.',
+				],
+			]);
+		}
+	}
 
     public function showDetails($agency_id)
     {
