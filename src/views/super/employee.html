@@ -39,12 +39,20 @@
 					<td>{{ team.email }}</td>
 					<td>{{ team.userStatus }}</td>
 					<td class="text-center">
-						<a href="#" class="btn btn-outline-primary">
-							<span><i class="fa fa-edit"></i></span>
-						</a>
-						<a href="#" class="btn btn-outline-danger">
-							<span><i class="fa fa-trash-o"></i></span>
-						</a>
+						<a href="#" 
+					class="btn btn-outline-primary edit-btn"
+					data-bs-toggle="modal"
+					data-bs-target="#editEmployeeModal"
+					data-userid="{{ team.userId }}"
+					data-agencyid="{{ team.agencyAgencyId }}">
+					<span><i class="fa fa-edit"></i></span>
+					</a>
+					<a href="javascript:void(0);" 
+					class="btn btn-outline-danger deleteUser" 
+					data-user-id="{{ team.userId }}" 
+					data-agency-id="{{ team.agencyAgencyId }}">
+					<span><i class="fa fa-trash-o"></i></span>
+					</a>
 					</td>
 				</tr>
 				{% endfor %}
@@ -74,5 +82,52 @@
 			</div>
 		</div>
 		{% endif %}
+	</div>
+</div>
+
+<!-- Edit Employee Modal -->
+<div class="modal fade" id="editEmployeeModal" tabindex="-1" aria-labelledby="editEmployeeModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+	  <div class="modal-content">
+		<div class="modal-header">
+		  <h5 class="modal-title" id="editEmployeeModalLabel">Edit Employee</h5>
+		</div>
+		<div class="modal-body">
+		  <form id="editEmployeeForm">
+			<input type="hidden" id="modalUserId">
+			<input type="hidden" id="modalAgencyId">
+			
+			<div class="mb-3">
+			  <label for="editFirstName" class="form-label">First Name</label>
+			  <input type="text" class="form-control" id="editFirstName" required>
+			</div>
+			<div class="mb-3">
+			  <label for="editLastName" class="form-label">Last Name</label>
+			  <input type="text" class="form-control" id="editLastName" required>
+			</div>
+			<div class="mb-3">
+			  <label for="editUserName" class="form-label">Username</label>
+			  <input type="text" class="form-control" id="editUserName" required>
+			</div>
+			<div class="mb-3">
+			  <label for="editEmail" class="form-label">Email</label>
+			  <input type="email" class="form-control" id="editEmail" required>
+			</div>
+			<div class="mb-3">
+			  <label for="editStatus" class="form-label">User Status</label>
+			  <select class="form-control" id="editStatus">
+				<option value="active">Active</option>
+				<option value="inactive">Inactive</option>
+			  </select>
+			</div>
+			<div class="modal-footer">
+				<button class="btn btn-min btn-promulgate-primary" type="submit">
+					Update
+			</button>
+			<button class="btn btn-min btn-outline-danger" data-bs-dismiss="modal" type="reset">Close</button>
+			</div>
+		  </form>
+		</div>
+	  </div>
 	</div>
 </div>

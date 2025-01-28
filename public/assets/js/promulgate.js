@@ -1978,7 +1978,15 @@ function processExtraAjaxData(extraData, formData, formElement) {
       }
       break;
 
-    case "update_agency":
+    case "updateEmployeeDetails":
+      if (extraData.next_screen !== undefined) {
+        setTimeout(function () {
+          window.location.href = extraData.next_screen;
+        }, 1000);
+      }
+      break;
+
+    case "updatedAgencyDetails":
       if (extraData.next_screen !== undefined) {
         setTimeout(function () {
           window.location.href = extraData.next_screen;
@@ -4065,6 +4073,129 @@ window.addEventListener('afterprint', () => {
   });
 });
 
+// JavaScript to open the modal and populate the data
+document.addEventListener('DOMContentLoaded', function () {
+  const editButtons = document.querySelectorAll('.edit-btn');
+  
+  editButtons.forEach(button => {
+    button.addEventListener('click', function () {
+      const userId = this.getAttribute('data-userid');
+      const agencyId = this.getAttribute('data-agencyid');
+      const firstName = this.closest('tr').querySelector('td:nth-child(1)').textContent;
+      const lastName = this.closest('tr').querySelector('td:nth-child(2)').textContent;
+      const userName = this.closest('tr').querySelector('td:nth-child(3)').textContent;
+      const email = this.closest('tr').querySelector('td:nth-child(4)').textContent;
+      const userStatus = this.closest('tr').querySelector('td:nth-child(5)').textContent.trim().toLowerCase();
+
+      // Set the values in the modal
+      document.getElementById('modalUserId').value = userId;
+      document.getElementById('modalAgencyId').value = agencyId;
+      document.getElementById('editFirstName').value = firstName;
+      document.getElementById('editLastName').value = lastName;
+      document.getElementById('editUserName').value = userName;
+      document.getElementById('editEmail').value = email;
+      document.getElementById('editStatus').value = userStatus;
+    });
+  });
+
+  const editagencyButtons = document.querySelectorAll(".edit-agency-btn");
+
+  editagencyButtons.forEach((buttons) => {
+    buttons.addEventListener("click", function () {
+      const agencyId = this.getAttribute("data-agencyId");
+      const name = this.closest('tr').querySelector('td:nth-child(1)').textContent;
+      const email = this.closest('tr').querySelector('td:nth-child(2)').textContent;
+      const description = this.closest('tr').querySelector('td:nth-child(3)').textContent;
+
+      // Populate modal fields
+      document.getElementById("magencyId").value = agencyId;
+      document.getElementById("agencyName").value = name;
+      document.getElementById("agencyEmail").value = email;
+      document.getElementById("agencyDescription").value = description;
+    });
+  });
+
+  const editEmployeeForm = document.getElementById('editEmployeeForm');
+  const editAgencyForm = document.getElementById('editAgencyForm');
+
+  if (editEmployeeForm) {
+    editEmployeeForm.addEventListener('submit', function (event) {
+      event.preventDefault();
+      showProcessingToast("Updating employee details...");
+
+      const userId = document.getElementById('modalUserId').value;
+      const agencyId = document.getElementById('modalAgencyId').value;
+      const firstName = document.getElementById('editFirstName').value;
+      const lastName = document.getElementById('editLastName').value;
+      const userName = document.getElementById('editUserName').value;
+      const email = document.getElementById('editEmail').value;
+      const userStatus = document.getElementById('editStatus').value;
+
+      var inputData = {
+        ajax_source: "super/ajax",
+        from_ajax: true,
+        form_source: "updateEmployeeDetails",
+        userId: userId,
+        agencyId: agencyId,
+        firstName: firstName,
+        lastName: lastName,
+        userName: userName,
+        email: email,
+        userStatus: userStatus,
+      };
+
+      $.ajax({
+        url: "/super/ajax",
+        type: "post",
+        dataType: "json",
+        contentType: "application/json; charset=UTF-8",
+        data: JSON.stringify(inputData),
+        success: function (responseData) {
+          ajaxSuccessResponse(responseData, "employee", inputData);
+        },
+        error: function (error) {
+          ajaxFailedResponse(error, "employee", inputData);
+        },
+      });
+    });
+  }
+
+  if (editAgencyForm) {
+    editAgencyForm.addEventListener('submit', function (event) {
+      event.preventDefault();
+      showProcessingToast("Updating Agency details...");
+
+      const magencyId = document.getElementById('magencyId').value;
+      const name = document.getElementById('agencyName').value;
+      const memail = document.getElementById('agencyEmail').value;
+      const description = document.getElementById('agencyDescription').value;
+
+      var inputData = {
+        ajax_source: "super/ajax",
+        from_ajax: true,
+        form_source: "updatedAgencyDetails",
+        agencyId: magencyId,
+        name: name,
+        email: memail,
+        description: description,
+      };
+
+      $.ajax({
+        url: "/super/ajax",
+        type: "post",
+        dataType: "json",
+        contentType: "application/json; charset=UTF-8",
+        data: JSON.stringify(inputData),
+        success: function (responseData) {
+          ajaxSuccessResponse(responseData, "agency", inputData);
+        },
+        error: function (error) {
+          ajaxFailedResponse(error, "agency", inputData);
+        },
+      });
+    });
+  }
+});
 
 $(".deleteUser").click(function () {
   const userId = $(this).data('user-id');

@@ -31,11 +31,14 @@
                         <td>{{ team.email }}</td>
                         <td>{{ team.description }}</td>
                         <td class="text-center">
-                            <input type="hidden" name="form_source" id="form_source" value="{{ team.agencyId }}">
                             <div class="d-inline-flex justify-content-center align-items-center gap-2">
-                            <a href="{{ url('super_upadate_agency') }}?agencyId={{ team.agencyId }}" class="btn btn-outline-primary">
+                                <a href="#" 
+                                class="btn btn-outline-primary edit-agency-btn"
+                                data-bs-toggle="modal"
+                                data-bs-target="#editAgencyModal"
+                                data-agencyId="{{ team.agencyId }}">
                                 <span><i class="fa fa-edit"></i></span>
-                            </a>
+                                </a>
                             <a href="{{ url('agency_details', {agency_id : team.agencyId}) }}" class="btn btn-outline-success">
                                 <span>View&nbsp;Details</span>
                             </a>
@@ -51,3 +54,38 @@
         </div>
     </div>
     </div>
+
+
+<!-- Edit Agency Modal -->
+<div class="modal fade" id="editAgencyModal" tabindex="-1" aria-labelledby="editAgencyModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editAgencyModalLabel">Edit Agency</h5>
+        </div>
+        <div class="modal-body">
+          <form id="editAgencyForm">
+            <input type="hidden" id="magencyId">
+            <div class="mb-3">
+              <label for="agencyName" class="form-label">Agency Name</label>
+              <input type="text" class="form-control" id="agencyName" required>
+            </div>
+            <div class="mb-3">
+              <label for="agencyEmail" class="form-label">Agency Email</label>
+              <input type="email" class="form-control" id="agencyEmail" required>
+            </div>
+            <div class="mb-3">
+              <label for="agencyDescription" class="form-label">Description</label>
+              <textarea class="form-control" id="agencyDescription" rows="3"></textarea>
+            </div>
+            <div class="modal-footer">
+				<button class="btn btn-min btn-promulgate-primary" type="submit">
+					Update
+			    </button>
+			<button class="btn btn-min btn-outline-danger" data-bs-dismiss="modal" type="reset">Close</button>
+			</div>
+          </form>
+        </div>
+      </div>
+    </div>
+</div>

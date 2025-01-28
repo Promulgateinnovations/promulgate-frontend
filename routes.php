@@ -33,9 +33,6 @@ Route::group([
 	Route::get('addEmployee', 'SuperController@showAddEmployee')
 		->name('super_add_new_employee');
 
-	Route::get('/updateAgency', 'SuperController@showAgencyToUpdate')
-		->name('super_upadate_agency');
-
 	Route::get('/details/{agency_id}', 'SuperController@showDetails')
 		->name('agency_details')
 		->where(['agency_id' => '[a-zA-Z0-9-]+']);

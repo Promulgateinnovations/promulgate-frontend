@@ -85,48 +85,6 @@ class SuperModel extends BaseModel
         ]);
     }   
 
-
-    public function updateAgencyModel($agencyId, array $agency_details): array
-    {
-		if(!$agency_details || !$agencyId) {
-			return [
-				'body' => [],
-			];
-		}
-
-		$agency_data = [
-			"agencyId"       => $agencyId,
-			"name"        => $agency_details['agency_name'],
-			"email"   => $agency_details['agency_email'],
-			"description"      => $agency_details['agency_description']
-		];
-
-		return $this->makeRequest('POST', '/api/v1/agency/updateAgencyDetails', [
-				'json' => $agency_data,
-			]
-		);
-
-	}
-
-    public function getAgencyDetails(string $agencyId = NULL): array
-	{
-
-		if(!$agencyId) {
-			return [
-				'body' => [],
-			];
-		}
-
-
-		return $this->makeRequest('POST', '/api/v1/agency/getAgencyDetails', [
-				'json' => [
-					"agencyId" => $agencyId,
-				],
-			]
-		);
-
-	}
-
     public function getTeamsList(string $agencyId = NULL): array
 	{
 		if(!$agencyId) {
@@ -160,6 +118,66 @@ class SuperModel extends BaseModel
     ]);
     }
 
+    public function deleteEmployeeDetails(string $userId = NULL, string $agencyId = NULL): array
+    {
+        if (!$userId || !$agencyId) {
+            return [
+                'body' => [],
+            ];
+        }
+
+        return $this->makeRequest('DELETE', 'api/v1/deleteAgencyEmployeeDetails', [
+            'json' => [
+                "userId"   => $userId,
+                "agencyId" => $agencyId,
+            ],
+        ]);
+    }
+
+    public function updateSuperAgencyDetails(array $updated_agency): array
+    {
+		if(!$updated_agency) {
+			return [
+				'body' => [],
+			];
+		}
+
+		$updated_data = [
+			"agencyId"       => $updated_agency['agencyId'],
+			"name"        => $updated_agency['name'],
+			"email"   => $updated_agency['email'],
+			"description"      => $updated_agency['description']
+		];
+
+		return $this->makeRequest('POST', '/api/v1/agency/updateAgencyDetails', [
+				'json' => $updated_data,
+			]
+		);
+	}
+
+    public function updatesuperEmployeeDetails(array $update_Details): array
+	{
+		if(!$update_Details) {
+			return [
+				'body' => [],
+			];
+		}
+
+		$user_data = [
+            "userId"        => $update_Details['userId'],
+			"firstName"  => $update_Details['firstName'],
+			"lastName"   => $update_Details['lastName'],
+			"email"      => $update_Details['email'],
+			"userName"   => $update_Details['userName'],
+            "userStatus"      => $update_Details['userStatus'],
+			"agencyId"      => $update_Details['agencyId'],
+		];
+
+		return $this->makeRequest('POST', '/api/v1/agency/updateAgencyEmpDetails', [
+				'json' => $user_data,
+			]
+		);
+	}
 
 }
 
