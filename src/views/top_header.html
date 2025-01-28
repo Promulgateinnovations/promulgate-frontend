@@ -1,7 +1,7 @@
 <header class="header top-nav-bar">
 	<div class="top-nav-content">
 		<div class="logo-div">
-			<a href="{{ url('/homepage') }}">
+			<a href="{% if logged_in_user.username == 'admin' %}{{ url('super_agency_list') }}{% else %}{{ url('/homepage') }}{% endif %}">
 				<img alt="Promulgate Logo" class="logo" src="{{ images_path }}/logo.png"/>
 			</a>
 		</div>
