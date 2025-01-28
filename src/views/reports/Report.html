@@ -32,7 +32,7 @@
     }
 
     .section {
-        /* background: white; */
+        background-color: #e8f4fc; /* Light blue background */
         padding: 15px;
         margin-bottom: 20px;
         /* border-radius: 12px; */
@@ -901,6 +901,7 @@
     <div class="dashboard-container">
     {% if user_organization.id %}
     <header>
+        <section class="section">
         <div class="month-selector-container">
             <label for="month" class="choose-label">Choose month:</label>
             <div class="month-selector">
@@ -942,6 +943,7 @@
             padding: 0;
             position: relative;
             border-bottom: 2px solid var(--primary-color);"></b>
+            </section>
     </header>
 
 
@@ -1388,7 +1390,8 @@
         </div>
     </section>
 
-    <section class="google-reviews">
+    <section>
+    <div class="google-reviews">
         <h2>Google Reviews</h2>
         <div class="google-section">
             <div class="google-content">
@@ -1445,10 +1448,11 @@
                 </div>
             </div>
         </div>
+        </div>
     </section>
 
     <!-- paid analytics -->
-    <section>
+    <section class="section">
         <div class="container mt-5">
             <h2 class="mb-4">Paid Analytics</h2>
             <div class="dropdown-container">
@@ -1941,85 +1945,120 @@ const xTweets=`{{reports.data.reachSocialIndexByChannel.xTweets}}`;
 
 
 document.querySelector('.download-btn').addEventListener('click', () => {
-    const element = document.getElementById('reportSection'); 
-
-    html2canvas(element, { scale: 2 }).then(canvas => {
-        const imgData = canvas.toDataURL('image/png');
         const { jsPDF } = window.jspdf;
-
         const pdf = new jsPDF('p', 'mm', 'a4');
-
         const pageWidth = pdf.internal.pageSize.getWidth();
         const pageHeight = pdf.internal.pageSize.getHeight();
-        const canvasWidth = canvas.width;
-        const canvasHeight = canvas.height;
+        const html2canvasOptions = { scale: 2 };
 
-        const scale = pageWidth / canvasWidth;
-        const scaledHeight = canvasHeight * scale;
+        const sections = document.querySelectorAll('.section'); // Select all sections
+        let yPosition = 0;
 
-        let position = 0;
+        const renderSectionsToPDF = async () => {
+            for (let i = 0; i < sections.length; i++) {
+                const section = sections[i];
 
-        while (position < scaledHeight) {
-            const canvasPage = document.createElement('canvas');
-            canvasPage.width = canvasWidth;
-            canvasPage.height = pageHeight / scale;
+                // Render the section into a canvas
+                const canvas = await html2canvas(section, html2canvasOptions);
+                const imgData = canvas.toDataURL('image/png');
+                const canvasHeight = (canvas.height * pageWidth) / canvas.width; // Scale height based on width
 
-            const ctx = canvasPage.getContext('2d');
-            ctx.drawImage(
-                canvas,
-                0,
-                position / scale,
-                canvasWidth,
-                canvasPage.height,
-                0,
-                0,
-                canvasWidth,
-                canvasPage.height
-            );
+                if (yPosition + canvasHeight > pageHeight) {
+                    // If the section doesn't fit on the current page, add a new page
+                    pdf.addPage();
+                    yPosition = 0;
+                }
 
-            const pageData = canvasPage.toDataURL('image/png');
-            pdf.addImage(pageData, 'PNG', 0, 0, pageWidth, pageHeight);
+                // Add the section image to the PDF
+                pdf.addImage(imgData, 'PNG', 0, yPosition, pageWidth, canvasHeight);
+                yPosition += canvasHeight;
+            }
 
-            position += pageHeight;
+            // Save the final PDF
+            pdf.save('report.pdf');
+        };
 
-            if (position < scaledHeight) {
-                pdf.addPage();
+        renderSectionsToPDF();
+    });
+
+document.querySelector('.link-in-iframe1').addEventListener('click', () => {
+    const sections = document.querySelectorAll('.section'); // Select all sections
+    const printWindow = window.open('', '', 'height=600,width=800');
+
+    // Prepare the print document
+    printWindow.document.write(`
+        <html>
+            <head>
+                <title>Print Report</title>
+                <style>
+                    body {
+                        margin: 0;
+                        padding: 0;
+                        font-family: Arial, sans-serif;
+                    }
+                    .section {
+                        margin: 10px auto;
+                        padding: 10px;
+                        border: 1px solid #ccc;
+                        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+                        page-break-inside: avoid; /* Prevent section splitting */
+                    }
+                    .page-container {
+                        page-break-after: always; /* Ensure each page container ends cleanly */
+                    }
+                </style>
+            </head>
+            <body>
+    `);
+
+    // Process sections for printing
+    const processSectionsForPrint = async () => {
+        let pageContainerHTML = ''; // Collect sections for each page
+        let sectionCount = 0; // To track section number for the first page
+
+        // First, process the first page with 3 sections
+        for (let i = 0; i < 3 && i < sections.length; i++) {
+            const section = sections[i];
+            const canvas = await html2canvas(section, {
+                scale: 2,
+                useCORS: true
+            });
+            const imgData = canvas.toDataURL('image/png');
+            pageContainerHTML += `<img src="${imgData}" style="width: 100%; height: auto;" />`;
+        }
+
+        // Add the first page with 3 sections
+        printWindow.document.write(`<div class="page-container">${pageContainerHTML}</div>`);
+        pageContainerHTML = ''; // Reset for the next pages
+
+        // Now process remaining pages with 2 sections each
+        for (let i = 3; i < sections.length; i++) {
+            const section = sections[i];
+            const canvas = await html2canvas(section, {
+                scale: 2,
+                useCORS: true
+            });
+            const imgData = canvas.toDataURL('image/png');
+            pageContainerHTML += `<img src="${imgData}" style="width: 100%; height: auto;" />`;
+
+            // After every 2 sections, we create a new page
+            if ((i - 2) % 2 === 0 || i === sections.length - 1) {
+                printWindow.document.write(`<div class="page-container">${pageContainerHTML}</div>`);
+                pageContainerHTML = ''; // Reset for the next set of sections
             }
         }
 
-        pdf.save('report.pdf');
-    });
-});
-
-
-document.querySelector('.link-in-iframe1').addEventListener('click', () => {
-    const element = document.getElementById('reportSection');
-
-    const totalWidth = element.scrollWidth;
-    const totalHeight = element.scrollHeight;
-
-    html2canvas(element, {
-        scale: 2,
-        width: totalWidth,
-        height: totalHeight,
-        x: 0,
-        y: 0,
-        useCORS: true
-    }).then(canvas => {
-        const imgData = canvas.toDataURL('image/png');
-
-        const printWindow = window.open('', '', 'height=600,width=800');
-
-        printWindow.document.write('<html><head><title>Print Report</title></head><body>');
-        printWindow.document.write('<img src="' + imgData + '" style="width: 100%; height: auto;" />');
-
+        // Close the print document
         printWindow.document.write('</body></html>');
         printWindow.document.close();
 
-        setTimeout(function() {
+        // Trigger print
+        setTimeout(() => {
             printWindow.print();
         }, 500);
-    });
+    };
+
+    processSectionsForPrint();
 });
 
 
