@@ -39,8 +39,13 @@
 					<td>{{ team.email }}</td>
 					<td>{{ team.userStatus }}</td>
 					<td class="text-center">
-						<a href="{{ url('agency_upadate_employee') }}?userId={{ team.userId }}" class="btn btn-outline-primary">
-							<span><i class="fa fa-edit"></i></span>
+						<a href="#" 
+						class="btn btn-outline-primary edit-employee-btn"
+						data-bs-toggle="modal"
+						data-bs-target="#editAgencyEmployee"
+						userid="{{ team.userId }}"
+						agencyid="{{ team.agencyAgencyId }}">
+						<span><i class="fa fa-edit"></i></span>
 						</a>
 						<a href="javascript:void(0);" 
 						class="btn btn-outline-danger deleteUser" 
@@ -76,5 +81,53 @@
 			</div>
 		</div>
 		{% endif %}
+	</div>
+</div>
+
+
+<!-- Edit Agency Employee -->
+<div class="modal fade" id="editAgencyEmployee" tabindex="-1" aria-labelledby="editEmployeeModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+	  <div class="modal-content">
+		<div class="modal-header">
+		  <h5 class="modal-title" id="editEmployeeModalLabel">Edit Employee</h5>
+		</div>
+		<div class="modal-body">
+		  <form id="editAgencyEmployee">
+			<input type="hidden" id="emplyUserId">
+			<input type="hidden" id="emplyAgencyId">
+			
+			<div class="mb-3">
+			  <label for="emplyFirstName" class="form-label">First Name</label>
+			  <input type="text" class="form-control" id="emplyFirstName" required>
+			</div>
+			<div class="mb-3">
+			  <label for="emplyLastName" class="form-label">Last Name</label>
+			  <input type="text" class="form-control" id="emplyLastName" required>
+			</div>
+			<div class="mb-3">
+			  <label for="emplyUserName" class="form-label">Username</label>
+			  <input type="text" class="form-control" id="emplyUserName" required>
+			</div>
+			<div class="mb-3">
+			  <label for="emplyEmail" class="form-label">Email</label>
+			  <input type="email" class="form-control" id="emplyEmail" required>
+			</div>
+			<div class="mb-3">
+			  <label for="emplyStatus" class="form-label">User Status</label>
+			  <select class="form-control" id="emplyStatus">
+				<option value="active">Active</option>
+				<option value="inactive">Inactive</option>
+			  </select>
+			</div>
+			<div class="modal-footer">
+				<button class="btn btn-min btn-promulgate-primary" type="submit">
+					Update
+			</button>
+			<button class="btn btn-min btn-outline-danger" data-bs-dismiss="modal" type="reset">Close</button>
+			</div>
+		  </form>
+		</div>
+	  </div>
 	</div>
 </div>
