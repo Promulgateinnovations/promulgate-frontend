@@ -145,7 +145,7 @@ class AdminController extends BaseController
 
 			}
 		}
-
+		$final_team_list = $this->removeDuplicatesByEmail($final_team_list);
 		$this->setViewData('team.html',
 			[
 				'teams_list'       => $final_team_list,
