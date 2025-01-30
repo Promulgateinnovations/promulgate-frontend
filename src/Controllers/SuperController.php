@@ -382,7 +382,7 @@ class SuperController extends BaseController
             'hide_side_menu' => true,
             'agency_id' => $agency_id,
             'employee_details_url' => $employeeDetailsUrl,
-            'current_url_name' => 'agency_details',
+            'current_url_name' => 'super_agency_details',
         ]);
     }
     
