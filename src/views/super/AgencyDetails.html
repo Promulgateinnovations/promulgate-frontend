@@ -19,7 +19,7 @@
                 <thead>
                     <tr class="text-center">
                         <th>Organization Name</th>
-                        <th>Organization ID</th>
+                        <th>Organization Alias</th>
                         <th>Status</th>
                         <th>Actions</th>
                     </tr>
@@ -28,7 +28,7 @@
                     {% for organization in organizations_list %}
                     <tr>
                         <td>{{ organization.name }}</td>  <!-- Display organization name -->
-                        <td>{{ organization.orgId }}</td>    <!-- Display organization ID -->
+                        <td>{{ organization.aliasName }}</td>  <!-- Organization URL -->
                         <td>{{ organization.orgStatus }}</td> 
                         <td class="text-center">
                             <input type="hidden" name="form_source" id="form_source" value="{{ user_organization.id }}">
