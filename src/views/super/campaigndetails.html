@@ -12,17 +12,24 @@
 
     <div class="content_body">
         <!-- Filters Section -->
-        <div class="row">
-            <div class="col-12">
-                <h3>Filters</h3>
-                <label for="status">Status: </label>
-                <select id="status" class="form-control" onchange="filterCampaigns()">
-                    <option value="">All Statuses</option>
-                    {% for status in filters.status %}
-                        <option value="{{ status }}" {% if status == selected_status %}selected{% endif %}>{{ status }}</option>
-                    {% endfor %}
-                </select>
-            </div>
+        <div class="row mb-3">
+            <fieldset class="border p-2 filters_section">
+                <legend>Filters</legend>
+                <div class="row">
+                    <div class="col-4"></div>
+                    <div class="col-4 text-center">
+                        <select id="campaign_status_filter" name="campaign_status_filter" class="js-select-2 form-control"
+                                data-placeholder--id="0"
+                                data-placeholder--text="Campaign Status">
+                            <option value="">Campaign Status</option>
+                            {% for each_status in filters.status %}
+                                <option value="{{ each_status }}">{{ each_status }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-4"></div>
+                </div>
+            </fieldset>
         </div>
 
         <!-- Campaigns List Section -->

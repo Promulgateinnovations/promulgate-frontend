@@ -459,6 +459,7 @@ class SuperController extends BaseController
             'page_title' => "Campaign Details",
             'total_no_of_campaigns' => $total_no_of_campaigns,
             'current_page' => $current_page,
+            'show_only_content' => true,
             'no_of_campaigns_in_current_page' => $no_of_campaigns_in_current_page,
         ]);
     }
