@@ -140,8 +140,6 @@ Route::group([
 	Route::get('/delete', 'AgencyController@deleteUser')
 	        ->name('admin_delete');
 
-	Route::get('/updateEmployee', 'AgencyController@showEmployeeToUpdate')
-			->name('agency_upadate_employee');
 
 
 });
