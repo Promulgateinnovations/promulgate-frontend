@@ -361,52 +361,35 @@ class SuperController extends BaseController
 
     public function showDetails($agency_id)
     {
-        $params = [
-            'agencyId' => $agency_id,
-        ];
-    
         $response = $this->agencyModel->getListOfOrg($agency_id)['body'];
-    
         $list_of_organizations = [];
     
         if ($response['status'] == 'success') {
             $list_of_organizations = $response['data'];
         }
     
-        $employeeDetailsUrl = url('agency_Empdetails') . '?agencyId=' . $agency_id;
+        foreach ($list_of_organizations as &$organization) {
+            $orgDetailsResponse = $this->adminModel->getOrganizationDetails($organization['orgId'])['body'];
     
-        // Fetch the full agency list
-        $agency_list_response = $this->superModel->getAgencyList();
-        if (isset($agency_list_response['body']) && is_array($agency_list_response['body'])) {
-            $agency_list = $agency_list_response['body'];
-        } else {
-            $agency_list = [];
-        }
-        // Ensure $agency_list is an array before looping
-        $agency_name = '';
-        if (isset($agency_list['data']) && is_array($agency_list['data'])) {
-            foreach ($agency_list['data'] as $agency) {
-                if (isset($agency['agencyId']) && $agency['agencyId'] == $agency_id) {
-                    $agency_name = $agency['name'];
-                    break;
-                }
+            if (isset($orgDetailsResponse['status']) && $orgDetailsResponse['status'] == 'success') {
+                $organization['aliasName'] = $orgDetailsResponse['data']['aliasName'] ?? ''; // Add orgUrl to organization data
+            } else {
+                $organization['aliasName'] = ''; // Default empty value
             }
         }
-
-        $this->setViewData('AgencyDetails.html', [
-            'form_action' => url('super_ajax'),
-            'organizations_list' => $list_of_organizations,
-            'page_title' => "Details",
-            'hide_side_menu' => true,
-            'agency_id' => $agency_id,
-            'employee_details_url' => $employeeDetailsUrl,
-
-            'current_url_name' => 'agency_details',
-            'agency_name'         => $agency_name,
-
-        ]);
-    }
     
+        $employeeDetailsUrl = url('agency_Empdetails') . '?agencyId=' . $agency_id;
+    
+        $this->setViewData('AgencyDetails.html', [
+            'form_action'        => url('super_ajax'),
+            'organizations_list' => $list_of_organizations, // Updated List with orgUrl
+            'page_title'         => "Details",
+            'hide_side_menu'     => true,
+            'agency_id'          => $agency_id,
+            'employee_details_url' => $employeeDetailsUrl,
+            'current_url_name'   => 'agency_details1',
+        ]);
+    }    
     public function showEmpDetails()
     {
         $agencyId = $_GET['agencyId'] ?? null;
