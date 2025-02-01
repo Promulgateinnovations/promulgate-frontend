@@ -380,6 +380,23 @@ class SuperController extends BaseController
     
         $employeeDetailsUrl = url('agency_Empdetails') . '?agencyId=' . $agency_id;
     
+         // Fetch the full agency list
+         $agency_list_response = $this->superModel->getAgencyList();
+         if (isset($agency_list_response['body']) && is_array($agency_list_response['body'])) {
+             $agency_list = $agency_list_response['body'];
+         } else {
+             $agency_list = [];
+         }
+         $agency_name = '';
+         if (isset($agency_list['data']) && is_array($agency_list['data'])) {
+             foreach ($agency_list['data'] as $agency) {
+                 if (isset($agency['agencyId']) && $agency['agencyId'] == $agency_id) {
+                     $agency_name = $agency['name'];
+                     break;
+                 }
+             }
+         }
+
         $this->setViewData('AgencyDetails.html', [
             'form_action'        => url('super_ajax'),
             'organizations_list' => $list_of_organizations, // Updated List with orgUrl
@@ -387,7 +404,8 @@ class SuperController extends BaseController
             'hide_side_menu'     => true,
             'agency_id'          => $agency_id,
             'employee_details_url' => $employeeDetailsUrl,
-            'current_url_name'   => 'agency_details1',
+            'current_url_name'   => 'super_agency_details',
+            'agency_name'         => $agency_name,
         ]);
     }    
     public function showEmpDetails()
