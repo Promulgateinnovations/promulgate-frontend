@@ -81,6 +81,8 @@ class DealershipController extends BaseController
             'dealerships' => $dealerships,
             'page_title' => 'Dealership Overview',
             'organization_id' => $this->organizationId,
+            'hide_side_menu' => false,
+            'hide_side_bar' => true,  
         ]);
     }
 
