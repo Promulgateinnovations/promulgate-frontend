@@ -63,6 +63,7 @@ class CampaignController extends BaseController
 					'status' => array_unique(array_column($list_of_campaigns, 'status')),
 				],
 				'page_title'     => "Campaign Initiation",
+				'hide_side_menu' => false,
 			]
 		);
 	}
@@ -107,6 +108,7 @@ class CampaignController extends BaseController
 				'organization_hub'                             => $organization_hub,
 				'page_title'                                   => "Campaign Strategy Definition",
 				'page_content_heading'                         => $this->getPageContentHeading(),
+				'hide_side_menu' => false,
 			]
 		);
 	}
@@ -149,6 +151,7 @@ class CampaignController extends BaseController
 				'languages'                                    => $this->campaignModel->getLanguages(),
 				'page_title'                                   => "Campaign Target Viewers",
 				'page_content_heading'                         => $this->getPageContentHeading(),
+				'hide_side_menu' => false,
 			]
 		);
 	}
@@ -170,6 +173,7 @@ class CampaignController extends BaseController
 				'selected_social_media_connections'            => $this->getChannelSelectionSocialMediaConnections(),
 				'page_title'                                   => "Campaign Channel Selection",
 				'page_content_heading'                         => $this->getPageContentHeading(),
+				'hide_side_menu' => false,
 			]
 		);
 	}
@@ -224,6 +228,7 @@ class CampaignController extends BaseController
 				// NOT SECURE BUT FOR NOW
 				'GOOGLE_DRIVE_ACCESS_TOKEN'                    => $google_drive_access_token,
 				'BUSINESS_URL'                                 => url('admin_business'),
+				'hide_side_menu' => false,
 			]
 		);
 	}
@@ -300,6 +305,8 @@ class CampaignController extends BaseController
 				'current_calendar_events'                      => $final_calendar_events,
 				'page_title'                                   => "Campaign Calendar",
 				'page_content_heading'                         => $this->getPageContentHeading(),
+				'hide_side_menu' => false,  // Show side menu for Organization page
+                'hide_side_bar' => true, 
 			]
 		);
 	}

@@ -93,6 +93,7 @@ class AdminController extends BaseController
 				'form_action'          => url('admin_ajax'),
 				'organization_details' => $organization_details,
 				'page_title'           => "Admin Organization",
+				'hide_side_menu' => false,  // Show side bar for Organization page
 			]
 		);
 	}
@@ -111,6 +112,7 @@ class AdminController extends BaseController
 				'form_action'          => url('admin_ajax'),
 				'organization_details' => [],
 				'page_title'           => "Admin Organization",
+				'hide_side_menu' => false,  // Show side bar for Organization page
 			]
 		);
 	}
@@ -151,6 +153,7 @@ class AdminController extends BaseController
 				'teams_list'       => $final_team_list,
 				'director_details' => reset($directors_list),
 				'page_title'       => "Admin Team",
+				'hide_side_menu' => false,  // Show side bar for Organization page
 			]
 		);
 
@@ -230,6 +233,8 @@ class AdminController extends BaseController
 				'organization_roles_list' => $final_organization_roles_list,
 				'agency_user_list' => $agency_user_list,
 				'page_title'              => "Add new Team",
+				'hide_side_menu' => false,  // Show side bar for Organization page
+
 			]
 		);
 

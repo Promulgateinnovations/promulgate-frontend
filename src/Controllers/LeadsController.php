@@ -73,6 +73,8 @@ class LeadsController extends BaseController
 				'form_action'           => url('analytics_ajax'),
 				'page_title'            => "leads",
 				'lead_details' 			=> $leads_details['body'] ? $leads_details['body']['data'] : [],
+				'hide_side_menu' => false,  // Show side menu for Organization page
+                'hide_side_bar' => true, 
 			]
 		);
 
@@ -94,6 +96,8 @@ class LeadsController extends BaseController
 				'form_action'           => url('analytics_ajax'),
 				'page_title'            => "leads",
 				'lead_details' 			=> $leads_details['body'] ? $leads_details['body']['data'] : [],
+				'hide_side_menu' => false,  // Show side menu for Organization page
+                'hide_side_bar' => true, 
 			]
 		);
 
@@ -138,7 +142,9 @@ class LeadsController extends BaseController
 				//'last_days_users_count' => array_sum(array_column($users_count_per_day, 1)) ?? 0,
 				'page_title'            => "leads",
 				'show_only_content'         => true,
-				'lead_contacts' 		=> $lead_contacts['body'] ? $lead_contacts['body']['data'] : []
+				'lead_contacts' 		=> $lead_contacts['body'] ? $lead_contacts['body']['data'] : [],
+				'hide_side_menu' => false,  // Show side menu for Organization page
+                'hide_side_bar' => true, 
 			]
 		);
 
