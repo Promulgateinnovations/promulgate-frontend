@@ -50,7 +50,6 @@
 					<th>Email</th>
 					<th>Role</th>
 					<th>User Status</th>
-					<th>Actions</th>
 				</tr>
 				</thead>
 				<tbody>
@@ -62,14 +61,6 @@
 					<td>{{ team.user.email }}</td>
 					<td>{{ team.role.roleName }}</td>
 					<td>{{ team.user.userStatus }}</td>
-					<td class="text-center">
-						<a href="#" class="btn btn-outline-primary">
-							<span><i class="fa fa-edit"></i></span>
-						</a>
-						<a href="#" class="btn btn-outline-danger">
-							<span><i class="fa fa-trash-o"></i></span>
-						</a>
-					</td>
 				</tr>
 				{% endfor %}
 				</tbody>
