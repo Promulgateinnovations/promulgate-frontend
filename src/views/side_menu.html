@@ -113,6 +113,15 @@
 							</span> -->
 						</a>
 					</li>
+					<li class="nav-item">
+						<a class="nav-link {% if 'dealership_' in current_url_name %} active {% endif %}" href="{{ url('dealership_overview') }}" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="navbar-dashboards">
+							<i class="fa fa-file"></i>
+							<span class="nav-link-text">Dealership Report</span>
+							<!-- <span class="nav-link-icon">
+								<i class="fa fa-caret-down {% if 'reports_' in current_url_name %} fa-caret-up {% endif %}"></i>
+							</span> -->
+						</a>
+					</li>
 				</ul>
 			</div>
 			<div class="toggle-icon">

@@ -312,5 +312,16 @@ Route::group([
          ->name('reports_overview');
 });
 
+Route::group([
+    'prefix'     => '/dealership',
+    'middleware' => Promulgate\Middlewares\UserAuth::class,
+], function() {
+
+    Route::post('/ajax', 'DealershipController@processAjax')->name('dealership_ajax');
+
+    Route::get('/overview', 'DealershipController@showDealershipOverview')
+         ->name('dealership_overview');
+});
+
 
 Route::start();
