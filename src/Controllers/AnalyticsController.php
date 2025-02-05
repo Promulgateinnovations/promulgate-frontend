@@ -137,7 +137,8 @@ class AnalyticsController extends BaseController
 				'graph_users_count'     => json_encode($users_count_per_day, true),
 				'last_days_users_count' => array_sum(array_column($users_count_per_day, 1)) ?? 0,
 				'page_title'            => "Subscription Analysis",
-				'all_social_medias' => $all_channels
+				'all_social_medias' => $all_channels,
+				'hide_side_menu' => false,  // Show side bar for Organization page
 			]
 		);
 
@@ -171,6 +172,7 @@ class AnalyticsController extends BaseController
 				'form_action'    => url('analytics_ajax'),
 				'campaigns_list' => $list_of_campaigns,
 				'page_title'     => "Campaign Analysis- ".env('SITE_NAME'),
+				'hide_side_menu' => false,  // Show side bar for Organization page
 			]
 		);
 	}
@@ -248,7 +250,8 @@ class AnalyticsController extends BaseController
 				'page_title'                => "Analysis of campaign- ".env('SITE_NAME'),
 				'show_only_content'         => true,
 				'current_calendar_events'                      => $final_calendar_events,
-				'campaign_id' => $campaign_id
+				'campaign_id' => $campaign_id,
+				'hide_side_menu' => false,  // Show side bar for Organization page
 			]
 		);
 	}
@@ -272,6 +275,7 @@ class AnalyticsController extends BaseController
 				'last_days_users_session_count'          => $sum_of_sessions,
 				'last_days_average_users_sessions_count' => (int)($sum_of_sessions / 15),
 				'channel_viewers_count'                  => $this->analyticsModel->getChannelViewersCounts(),
+				'hide_side_menu' => false,  // Show side bar for Organization page
 			]
 		);
 	}
@@ -302,6 +306,7 @@ class AnalyticsController extends BaseController
 				'form_action' => url('analytics_ajax'),
 				'competitors' => $competitors,
 				'page_title'  => "Competitor Analysis".env('SITE_NAME'),
+				'hide_side_menu' => false,  // Show side bar for Organization page
 			]
 		);
 	}
@@ -349,6 +354,7 @@ class AnalyticsController extends BaseController
 				'form_action' => url('analytics_ajax'),
 				'yoututbe_analyticsData' => $yoututbe_analyticsData['data'],
 				'page_title'  => "Competitor Analysis".env('SITE_NAME'),
+				'hide_side_menu' => false,  // Show side bar for Organization page
 			]
 		);
 	}
@@ -547,6 +553,7 @@ class AnalyticsController extends BaseController
 				// 'socialInbox' 		=> isset($getSocialInbox['body']['data']) ? $getSocialInbox['body']['data']['getSocialInboxData'] : [],
 				'type' => strtoupper($type),
 				'filter_by' => $filterBy,
+				'hide_side_menu' => false,  // Show side bar for Organization page
 			]
 		);
 
@@ -607,6 +614,7 @@ class AnalyticsController extends BaseController
 				'indUniqueReadCounts' => json_encode($indUniqueReadCounts),
 				'indUniqueRepliedCounts' => json_encode($indUniqueRepliedCounts),
 
+				'hide_side_menu' => false,  // Show side bar for Organization page
 
 				//total analysis
 				'totalAnalysis' => json_encode($totalAnalysis)

@@ -41,23 +41,58 @@
 <body class="page_{{ current_url_name }}
 {% if show_only_content %} only_content full_width no_grid {% endif %}
 {% if hide_side_menu %} hide_side_menu {% endif %}
+{% if hide_side_bar %} hide_side_bar {% endif %}
 ">
 <div class="main_body transition-ease">
 
 	{% if not show_only_content %}
 	{% include 'top_header.html' %}
-	{% if not hide_side_menu%}
-	{% include 'side_menu.html' %}
+	
+	{# Include Agency Sidebar if on Agency-related screens #}
+	{% if 'agency' in current_url_name and not hide_side_bar %}
+		{% include 'side_bar.html' %}
+	
+	{# Include Organization Side Menu if on Organization-related screens #}
+	{% elseif 'admin' in current_url_name and not hide_side_menu %}
+		{% include 'side_menu.html' %}
+	
+	{# Include Campaign-related Side Menu if on Campaign-related screens #}
+	{% elseif 'campaign' in current_url_name and not hide_side_menu %}
+		{% include 'side_menu.html' %}
+	
+	{# Include Leads-related Side Menu if on Leads-related screens #}
+	{% elseif 'leads' in current_url_name and not hide_side_menu %}
+		{% include 'side_menu.html' %}
+	
+	{# Include Analytics-related Side Menu if on Analytics-related screens #}
+	{% elseif 'analytics' in current_url_name and not hide_side_menu %}
+		{% include 'side_menu.html' %}
+
+	{% elseif 'social_inbox' in current_url_name and not hide_side_menu %}
+		{% include 'side_menu.html' %}
+	
+	{# Include Reports-related Side Menu if on Reports-related screens #}
+	{% elseif 'reports' in current_url_name and not hide_side_menu %}
+		{% include 'side_menu.html' %}
+	
+	{# Include Dealership-related Side Menu if on Dealership-related screens #}
+	{% elseif 'dealership' in current_url_name and not hide_side_menu %}
+		{% include 'side_menu.html' %}
+	
+	{# Optional: Add a fallback if needed #}
+	{% else %}
+		{# Default or no sidebar/menu #}
 	{% endif %}
-	{% endif %}
+{% endif %}
+
 
 	<main class="main-page-content content transition-ease">
 
 		{% if not show_only_content %}
-		{% if not hide_side_menu %}
-		{% include 'breadcrumbs_content_heading.html' %}
-		{% endif %}
-		{% endif %}
+            {% if not hide_side_menu and not hide_side_bar %}
+                {% include 'breadcrumbs_content_heading.html' %}
+            {% endif %}
+        {% endif %}
 		<div class="error-messages"></div>
 		{{ include(content_template_file, content_template_placeholders, ignore_missing = true) }}
 
@@ -89,7 +124,7 @@
 {% if (current_url_name == 'admin_connections') or (current_url_name == 'admin_business') %}
 <script>
     const ADMINS_AJAX_SOURCE = '{{ url("admin_ajax") | raw }}';
-    const CONNECTION_OAUTH_STATUS = {{ CONNECTION_OAUTH_STATUS | raw }};
+    const CONNECTION_OAUTH_STATUS = '{{ CONNECTION_OAUTH_STATUS | raw }}';
 
     $(document).ready(function () {
         showOauthConnectionStatus();

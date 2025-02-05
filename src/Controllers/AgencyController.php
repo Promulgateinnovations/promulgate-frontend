@@ -74,8 +74,8 @@ class AgencyController extends BaseController
 				'form_action'          => url('agency_ajax'),
 				'agency_details' => $agency_details,
 				'page_title'           => "Admin Agency",
-				'hide_side_menu' => true,
-			]
+				'hide_side_bar' => false,  // Show side bar for Agency page
+				]
 		);
 	}
 
@@ -114,6 +114,7 @@ class AgencyController extends BaseController
 				'teams_list'       => $teams_list,
 				'page_title'       => "Agency Team",
 				'hide_side_menu' => true,
+				'hide_side_bar' => false,  // Show side bar for Agency page
 			]
 		);
 
@@ -138,7 +139,7 @@ class AgencyController extends BaseController
 			[
 				'form_action'          => url('agency_ajax'),
 				'page_title'              => "Add new Team",
-				'hide_side_menu' => true,
+				'hide_side_bar' => false,  // Show side bar for Agency page
 				
 			]
 		);
@@ -161,6 +162,7 @@ class AgencyController extends BaseController
 				'form_action'      => url('admin_ajax'),
 				'page_title'       => "Admin Business",
 				'business_details' => $business_details,
+				'hide_side_bar' => false,  // Show side bar for Agency page
 			]
 		);
 	}
@@ -233,6 +235,7 @@ class AgencyController extends BaseController
 				'facebook_graph_api_version'      => env('FACEBOOK_GRAPH_API_VERSION'),
 				'GOOGLE_OAUTH_CLIENT_ID'          => env('GOOGLE_OAUTH_CLIENT_ID'),
 				'GOOGLE_YOUTUBE_API_KEY'          => env('GOOGLE_YOUTUBE_API_KEY'),
+				'hide_side_bar' => false,  // Show side bar for Agency page
 			]
 		);
 	}

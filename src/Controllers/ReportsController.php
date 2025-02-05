@@ -91,6 +91,8 @@ class ReportsController extends BaseController
              'reports' => $reports,
              'page_title' => 'Reports Overview',
              'organization_id' => $this->organizationId,
+             'hide_side_menu' => false,  // Show side menu for Organization page
+             'hide_side_bar' => true, 
          ]);
      
      }
