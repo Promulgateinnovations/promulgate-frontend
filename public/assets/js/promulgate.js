@@ -57,6 +57,28 @@ $(document).ready(function () {
   //     //$('#select2Form').bootstrapValidator('revalidateField',
   // 'colors'); console.log("SELECTION CHANGED", e); })
 
+  $(".data-table-agency").DataTable({
+    pageLength: 5,
+    lengthMenu: [5, 10, 20, 50],
+    paging: false,
+    searching: true,
+    ordering: true,
+    select: false,
+    columnDefs: [
+      { targets: [3], orderable: false } // Disables sorting for "User Status" (Column 5)
+  ],
+  });
+  $(".data-table-employee").DataTable({
+    pageLength: 5,
+    lengthMenu: [5, 10, 20, 50],
+    paging: false,
+    searching: true,
+    ordering: true,
+    select: false,
+    columnDefs: [
+      { targets: [5], orderable: false } // Disables sorting for "User Status" (Column 5)
+  ],
+  });
   $(".data-table").DataTable({
     pageLength: 5,
     lengthMenu: [5, 10, 20, 50],
@@ -76,6 +98,9 @@ $(document).ready(function () {
     order: [[4, "desc"]],
     sDom: "", // "sDom":"lftipr"
     //"dom": '<"campaign_status_filter">'
+    columnDefs: [
+      { targets: [5], orderable: false } // Assuming "User Status" is column index 5
+    ],
   });
 
   //$("div.data_table_status_filter").html('<select
@@ -800,6 +825,67 @@ function enableBootstrapValidator() {
         processData(e.target);
       },
       fields: {
+        // ✅ Agency Name Validation
+        agency_name: {
+          validators: {
+            notEmpty: {
+              message: "Please provide agency name",
+            },
+            callback: {
+              message: "Invalid input",
+              callback: function (value, validator, $field) {
+                value = value.trim();
+
+                if ((value.length < 3 || value.length > 32 )&&value.length !="") {
+                  return {
+                    valid: false,
+                    message: "Agency name must be between 3 and 32 characters long",
+                  };
+                }
+
+                if (!/^[a-zA-Z\s]+$/.test(value)&&value.length !="") {
+                  return {
+                    valid: false,
+                    message: "Agency name can only contain alphabets and spaces",
+                  };
+                }
+
+                return true;
+              },
+            },
+          },
+        },
+
+        // ✅ Agency Email Validation
+        agency_email: {
+          validators: {
+            notEmpty: {
+              message: "Please provide agency email",
+            },
+            regexp: {
+              regexp: /^[a-zA-Z][a-zA-Z0-9.]*@[a-zA-Z]+\.(com|in)$/,
+              message: "Please enter a valid email address",
+            },
+          },
+        },
+
+        // ✅ Agency Description Validation 
+        agency_description: {
+          validators: {
+            notEmpty: {
+              message: "Please provide a description for the agency",
+            },
+            stringLength: {
+              min: 10,
+              max: 256,
+              message: "Description must be between 10 and 256 characters long",
+            },
+            regexp: {
+              regexp: /^[a-zA-Z#@\$*&()/\\!‘’“”._\s]+$/,
+              message: "Please enter a valid description.",
+            },
+          },
+        },
         email: {
           validators: {
             notEmpty: {
