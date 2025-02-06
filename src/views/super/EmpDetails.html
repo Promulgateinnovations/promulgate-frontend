@@ -14,12 +14,12 @@
 
     <div class="content_body">
         <div class="row">
-            <table class="table data-table table-hover table-bordered align-middle size">
+            <table class="table data-table-emply table-hover table-bordered align-middle size">
                 <thead>
                     <tr class="text-center">
-                        <th>Username</th>
                         <th>First Name</th>
                         <th>Last Name</th>
+                        <th>Username</th>
                         <th>Email</th>
                         <th>Status</th>
                     </tr>
@@ -27,9 +27,9 @@
                 <tbody>
                     {% for employee in employee_list %}
                     <tr>
-                        <td>{{ employee.userName }}</td> <!-- Display username -->
                         <td>{{ employee.firstName }}</td> <!-- Display first name -->
                         <td>{{ employee.lastName }}</td> <!-- Display last name -->
+                        <td>{{ employee.userName }}</td> <!-- Display username -->
                         <td>{{ employee.email }}</td> <!-- Display email -->
                         <td>{{ employee.userStatus }}</td> <!-- Display user status -->
                     </tr>

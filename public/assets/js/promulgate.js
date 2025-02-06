@@ -57,36 +57,38 @@ $(document).ready(function () {
   //     //$('#select2Form').bootstrapValidator('revalidateField',
   // 'colors'); console.log("SELECTION CHANGED", e); })
 
+  // Common DataTable settings
+  var commonSettings = {
+    pageLength: 5,
+    lengthMenu: [5, 10, 20, 50],
+    paging: false,
+    searching: true,
+    ordering: true,
+    select: false
+  };
+
   $(".data-table-agency").DataTable({
-    pageLength: 5,
-    lengthMenu: [5, 10, 20, 50],
-    paging: false,
-    searching: true,
-    ordering: true,
-    select: false,
+    ...commonSettings,
     columnDefs: [
-      { targets: [3], orderable: false } // Disables sorting for "User Status" (Column 5)
-  ],
+      { targets: [2, 3], orderable: false }
+    ]
   });
+
   $(".data-table-employee").DataTable({
-    pageLength: 5,
-    lengthMenu: [5, 10, 20, 50],
-    paging: false,
-    searching: true,
-    ordering: true,
-    select: false,
+    ...commonSettings,
     columnDefs: [
-      { targets: [5], orderable: false } // Disables sorting for "User Status" (Column 5)
-  ],
+      { targets: [4, 5], orderable: false }
+    ]
   });
-  $(".data-table").DataTable({
-    pageLength: 5,
-    lengthMenu: [5, 10, 20, 50],
-    paging: false,
-    searching: true,
-    ordering: true,
-    select: false,
+
+  $(".data-table-emply").DataTable({
+    ...commonSettings,
+    columnDefs: [
+      { targets: [4], orderable: false }
+    ]
   });
+
+  $(".data-table").DataTable(commonSettings);
 
   var campaigns_list_table = $(".data-table-campaigns-list").DataTable({
     pageLength: 10,
@@ -836,10 +838,10 @@ function enableBootstrapValidator() {
               callback: function (value, validator, $field) {
                 value = value.trim();
 
-                if ((value.length < 3 || value.length > 32 )&&value.length !="") {
+                if ((value.length < 5 || value.length > 32 )&&value.length !="") {
                   return {
                     valid: false,
-                    message: "Agency name must be between 3 and 32 characters long",
+                    message: "Agency name must be between 5 and 32 characters long",
                   };
                 }
 
@@ -856,15 +858,35 @@ function enableBootstrapValidator() {
           },
         },
 
-        // ✅ Agency Email Validation
-        agency_email: {
+        email: {
           validators: {
             notEmpty: {
-              message: "Please provide agency email",
+              message: "Please provide email",
             },
-            regexp: {
-              regexp: /^[a-zA-Z][a-zA-Z0-9.]*@[a-zA-Z]+\.(com|in)$/,
-              message: "Please enter a valid email address",
+            callback: {
+              message: "Invalid input",
+              callback: function (value, validator, $field) {
+                value = value.trim();
+                if (value.length > 25) {
+                  return {
+                    valid: false,
+                    message: "Email address cannot be longer than 25 characters.",
+                  };
+                }
+                if (!value.includes('@') && value.length > 25) {
+                  return {
+                    valid: false,
+                    message: "Please provide a valid email address",
+                  };
+                }
+                if (/[A-Z]/.test(value)) {
+                  return {
+                    valid: false,
+                    message: "Email cannot contain uppercase letters.",
+                  };
+                }
+                return true;
+              },
             },
           },
         },
@@ -873,23 +895,29 @@ function enableBootstrapValidator() {
         agency_description: {
           validators: {
             notEmpty: {
-              message: "Please provide a description for the agency",
+              message: "Please provide a agency description",
             },
-            stringLength: {
-              min: 10,
-              max: 256,
-              message: "Description must be between 10 and 256 characters long",
-            },
-            regexp: {
-              regexp: /^[a-zA-Z#@\$*&()/\\!‘’“”._\s]+$/,
-              message: "Please enter a valid description.",
-            },
-          },
-        },
-        email: {
-          validators: {
-            notEmpty: {
-              message: "Please provide email",
+            callback: {
+              message: "Invalid input",
+              callback: function (value, validator, $field) {
+                value = value.trim();
+        
+                if ((value.length < 10 || value.length > 250) && value.length != "") {
+                  return {
+                    valid: false,
+                    message: "Description must be between 10 and 250 characters long",
+                  };
+                }
+        
+                if (!/^[a-zA-Z#@\$*&()/\\!‘’“”._\s]+$/.test(value) && value.length != "") {
+                  return {
+                    valid: false,
+                    message: "Description can only contain letters and specific special characters",
+                  };
+                }
+        
+                return true;
+              },
             },
           },
         },
@@ -914,8 +942,8 @@ function enableBootstrapValidator() {
             },
             stringLength: {
               min: 5,
-              max: 50,
-              message: "The password must be min 5 characters long",
+              max: 20,
+              message: "The password must be between 5 and 20 characters long",
             },
           },
         },
@@ -926,7 +954,8 @@ function enableBootstrapValidator() {
             },
             stringLength: {
               min: 3,
-              message: "First name must be more than 3 characters long",
+              max: 20,
+              message: "First name must be between 3 and 20 characters long",
             },
             regexp: {
               regexp: /^[a-zA-Z ]+$/,
@@ -941,7 +970,8 @@ function enableBootstrapValidator() {
             },
             stringLength: {
               min: 1,
-              message: "Last name must be more than 1 characters long",
+              max: 20,
+              message: "Last name must be between 1 and 20 characters long",
             },
             regexp: {
               regexp: /^[a-zA-Z ]+$/,
@@ -956,7 +986,8 @@ function enableBootstrapValidator() {
             },
             stringLength: {
               min: 3,
-              message: "Username must be more than 3 characters long",
+              max: 20,
+              message: "Username must be between 3 and 20 characters long",
             },
             regexp: {
               regexp: /^[a-zA-Z0-9]+$/,
@@ -4244,7 +4275,6 @@ document.addEventListener('DOMContentLoaded', function () {
   if (editAgencyEmployee) {
     editAgencyEmployee.addEventListener('submit', function (event) {
       event.preventDefault();
-      showProcessingToast("Updating employee details...");
 
       const userId = document.getElementById('emplyUserId').value;
       const agencyId = document.getElementById('emplyAgencyId').value;
@@ -4286,7 +4316,6 @@ document.addEventListener('DOMContentLoaded', function () {
   if (editEmployeeForm) {
     editEmployeeForm.addEventListener('submit', function (event) {
       event.preventDefault();
-      showProcessingToast("Updating employee details...");
 
       const userId = document.getElementById('modalUserId').value;
       const agencyId = document.getElementById('modalAgencyId').value;
@@ -4328,7 +4357,6 @@ document.addEventListener('DOMContentLoaded', function () {
   if (editAgencyForm) {
     editAgencyForm.addEventListener('submit', function (event) {
       event.preventDefault();
-      showProcessingToast("Updating Agency details...");
 
       const magencyId = document.getElementById('magencyId').value;
       const name = document.getElementById('agencyName').value;

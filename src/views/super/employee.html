@@ -40,7 +40,7 @@
 					<td>{{ team.userStatus }}</td>
 					<td class="text-center">
 						<a href="#" 
-					class="btn btn-outline-primary edit-btn"
+					class="btn btn-outline-promulgate-primary edit-btn small-btn"
 					data-bs-toggle="modal"
 					data-bs-target="#editEmployeeModal"
 					data-userid="{{ team.userId }}"
@@ -48,7 +48,7 @@
 					<span><i class="fa fa-edit"></i></span>
 					</a>
 					<a href="javascript:void(0);" 
-					class="btn btn-outline-danger deleteUser" 
+					class="btn btn-outline-danger deleteUser small-btn" 
 					data-user-id="{{ team.userId }}" 
 					data-agency-id="{{ team.agencyAgencyId }}">
 					<span><i class="fa fa-trash-o"></i></span>
@@ -93,25 +93,25 @@
 		  <h5 class="modal-title" id="editEmployeeModalLabel">Edit Employee</h5>
 		</div>
 		<div class="modal-body">
-		  <form id="editEmployeeForm">
+		  <form class="needs-validation" action="{{ form_action }}" novalidate id="editEmployeeForm">
 			<input type="hidden" id="modalUserId">
 			<input type="hidden" id="modalAgencyId">
 			
-			<div class="mb-3">
+			<div class="mb-3 form-group">
 			  <label for="editFirstName" class="form-label">First Name</label>
-			  <input type="text" class="form-control" id="editFirstName" required>
+			  <input type="text" class="form-control" id="editFirstName" name="first_name" placeholder="FirstName">
 			</div>
-			<div class="mb-3">
+			<div class="mb-3 form-group">
 			  <label for="editLastName" class="form-label">Last Name</label>
-			  <input type="text" class="form-control" id="editLastName" required>
+			  <input type="text" class="form-control" id="editLastName" name="last_name" placeholder="Lastname">
 			</div>
-			<div class="mb-3">
+			<div class="mb-3 form-group">
 			  <label for="editUserName" class="form-label">Username</label>
-			  <input type="text" class="form-control" id="editUserName" required>
+			  <input type="text" class="form-control" id="editUserName" name="username" placeholder="Username">
 			</div>
-			<div class="mb-3">
+			<div class="mb-3 form-group">
 			  <label for="editEmail" class="form-label">Email</label>
-			  <input type="email" class="form-control" id="editEmail" required>
+			  <input type="email" class="form-control" id="editEmail" name="email" placeholder="Email">
 			</div>
 			<div class="mb-3">
 			  <label for="editStatus" class="form-label">User Status</label>
