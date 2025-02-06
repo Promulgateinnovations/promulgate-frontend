@@ -25,6 +25,18 @@ body {
     color: #525f7f;
 }
 
+.small-btn {
+    padding: 5px;
+    font-size: 12px;
+    height: 30px;
+    width: 30px;
+    line-height: 20px;
+}
+  
+.small-btn i {
+    font-size: 14px;
+}
+
 .font-nuno {
     font-family: "Nunito", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
