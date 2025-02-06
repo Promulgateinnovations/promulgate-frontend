@@ -113,7 +113,7 @@ class AgencyController extends BaseController
 			[
 				'teams_list'       => $teams_list,
 				'page_title'       => "Agency Team",
-				'hide_side_menu' => true,
+				// 'hide_side_menu' => true,
 				'hide_side_bar' => false,  // Show side bar for Agency page
 			]
 		);
@@ -162,7 +162,7 @@ class AgencyController extends BaseController
 				'form_action'      => url('admin_ajax'),
 				'page_title'       => "Admin Business",
 				'business_details' => $business_details,
-				'hide_side_bar' => false,  // Show side bar for Agency page
+				// 'hide_side_bar' => false,  // Show side bar for Agency page
 			]
 		);
 	}

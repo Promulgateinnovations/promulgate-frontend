@@ -2,10 +2,10 @@
 	<div class="uitabs">
 		<ul class="uitabs-container">
 			<li>
-				<a class="Organization  {% if current_url_name == 'super_agency_list' %} active {% endif %}" href="{{ url('super_agency_list') }}">Agency</a>
+				<a class="Organization  {% if current_url_name == 'super_agency_list' or current_url_name == 'super_add_new_agency' %} active {% endif %}" href="{{ url('super_agency_list') }}">Agency</a>
 			</li>
 			<li>
-				<a class="Team {% if 'super_employee_' in current_url_name %} active {% endif %}" href="{{ url('super_employee_list') }}">Employees</a>
+				<a class="Team {% if 'super_employee_' in current_url_name or current_url_name == 'super_add_new_employee' %} active {% endif %}" href="{{ url('super_employee_list') }}">Employees</a>
 			</li>
 		</ul>
 	</div>

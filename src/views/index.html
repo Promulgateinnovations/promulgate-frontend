@@ -42,6 +42,8 @@
 {% if show_only_content %} only_content full_width no_grid {% endif %}
 {% if hide_side_menu %} hide_side_menu {% endif %}
 {% if hide_side_bar %} hide_side_bar {% endif %}
+{% if hide_super_side_bar %} hide_super_side_bar {% endif %}
+{% if hide_super_side_menu %} hide_super_side_menu {% endif %}
 ">
 <div class="main_body transition-ease">
 
@@ -51,6 +53,15 @@
 	{# Include Agency Sidebar if on Agency-related screens #}
 	{% if 'agency' in current_url_name and not hide_side_bar %}
 		{% include 'side_bar.html' %}
+	
+	{% elseif 'super' in current_url_name  and not hide_super_side_bar %}
+		{% include 'super_side_bar.html' %}
+
+	{% elseif 'agency_details1' in current_url_name and not hide_super_side_menu %}
+		{% include 'super_side_menu.html' %}
+		
+	{% elseif 'agency_Empdetails' in current_url_name and not hide_super_side_menu %}
+		{% include 'super_side_menu.html' %}
 	
 	{# Include Organization Side Menu if on Organization-related screens #}
 	{% elseif 'admin' in current_url_name and not hide_side_menu %}
@@ -89,7 +100,7 @@
 	<main class="main-page-content content transition-ease">
 
 		{% if not show_only_content %}
-            {% if not hide_side_menu and not hide_side_bar %}
+            {% if not hide_side_menu and not hide_side_bar and not hide_super_side_bar and not hide_super_side_menu %}
                 {% include 'breadcrumbs_content_heading.html' %}
             {% endif %}
         {% endif %}
