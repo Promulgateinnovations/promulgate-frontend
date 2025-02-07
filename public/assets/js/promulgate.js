@@ -88,12 +88,19 @@ $(document).ready(function () {
     ]
   });
 
-  $(".data-table").DataTable(commonSettings);
-
+  $(".data-table").DataTable({
+    pageLength: 10,
+    lengthMenu: [10, 20, 50, 100],
+    paging: true,
+    searching: true,
+    ordering: true,
+    select: false,
+  });
+  
   var campaigns_list_table = $(".data-table-campaigns-list").DataTable({
     pageLength: 10,
     lengthMenu: [10, 20, 50, 100],
-    paging: false,
+    paging: true,
     searching: true,
     select: true,
     ordering: true,
@@ -3880,9 +3887,18 @@ $(function () {
       {data: "sentTo" , render : function ( data, type, row, meta ) {
         return row.messageType == "OUTGOING" ? 'To: +'+data : 'From: '+data;
       }},
-      {data: "message" , render : function ( data, type, row, meta ) {
-        return `<p title="${data}" onclick="showMsgDetails(this)" class="msg_body"data-msg="${data}">${data}</p>`
-      }},
+      { 
+        data: "message", 
+        render: function(data, type, row, meta) {
+            const maxLength = 25; // You can adjust the maximum length of the visible message
+            const truncatedMessage = data.length > maxLength ? data.substring(0, maxLength) + "..." : data;
+            return `
+                <p title="${data}" onclick="showMsgDetails(this)" class="msg_body" data-msg="${data}">
+                    ${truncatedMessage}
+                </p>
+            `;
+        }
+    },
       {data: "message" , render : function ( data, type, row, meta ) {
         return `
           <input data-bootstrap-switch type="checkbox" name="readInboxId[]"

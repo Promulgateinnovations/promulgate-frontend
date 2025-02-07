@@ -272,7 +272,7 @@ a:hover {
     grid-template-areas: "header header header header" "sidemenu content content content" "sidemenu content content content" "sidemenu footer footer footer";
     */
     grid-template-columns: 220px 1.6fr;
-    grid-template-rows: 80px 1.8fr 1fr 1fr;
+    grid-template-rows: 80px 1.4fr 1fr auto;
     gap: 0px 0px;
     grid-template-areas: "header header" "sidemenu content" "sidemenu content" "sidemenu footer";
     min-height: 100vh;
@@ -530,7 +530,7 @@ a:hover {
 
 .admin_content .content_body,
 .campaign_content .content_body {
-    margin-bottom: 30px;
+    margin-bottom: 20px;
 }
 
 .uitabs ul {
@@ -1744,4 +1744,27 @@ table.spends_table th {
 
 .required-text {
     color:red !important; 
+}
+
+.description-cell {
+    max-width: 200px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: pointer; 
+}
+
+#modalDescriptionContent {
+    white-space: normal;
+    word-wrap: break-word;
+    word-break: break-all;
+    overflow-wrap: break-word;
+}
+
+.modal-body p {
+    white-space: normal; 
+    word-wrap: break-word; 
+    word-break: break-word; 
+    max-height: 300px; 
+    overflow-y: auto; 
 }
