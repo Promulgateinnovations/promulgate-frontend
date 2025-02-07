@@ -55,7 +55,7 @@
                 <div class="row">
                     <table class="table data-table-campaigns-list table-hover table-bordered align-middle">
                         <thead>
-                        <tr class="text-center">
+                        <tr class="text-center table-head-bg">
                             <th>Name</th>
                             <th>Status</th>
                             <th>Type</th>
@@ -76,7 +76,7 @@
                                         <a href="{{ url('campaign_strategy_definition', {'campaign_id': campaign.campaignDefinitionId}) }}" class="btn btn-sm btn-outline-promulgate-primary {% if campaign.status == 'COMPLETED' %}disabled{% endif %}">
                                             <span><i class="fa fa-edit"></i> Edit</span>
                                         </a>
-                                        <a href="{{ url('analytics_campaign_analysis', {campaign_id : campaign.campaignDefinitionId}) }}" class="link-in-iframe btn btn-sm btn-outline-success">
+                                        <a href="{{ url('analytics_campaign_analysis', {campaign_id : campaign.campaignDefinitionId}) }}" class="link-in-iframe btn btn-sm btn-outline-promulgate-primary">
                                             <span><i class="fa fa-eye"></i> View Analysis</span>
                                         </a>
                                     </td>

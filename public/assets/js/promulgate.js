@@ -867,10 +867,10 @@ function enableBootstrapValidator() {
               message: "Invalid input",
               callback: function (value, validator, $field) {
                 value = value.trim();
-                if (value.length > 25) {
+                if (value.length > 30) {
                   return {
                     valid: false,
-                    message: "Email address cannot be longer than 25 characters.",
+                    message: "Email address cannot be longer than 30 characters.",
                   };
                 }
                 if (!value.includes('@') && value.length > 25) {
@@ -4451,6 +4451,7 @@ deleteAgencyEmployee = (userId, agencyId) => {
       if (responseData.success) {
         toastr.success(responseData.message || 'Employee deleted successfully.');
         $(`[data-user-id="${userId}"][data-agency-id="${agencyId}"]`).closest('tr').remove();
+        window.location.reload();
       } else {
         toastr.error(responseData.message || 'Failed to delete the employee.');
       }
