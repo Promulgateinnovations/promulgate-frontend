@@ -25,6 +25,10 @@ body {
     color: #525f7f;
 }
 
+.table-head-bg {
+    background-color: var(--primary-light-color);
+}
+
 .small-btn {
     padding: 5px;
     font-size: 12px;
