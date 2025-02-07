@@ -70,7 +70,8 @@ class SuperController extends BaseController
         $this->setViewData('employee.html', [
             'employee_list' => $employee_list,
             'page_title'   => "Super Employee",
-            'hide_side_menu' => true,
+            'hide_super_side_bar' => false,
+            'hide_side_bar'=>true,        
         ]);
     }
 
@@ -94,8 +95,9 @@ class SuperController extends BaseController
                 'form_action'          => url('super_ajax'),
 				'agency_list'       => $agency_list,
 				'page_title'       => "Super Agency",
-				'hide_side_menu' => true,
-			]
+                'hide_super_side_bar' => false,
+                'hide_side_bar'=>true,			
+            ]
 		);
     }
 
@@ -115,7 +117,10 @@ class SuperController extends BaseController
         $this->setViewData('add_agency.html', [
 			'form_action'          => url('super_ajax'),
 			'page_title'              => "Super Add Agency",
-			'hide_side_menu' => true,
+            'hide_super_side_bar' => false,
+            'hide_super_side_menu' =>false,
+            'hide_side_bar'=>true,
+            'hide_side_menu'=>false,
         ]);
     }
 
@@ -212,7 +217,8 @@ class SuperController extends BaseController
         $this->setViewData('add_employee.html', [
             'form_action'       => url('super_ajax'),
             'page_title'        => 'Super Add Employee',
-            'hide_side_menu'    => true,
+            'hide_super_side_bar' => false,
+            'hide_side_bar'=>true,        
         ]);
     }
 
@@ -404,8 +410,12 @@ class SuperController extends BaseController
             'hide_side_menu'     => true,
             'agency_id'          => $agency_id,
             'employee_details_url' => $employeeDetailsUrl,
-            'current_url_name'   => 'super_agency_details',
+            'current_url_name'   => 'agency_details1',
             'agency_name'         => $agency_name,
+            'hide_super_side_menu' => false,
+            'hide_super_side_bar' =>false,
+            'hide_side_bar'=>true,
+            'hide_side_menu'=>false
         ]);
     }    
     public function showEmpDetails()
@@ -432,6 +442,10 @@ class SuperController extends BaseController
             'agency_id'     => $agencyId,
             'current_agency_id' => $agencyId,
             'current_url_name' => 'agency_Empdetails',
+            'hide_super_side_bar' => false,
+            'hide_super_side_menu' =>false,
+            'hide_side_bar'=>true,
+            'hide_side_menu'=>false,
         ]);
     }
     
