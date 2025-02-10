@@ -1358,12 +1358,13 @@ textarea {
 }
 
 .organization_connections .connections_listing .connections_settings .pageName {
-    width: auto;
+    width: 110px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     margin: 0 10px 0;
     color: var(--primary-color);
+    font-size: 12px;
 }
 
 .organization_connections .connections_listing .connections_settings .pageName span.social-icons .fa {
@@ -1373,7 +1374,7 @@ textarea {
 }
 
 .organization_connections .connections_listing .connections_settings .form-check .settings .toggle-switch {
-    margin-left: 8px;
+    margin-left: 10px;
 }
 
 .organization_connections .connections_listing .connections_settings .form-check .form-check-label {
