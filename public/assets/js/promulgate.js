@@ -57,37 +57,18 @@ $(document).ready(function () {
   //     //$('#select2Form').bootstrapValidator('revalidateField',
   // 'colors'); console.log("SELECTION CHANGED", e); })
 
-  // Common DataTable settings
-  var commonSettings = {
-    pageLength: 5,
-    lengthMenu: [5, 10, 20, 50],
-    paging: false,
+  $(".data-table-emply").DataTable({
+    pageLength: 10,
+    lengthMenu: [10, 20, 50, 100],
+    paging: true,
     searching: true,
     ordering: true,
-    select: false
-  };
-
-  $(".data-table-agency").DataTable({
-    ...commonSettings,
-    columnDefs: [
-      { targets: [2, 3], orderable: false }
-    ]
-  });
-
-  $(".data-table-employee").DataTable({
-    ...commonSettings,
+    select: false,
     columnDefs: [
       { targets: [4, 5], orderable: false }
     ]
   });
-
-  $(".data-table-emply").DataTable({
-    ...commonSettings,
-    columnDefs: [
-      { targets: [4], orderable: false }
-    ]
-  });
-
+  
   $(".data-table").DataTable({
     pageLength: 10,
     lengthMenu: [10, 20, 50, 100],
@@ -95,6 +76,9 @@ $(document).ready(function () {
     searching: true,
     ordering: true,
     select: false,
+    columnDefs: [
+      { targets: [2, 3], orderable: false }
+    ]
   });
   
   var campaigns_list_table = $(".data-table-campaigns-list").DataTable({
@@ -2629,7 +2613,7 @@ function showOauthConnectionStatus() {
         popup: "animate__animated animate__zoomOutDown",
       },
     });
-  } else {
+  } else if (connectionStatus.provider_connection_name){
     Swal.fire({
       position: "top",
       icon: "success",
