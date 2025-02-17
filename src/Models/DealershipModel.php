@@ -40,7 +40,7 @@ class DealershipModel extends BaseModel
             'year' => $year,
         ];
 
-        return $this->makeRequest('POST', '/api/v1/analytics-report', [
+        return $this->makeRequest('POST', '/api/v1/delear-analy-report', [
             'json' => $payload,
         ]);
     }
