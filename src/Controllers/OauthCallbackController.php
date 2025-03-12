@@ -65,24 +65,66 @@ class OauthCallbackController extends BaseController
 			]));
 
 			try {
+				// Set required scopes for organization/page access
+				$scopes = ['r_liteprofile', 'r_organization_admin', 'rw_organization_admin'];
+				$LinkedInClient->setScopes($scopes);
 
 				$access_token        = $LinkedInClient->getAccessToken($linkedin_response['code']);
 				$profile_information = $LinkedInClient->api('/v2/me');
 
 				if($profile_information['id'] && $access_token->getToken()) {
 
+					// Fetch available LinkedIn pages/organizations
+					$pages = $LinkedInClient->get('organizationAcls?q=roleAssignee&role=ADMINISTRATOR&projection=(elements*(organization~(id,localizedName,vanityName)))');
+					$available_pages = [];
+					
+					if (isset($pages['elements']) && !empty($pages['elements'])) {
+						foreach ($pages['elements'] as $page) {
+							if (isset($page['organization~'])) {
+								$org = $page['organization~'];
+								$available_pages[] = [
+									'id' => $org['id'],
+									'name' => $org['localizedName'],
+									'vanityName' => $org['vanityName'] ?? ''
+								];
+							}
+						}
+					}
+
+					// Store pages in session for selection
+					Session::set('linkedin_available_pages', $available_pages);
+
 					$connection_info = [
 						'connection_name'       => 'LinkedIn',
 						'connection_media_type' => 'ORGANIC',
 						'linkedin'              => urlencode(json_encode([
 							'user_id'      => $profile_information['id'],
-							'username'     => $profile_information['localizedFirstName'],
+							'username'     => $profile_information['localizedFirstName'] . ' ' . $profile_information['localizedLastName'],
 							'access_token' => $access_token->getToken(),
+							'available_pages' => $available_pages
 						])),
 					];
 
+					// If only one page is available, select it automatically
+					if (count($available_pages) === 1) {
+						$page = $available_pages[0];
+						$linkedin_data = json_decode(urldecode($connection_info['linkedin']), true);
+						$linkedin_data['selected_page'] = [
+							'id' => $page['id'],
+							'name' => $page['name'],
+							'vanityName' => $page['vanityName']
+						];
+						$connection_info['linkedin'] = urlencode(json_encode($linkedin_data));
+					}
+
 					$AdminController   = new AdminController();
 					$connection_status = $AdminController->saveConnectionConfiguration('linkedin', $connection_info, true);
+
+					// If multiple pages available, redirect to page selection
+					if (count($available_pages) > 1) {
+						$redirect_url = url('linkedin_page_select');
+						Session::set('linkedin_connection_info', $connection_info);
+					}
 
 				} else {
 
