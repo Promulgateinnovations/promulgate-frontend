@@ -306,25 +306,36 @@ class AdminController extends BaseController
 		]);
 		$configured_connections = $CampaignController->getSocialMediaConnections(true);
 
+		// Get organization details for WhatsApp display
+		$organization_details = $this->adminModel->getOrganizationDetails($this->organizationId)['body'] ?? [];
+		$organization_name = '';
+		if (getValue('status', $organization_details) == 'success') {
+			$organization_name = getValue('name', $organization_details['data'], '');
+		}
+
 		// Ensure LinkedIn page names are included in configured_connections
 		foreach ($configured_connections as $key => $connection) {
 			if (strpos($key, 'linkedin') !== false && $connection['isConfigured']) {
-				// Fetch LinkedIn page details if not already present
-				if (!isset($connection['pageName'])) {
-					try {
-						$LinkedInClient = new \LinkedIn\Client(env('LINKEDIN_CLIENT_ID'), env('LINKEDIN_CLIENT_SECRET'));
-						$LinkedInClient->setAccessToken($connection['accessToken']);
-						
-						// Fetch organization details
-						$organizationId = $connection['organizationId'] ?? null;
-						if ($organizationId) {
-							$organization = $LinkedInClient->get('organizations/' . $organizationId);
-							$configured_connections[$key]['pageName'] = $organization['localizedName'] ?? '';
+				try {
+					error_log('Processing LinkedIn connection for key: ' . $key);
+					
+					// Get the LinkedIn data
+					$linkedin_data = json_decode(urldecode($connection['linkedin'] ?? ''), true);
+					
+					if ($linkedin_data) {
+						// Get vanity name if available
+						if (isset($linkedin_data['selected_page']['vanityName'])) {
+							$configured_connections[$key]['pageName'] = $linkedin_data['selected_page']['vanityName'];
+						} else {
+							$configured_connections[$key]['pageName'] = $linkedin_data['username'] ?? '';
 						}
-					} catch (\Exception $e) {
-						// Handle error silently or log it
+					} else {
 						$configured_connections[$key]['pageName'] = '';
 					}
+					
+				} catch (\Exception $e) {
+					error_log('Exception in LinkedIn connection: ' . $e->getMessage());
+					$configured_connections[$key]['pageName'] = '';
 				}
 			}
 		}
@@ -355,16 +366,6 @@ class AdminController extends BaseController
 			];
 		}
 
-		$LinkedInClient = new \LinkedIn\Client(env('LINKEDIN_CLIENT_ID'), env('LINKEDIN_CLIENT_SECRET'));
-		$LinkedInClient->setRedirectUrl(getAbsoluteUrl('oauth_linkedin_callback', NULL, [
-			'source' => 'connection',
-		], [
-			'NO_DEBUG' => true,
-		]));
-
-		// Saving state in session & validate once we receive authorization code for security
-		Session::set('linkedin_oauth_state', $LinkedInClient->getState());
-
 		$this->setViewData('connections.html', [
 			'form_action'                     => url('admin_ajax'),
 			'page_title'                      => "Admin Connections",
@@ -381,17 +382,8 @@ class AdminController extends BaseController
 			'facebook_graph_api_version'      => env('FACEBOOK_GRAPH_API_VERSION'),
 			'GOOGLE_OAUTH_CLIENT_ID'          => env('GOOGLE_OAUTH_CLIENT_ID'),
 			'GOOGLE_YOUTUBE_API_KEY'          => env('GOOGLE_YOUTUBE_API_KEY'),
-			'linkedin_oauth_authorization_url' => $LinkedInClient->getLoginUrl([
-				'r_emailaddress',
-				'r_liteprofile',
-				'w_member_social',
-				'rw_organization_admin',
-				'r_organization_social',
-				'w_organization_social',
-				'w_member_social',
-				'r_1st_connections_size'
-			]),
 			'CONNECTION_OAUTH_STATUS'          => json_encode(Session::pull('CONNECTION_OAUTH_STATUS') ?? []),
+			'organization_name'               => $organization_name,
 		]);
 	}
 
