@@ -288,128 +288,94 @@ class AdminController extends BaseController
 
 
 	public function showConnections()
-{
-    $this->Breadcrumbs->add([
-        'title' => 'Connections',
-        'url'   => url('admin_connections'),
-    ]);
+	{
 
-    // Fetch Organization Connections (Facebook, Instagram, etc.)
-    $organization_connections = [];
-    $organization_data = $this->adminModel->getConnectionsList($this->organizationId)['body'] ?? [];
-    if (getValue('status', $organization_data) == 'success') {
-        $organization_connections = getValue('connections', $organization_data['data'], []);
-    }
+		$this->Breadcrumbs->add([
+			'title' => 'Connections',
+			'url'   => url('admin_connections'),
+		]);
 
-    $CampaignController = new CampaignController([
-        'context' => 'data',
-    ]);
-    $configured_connections = $CampaignController->getSocialMediaConnections(true);
+		$organization_connections = $this->adminModel->getConnectionsList($this->organizationId)['body'] ?? [];
+		if(getValue('status', $organization_connections) != 'success') {
+			$organization_connections = [];
+		} else {
+			$organization_connections = getValue('connections', $organization_connections['data'], []);
+		}
 
-    // Get Organization Details (For WhatsApp & Display)
-    $organization_details = $this->adminModel->getOrganizationDetails($this->organizationId)['body'] ?? [];
-    $organization_name = getValue('name', $organization_details['data'] ?? [], '');
+		$CampaignController     = new CampaignController([
+			'context' => 'data',
+		]);
+		$configured_connections = $CampaignController->getSocialMediaConnections(true);
 
-    // 🔹 LINKEDIN INTEGRATION - FETCH PROFILE & ORGANIZATION PAGES
-    $linkedInProfileName = "";
-    $linkedInPages = [];
-    try {
-        $LinkedInClient = new \LinkedIn\Client(env('LINKEDIN_CLIENT_ID'), env('LINKEDIN_CLIENT_SECRET'));
-        $LinkedInClient->setRedirectUrl(getAbsoluteUrl('oauth_linkedin_callback', NULL, ['source' => 'connection']));
-        Session::set('linkedin_oauth_state', $LinkedInClient->getState());
+		$final_organization_connections        = [];
+		$final_organization_connections_titles = [];
 
-        // Fetch LinkedIn Pages (Organizations)
-        $accessToken = Session::get('linkedin_access_token'); // Retrieve stored access token
-        if ($accessToken) {
-            // Fetch LinkedIn Profile Name
-            $profileResponse = $LinkedInClient->api('/v2/me', 'GET', [
-                'headers' => ['Authorization' => 'Bearer ' . $accessToken]
-            ]);
-            if (!empty($profileResponse['localizedFirstName'])) {
-                $linkedInProfileName = $profileResponse['localizedFirstName'] . " " . ($profileResponse['localizedLastName'] ?? "");
-            }
+		if($organization_connections) {
 
-            // Fetch Administered LinkedIn Pages
-            $linkedInPagesResponse = $LinkedInClient->api('/v2/organizationalEntityAcls?q=roleAssignee', 'GET', [
-                'headers' => ['Authorization' => 'Bearer ' . $accessToken]
-            ]);
+			foreach($organization_connections as $connection) {
 
-            if (!empty($linkedInPagesResponse['elements']) && is_array($linkedInPagesResponse['elements'])) {
-                foreach ($linkedInPagesResponse['elements'] as $page) {
-                    $orgId = str_replace('urn:li:organization:', '', $page['organizationalTarget']);
+				$unique_name   = strtolower(preg_replace('/[^a-zA-Z0-9_]/', '_', $connection['name']));
+				$final_organization_connections[$connection['type']]
+				[$unique_name] = [
+					'name'        => $connection['name'],
+					'unique_name' => $unique_name,
+					'id'          => $connection['id'] ?? 0,
+					'type'        => $connection['type'],
+				];
+			}
 
-                    // Fetch organization details
-                    $orgDetails = $LinkedInClient->api("/v2/organizations/{$orgId}", 'GET', [
-                        'headers' => ['Authorization' => 'Bearer ' . $accessToken]
-                    ]);
+			// For looping in same order
+			$final_organization_connections = [
+				'ORGANIC' => $final_organization_connections['ORGANIC'] ?? [],
+				'PAID'    => $final_organization_connections['PAID'] ?? [],
+				#'SOCIAL'  => $final_organization_connections['SOCIAL'] ?? [],
+			];
 
-                    if (!empty($orgDetails['localizedName'])) {
-                        $linkedInPages[] = [
-                            'id' => $orgId,
-                            'name' => $orgDetails['localizedName']
-                        ];
-                    }
-                }
-            }
-        }
-    } catch (\Exception $e) {
-        error_log("LinkedIn API Error: " . $e->getMessage());
-    }
+			$final_organization_connections_titles = [
+				'ORGANIC' => "Organic",
+				#'SOCIAL'  => "Social",
+				'PAID'    => "Paid",
+			];
+		}
 
-    // Organize Social Media Connections
-    $final_organization_connections = [];
-    $final_organization_connections_titles = [];
+		
+	 	$LinkedInClient = new \LinkedIn\Client(env('LINKEDIN_CLIENT_ID'), env('LINKEDIN_CLIENT_SECRET'));
 
-    if (!empty($organization_connections)) {
-        foreach ($organization_connections as $connection) {
-            $unique_name = strtolower(preg_replace('/[^a-zA-Z0-9_]/', '_', $connection['name']));
-            $final_organization_connections[$connection['type']][$unique_name] = [
-                'name'        => $connection['name'],
-                'unique_name' => $unique_name,
-                'id'          => $connection['id'] ?? 0,
-                'type'        => $connection['type'],
-            ];
-        }
+		$LinkedInClient->setRedirectUrl(getAbsoluteUrl('oauth_linkedin_callback', NULL, [
+			'source' => 'connection',
+		], [
+			'NO_DEBUG' => false,
+		]));
 
-        // Maintain Connection Order (Facebook, Instagram, LinkedIn, etc.)
-        $final_organization_connections = [
-            'ORGANIC' => $final_organization_connections['ORGANIC'] ?? [],
-            'PAID'    => $final_organization_connections['PAID'] ?? [],
-        ];
+				// P($final_organization_connections);
+		//Saving state in session & validate once we receive authorization code for security
+		Session::set('linkedin_oauth_state', $LinkedInClient->getState());
 
-        $final_organization_connections_titles = [
-            'ORGANIC' => "Organic",
-            'PAID'    => "Paid",
-        ];
-    }
 
-    // Set View Data
-    $this->setViewData('connections.html', [
-        'form_action'                     => url('admin_ajax'),
-        'page_title'                      => "Admin Connections",
-        'organization_connections'        => $final_organization_connections ?? [],
-        'organization_connections_titles' => $final_organization_connections_titles ?? [],
-        'supported_api_connections'       => Config::API_CONFIGURATION_CONNECTIONS,
-        'configured_connections'          => $configured_connections ?? [],
-        'plugins_google_youtube'          => true,
-        'plugins_facebook'                => true,
-        'plugins_linkedin'                => true,
-        'facebook_app_id'                 => env('FACEBOOK_APP_ID'),
-        'facebook_app_client_id'          => env('FACEBOOK_CLIENT_ID'),
-        'facebook_app_client_secret'      => env('FACEBOOK_CLIENT_SECRET'),
-        'facebook_graph_api_version'      => env('FACEBOOK_GRAPH_API_VERSION'),
-        'GOOGLE_OAUTH_CLIENT_ID'          => env('GOOGLE_OAUTH_CLIENT_ID'),
-        'GOOGLE_YOUTUBE_API_KEY'          => env('GOOGLE_YOUTUBE_API_KEY'),
-        'CONNECTION_OAUTH_STATUS'         => json_encode(Session::pull('CONNECTION_OAUTH_STATUS') ?? []),
-
-        // LinkedIn Data
-        'linkedInProfileName'             => $linkedInProfileName,
-        'linkedInPages'                   => $linkedInPages ?? [],
-        'linkedin_oauth_authorization_url' => $LinkedInClient->getLoginUrl([
-            'r_organization_admin', 'w_organization_social'
-        ]),
-    ]);
-}
+		$this->setViewData('connections.html',
+			[
+				'form_action'                     => url('admin_ajax'),
+				'page_title'                      => "Admin Connections",
+				'organization_connections'        => $final_organization_connections,
+				'organization_connections_titles' => $final_organization_connections_titles,
+				'supported_api_connections'       => Config::API_CONFIGURATION_CONNECTIONS,
+				'configured_connections'          => $configured_connections,
+				'plugins_google_youtube'          => true,
+				'plugins_facebook'                => true,
+				'plugins_linkedin'                 => true,
+				'facebook_app_id'                 => env('FACEBOOK_APP_ID'),
+				'facebook_app_client_id'          => env('FACEBOOK_CLIENT_ID'),
+				'facebook_app_client_secret'      => env('FACEBOOK_CLIENT_SECRET'),
+				'facebook_graph_api_version'      => env('FACEBOOK_GRAPH_API_VERSION'),
+				'GOOGLE_OAUTH_CLIENT_ID'          => env('GOOGLE_OAUTH_CLIENT_ID'),
+				'GOOGLE_YOUTUBE_API_KEY'          => env('GOOGLE_YOUTUBE_API_KEY'),
+				'linkedin_oauth_authorization_url' => $LinkedInClient->getLoginUrl(['r_emailaddress', 'r_liteprofile', 'w_member_social', 'rw_organization_admin', 'r_organization_social', 'w_organization_social', 'w_member_social', 'r_1st_connections_size']),
+				//'linkedin_oauth_authorization_url' => [],
+				'CONNECTION_OAUTH_STATUS'          => json_encode(Session::pull('CONNECTION_OAUTH_STATUS') ?? []),
+				'organization_name'                => $this->adminModel->getOrganizationDetails($this->organizationId)['body']['data']['name'] ?? '',
+				]
+		);
+	}
 
 
 	public function addWhatsapp()
@@ -1351,37 +1317,37 @@ class AdminController extends BaseController
 		return $business_details;
 	}
 
-	public function postToLinkedInPage()
-{
-    $accessToken = Session::get('linkedin_access_token');
-    $organizationId = input()->get('linkedinPage');
-    $postContent = input()->get('postContent');
+	// public function postToLinkedInPage()
+	// {
+	// 	$accessToken = Session::get('linkedin_access_token');
+	// 	$organizationId = input()->get('linkedinPage');
+	// 	$postContent = input()->get('postContent');
 
-    if (!$accessToken || !$organizationId || !$postContent) {
-        return json_encode(['status' => false, 'message' => 'Missing required fields.']);
-    }
+	// 	if (!$accessToken || !$organizationId || !$postContent) {
+	// 		return json_encode(['status' => false, 'message' => 'Missing required fields.']);
+	// 	}
 
-    try {
-        $LinkedInClient = new \LinkedIn\Client(env('LINKEDIN_CLIENT_ID'), env('LINKEDIN_CLIENT_SECRET'));
-        $LinkedInClient->setAccessToken($accessToken);
+	// 	try {
+	// 		$LinkedInClient = new \LinkedIn\Client(env('LINKEDIN_CLIENT_ID'), env('LINKEDIN_CLIENT_SECRET'));
+	// 		$LinkedInClient->setAccessToken($accessToken);
 
-        $postData = [
-            'author' => "urn:li:organization:$organizationId",
-            'lifecycleState' => "PUBLISHED",
-            'specificContent' => [
-                'com.linkedin.ugc.ShareContent' => [
-                    'shareCommentary' => ['text' => $postContent],
-                    'shareMediaCategory' => "NONE"
-                ]
-            ],
-            'visibility' => ['com.linkedin.ugc.MemberNetworkVisibility' => "PUBLIC"]
-        ];
+	// 		$postData = [
+	// 			'author' => "urn:li:organization:$organizationId",
+	// 			'lifecycleState' => "PUBLISHED",
+	// 			'specificContent' => [
+	// 				'com.linkedin.ugc.ShareContent' => [
+	// 					'shareCommentary' => ['text' => $postContent],
+	// 					'shareMediaCategory' => "NONE"
+	// 				]
+	// 			],
+	// 			'visibility' => ['com.linkedin.ugc.MemberNetworkVisibility' => "PUBLIC"]
+	// 		];
 
-        $LinkedInClient->api('/v2/ugcPosts', 'POST', ['json' => $postData]);
+	// 		$LinkedInClient->api('/v2/ugcPosts', 'POST', ['json' => $postData]);
 
-        return json_encode(['status' => true, 'message' => 'Post published successfully!']);
-    } catch (\Exception $e) {
-        return json_encode(['status' => false, 'message' => "Failed to post: " . $e->getMessage()]);
-    }
-}
+	// 		return json_encode(['status' => true, 'message' => 'Post published successfully!']);
+	// 	} catch (\Exception $e) {
+	// 		return json_encode(['status' => false, 'message' => "Failed to post: " . $e->getMessage()]);
+	// 	}
+	// }
 }

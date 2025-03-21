@@ -2986,156 +2986,156 @@ class configureFacebookConnectionClass {
   };
 }
 
-function configureLinkedInConnection(
-  connection_configuration_toggle_element,
-  connection_selector
-) {
-  let linkedinConfiguration = new configureLinkedInConnectionClass();
-  linkedinConfiguration.setData(
-    connection_configuration_toggle_element,
-    connection_selector
-  );
-  linkedinConfiguration.checkLoginStatus();
-}
+// function configureLinkedInConnection(
+//   connection_configuration_toggle_element,
+//   connection_selector
+// ) {
+//   let linkedinConfiguration = new configureLinkedInConnectionClass();
+//   linkedinConfiguration.setData(
+//     connection_configuration_toggle_element,
+//     connection_selector
+//   );
+//   linkedinConfiguration.checkLoginStatus();
+// }
 
-class configureLinkedInConnectionClass {
-  setData = (connection_configuration_toggle_element, connection_selector) => {
-    this.connection_configuration_toggle_element = connection_configuration_toggle_element;
-    this.connection_selector = connection_selector;
-  };
+// class configureLinkedInConnectionClass {
+//   setData = (connection_configuration_toggle_element, connection_selector) => {
+//     this.connection_configuration_toggle_element = connection_configuration_toggle_element;
+//     this.connection_selector = connection_selector;
+//   };
 
-  setUserId = (userId) => {
-    this.userId = userId;
-  };
+//   setUserId = (userId) => {
+//     this.userId = userId;
+//   };
 
-  processPagesList = (response) => {
-    if (response.elements && response.elements.length) {
-      var pagesList = {};
-      var pagesListOptionsHtml = "";
-      var linkedinUserId = this.userId;
+//   processPagesList = (response) => {
+//     if (response.elements && response.elements.length) {
+//       var pagesList = {};
+//       var pagesListOptionsHtml = "";
+//       var linkedinUserId = this.userId;
 
-      pagesListOptionsHtml = '<div class="btn-group-vertical" role="group">';
-      $.each(response.elements, function (index, pageData) {
-        pagesList[pageData.organization] = {
-          id: pageData.organization,
-          user_id: linkedinUserId,
-          name: pageData.organizationName,
-          role: pageData.role,
-          access_token: IN.ENV.auth.oauth_token
-        };
+//       pagesListOptionsHtml = '<div class="btn-group-vertical" role="group">';
+//       $.each(response.elements, function (index, pageData) {
+//         pagesList[pageData.organization] = {
+//           id: pageData.organization,
+//           user_id: linkedinUserId,
+//           name: pageData.organizationName,
+//           role: pageData.role,
+//           access_token: IN.ENV.auth.oauth_token
+//         };
 
-        pagesListOptionsHtml +=
-          '<input type="radio" class="btn-check" name="linkedin_page" id="linkedin_page_' +
-          pageData.organization +
-          '" value="' +
-          encodeURIComponent(JSON.stringify(pagesList[pageData.organization])) +
-          '" autocomplete="off">\n' +
-          '  <label class="btn btn-outline-promulgate-primary" for="linkedin_page_' +
-          pageData.organization +
-          '">' +
-          pageData.organizationName +
-          "</label>";
-      });
-      pagesListOptionsHtml += "</div>";
+//         pagesListOptionsHtml +=
+//           '<input type="radio" class="btn-check" name="linkedin_page" id="linkedin_page_' +
+//           pageData.organization +
+//           '" value="' +
+//           encodeURIComponent(JSON.stringify(pagesList[pageData.organization])) +
+//           '" autocomplete="off">\n' +
+//           '  <label class="btn btn-outline-promulgate-primary" for="linkedin_page_' +
+//           pageData.organization +
+//           '">' +
+//           pageData.organizationName +
+//           "</label>";
+//       });
+//       pagesListOptionsHtml += "</div>";
 
-      var connection_name = this.connection_configuration_toggle_element.attr(
-        "data-connection_setting_name"
-      );
+//       var connection_name = this.connection_configuration_toggle_element.attr(
+//         "data-connection_setting_name"
+//       );
 
-      Swal.fire({
-        position: "center",
-        title: "Select LinkedIn Organization",
-        html:
-          '<div class="text-center"><form class="needs-validation" action="' +
-          ADMINS_AJAX_SOURCE +
-          '" novalidate data-custom_errors_container="form-error-messages-block">\n' +
-          '<input type="hidden" name="form_source" id="form_source" value="connection_configuration">\n' +
-          '<input type="hidden" name="connection_type" id="connection_type" value="linkedin_page">\n' +
-          '<input type="hidden" name="connection_name" id="connection_name" value="' +
-          connection_name +
-          '">\n' +
-          '<input type="hidden" name="connection_media_type" id="connection_media_type" value="' +
-          this.connection_configuration_toggle_element.attr("data-connection_media_type") +
-          '">\n' +
-          '<input type="hidden" name="connection_configuration_toggle_element" id="connection_configuration_toggle_element" value="#' +
-          this.connection_configuration_toggle_element.attr("id") +
-          '">\n' +
-          '<input type="hidden" name="connection_selector" id="connection_selector" value="' +
-          this.connection_selector +
-          '">\n' +
-          '<div class="row mt-2">' +
-          pagesListOptionsHtml +
-          "<div>" +
-          '<div class="row"><div class="form-error-messages-block"></div></div>\n' +
-          '<div class="row mt-3">\n' +
-          '<div class="text-center">\n' +
-          '<button class="btn btn-min btn-success" type="submit">Confirm</button>\n' +
-          "</div>\n" +
-          "</div>" +
-          "</form></div>",
-        showCloseButton: false,
-        showCancelButton: false,
-        showConfirmButton: false,
-        buttonsStyling: false,
-        reverseButtons: false,
-        focusConfirm: false,
-        allowEscapeKey: true,
-        allowOutsideClick: false,
-        showLoaderOnConfirm: false,
-        showClass: {
-          popup: "animate__animated animate__zoomIn",
-        },
-        hideClass: {
-          popup: "animate__animated animate__zoomOutDown",
-        },
-        didOpen: () => {
-          enableBootstrapValidator();
-        },
-      });
-    } else {
-      disableConfigurationAndDisableActiveConnection(
-        this.connection_configuration_toggle_element,
-        this.connection_selector,
-        "You don't have any organizations available in your LinkedIn Account"
-      );
-    }
-  };
+//       Swal.fire({
+//         position: "center",
+//         title: "Select LinkedIn Organization",
+//         html:
+//           '<div class="text-center"><form class="needs-validation" action="' +
+//           ADMINS_AJAX_SOURCE +
+//           '" novalidate data-custom_errors_container="form-error-messages-block">\n' +
+//           '<input type="hidden" name="form_source" id="form_source" value="connection_configuration">\n' +
+//           '<input type="hidden" name="connection_type" id="connection_type" value="linkedin_page">\n' +
+//           '<input type="hidden" name="connection_name" id="connection_name" value="' +
+//           connection_name +
+//           '">\n' +
+//           '<input type="hidden" name="connection_media_type" id="connection_media_type" value="' +
+//           this.connection_configuration_toggle_element.attr("data-connection_media_type") +
+//           '">\n' +
+//           '<input type="hidden" name="connection_configuration_toggle_element" id="connection_configuration_toggle_element" value="#' +
+//           this.connection_configuration_toggle_element.attr("id") +
+//           '">\n' +
+//           '<input type="hidden" name="connection_selector" id="connection_selector" value="' +
+//           this.connection_selector +
+//           '">\n' +
+//           '<div class="row mt-2">' +
+//           pagesListOptionsHtml +
+//           "<div>" +
+//           '<div class="row"><div class="form-error-messages-block"></div></div>\n' +
+//           '<div class="row mt-3">\n' +
+//           '<div class="text-center">\n' +
+//           '<button class="btn btn-min btn-success" type="submit">Confirm</button>\n' +
+//           "</div>\n" +
+//           "</div>" +
+//           "</form></div>",
+//         showCloseButton: false,
+//         showCancelButton: false,
+//         showConfirmButton: false,
+//         buttonsStyling: false,
+//         reverseButtons: false,
+//         focusConfirm: false,
+//         allowEscapeKey: true,
+//         allowOutsideClick: false,
+//         showLoaderOnConfirm: false,
+//         showClass: {
+//           popup: "animate__animated animate__zoomIn",
+//         },
+//         hideClass: {
+//           popup: "animate__animated animate__zoomOutDown",
+//         },
+//         didOpen: () => {
+//           enableBootstrapValidator();
+//         },
+//       });
+//     } else {
+//       disableConfigurationAndDisableActiveConnection(
+//         this.connection_configuration_toggle_element,
+//         this.connection_selector,
+//         "You don't have any organizations available in your LinkedIn Account"
+//       );
+//     }
+//   };
 
-  getLinkedInOrganizations = () => {
-    IN.API.Raw("/organizationalEntityAcls?q=roleAssignee&role=ADMINISTRATOR")
-      .result(this.processPagesList)
-      .error((error) => {
-        disableConfigurationAndDisableActiveConnection(
-          this.connection_configuration_toggle_element,
-          this.connection_selector,
-          "Failed to fetch LinkedIn organizations"
-        );
-      });
-  };
+//   getLinkedInOrganizations = () => {
+//     IN.API.Raw("/organizationalEntityAcls?q=roleAssignee&role=ADMINISTRATOR")
+//       .result(this.processPagesList)
+//       .error((error) => {
+//         disableConfigurationAndDisableActiveConnection(
+//           this.connection_configuration_toggle_element,
+//           this.connection_selector,
+//           "Failed to fetch LinkedIn organizations"
+//         );
+//       });
+//   };
 
-  processLoginResponse = (response) => {
-    if (response.status === "connected") {
-      this.setUserId(IN.User.getId());
-      this.getLinkedInOrganizations();
-    } else {
-      disableConfigurationAndDisableActiveConnection(
-        this.connection_configuration_toggle_element,
-        this.connection_selector,
-        "LinkedIn authentication failed"
-      );
-    }
-  };
+//   processLoginResponse = (response) => {
+//     if (response.status === "connected") {
+//       this.setUserId(IN.User.getId());
+//       this.getLinkedInOrganizations();
+//     } else {
+//       disableConfigurationAndDisableActiveConnection(
+//         this.connection_configuration_toggle_element,
+//         this.connection_selector,
+//         "LinkedIn authentication failed"
+//       );
+//     }
+//   };
 
-  checkLoginStatus = () => {
-    if (IN.User.isAuthorized()) {
-      this.processLoginResponse({ status: "connected" });
-    } else {
-      IN.User.authorize(() => {
-        this.processLoginResponse({ status: "connected" });
-      }, this);
-    }
-  };
-}
+//   checkLoginStatus = () => {
+//     if (IN.User.isAuthorized()) {
+//       this.processLoginResponse({ status: "connected" });
+//     } else {
+//       IN.User.authorize(() => {
+//         this.processLoginResponse({ status: "connected" });
+//       }, this);
+//     }
+//   };
+// }
 
 class configureYoutubeConnectionClass {
   setData = (connection_configuration_toggle_element, connection_selector) => {
