@@ -39,11 +39,9 @@ class OauthCallbackController extends BaseController
     public function processLinkedIn()
     {
         $redirect_url = url('admin_connections');
-    
         $linkedin_response = input()->all();
-    
         $connection_status = [];
-    
+
         if (!$linkedin_response['source'] || (Session::pull('linkedin_oauth_state') != $linkedin_response['state'] || !$linkedin_response['code'])) {
             $connection_status = [
                 'status' => false,
@@ -60,32 +58,56 @@ class OauthCallbackController extends BaseController
             $LinkedInClient->setRedirectUrl(getAbsoluteUrl('oauth_linkedin_callback', null, [
                 'source' => 'connection',
             ]));
-    
+
             try {
                 $access_token = $LinkedInClient->getAccessToken($linkedin_response['code']);
                 $profile_information = $LinkedInClient->api('/v2/me');
-    
+
                 if ($profile_information['id'] && $access_token->getToken()) {
-    
-                    // Fetch LinkedIn organization pages
-                    $organizationPages = $LinkedInClient->api('/v2/organizations?q=owners&owners=urn:li:person:' . $profile_information['id']);
-    
-                    if (isset($organizationPages['elements']) && !empty($organizationPages['elements'])) {
-                        // Loop through organization pages and save them
-                        foreach ($organizationPages['elements'] as $page) {
-                            $connection_info = [
-                                'connection_name' => $page['localizedName'], // Use page name
-                                'connection_media_type' => 'ORGANIC',
-                                'linkedin' => urlencode(json_encode([
-                                    'user_id' => $page['id'], // Use page ID
-                                    'username' => $page['localizedName'], // Use page name
-                                    'access_token' => $access_token->getToken(),
-                                    'is_page' => true, // Flag as a LinkedIn page connection
-                                ])),
-                            ];
-    
-                            $AdminController = new AdminController();
-                            $connection_status = $AdminController->saveConnectionConfiguration('linkedin', $connection_info, true);
+                    // Fetch LinkedIn organization pages using organizationalEntityAcls endpoint
+                    $aclResponse = $LinkedInClient->api('/v2/organizationalEntityAcls?q=roleAssignee');
+
+                    if (isset($aclResponse['elements']) && !empty($aclResponse['elements'])) {
+                        $orgUrns = array_map(function ($org) {
+                            return $org['organizationalTarget'] ?? null;
+                        }, $aclResponse['elements']);
+
+                        $orgUrns = array_filter($orgUrns);
+
+                        foreach ($orgUrns as $urn) {
+                            try {
+                                $orgId = str_replace('urn:li:organization:', '', $urn);
+                                $orgDetails = $LinkedInClient->api('/v2/organizations/' . rawurlencode($orgId));
+                                $pageDescription = $orgDetails['localizedDescription'] ?? '';
+                                $pageIndustry = $orgDetails['industries'][0] ?? '';
+
+                                $connection_info = [
+                                    'connection_name' => $orgDetails['localizedName'],
+                                    'connection_media_type' => 'ORGANIC',
+                                    'linkedin' => urlencode(json_encode([
+                                        'user_id' => $urn, // Store the URN
+                                        'username' => $orgDetails['localizedName'],
+                                        'access_token' => $access_token->getToken(),
+                                        'is_page' => true,
+                                        'page_description' => $pageDescription,
+                                        'page_industry' => $pageIndustry,
+                                        'pageName' => $orgDetails['localizedName'], // Add pageName explicitly
+                                    ])),
+                                ];
+
+                                $AdminController = new AdminController();
+                                $connection_status = $AdminController->saveConnectionConfiguration('linkedin', $connection_info, true);
+                            } catch (\LinkedIn\Exception $orgDetailException) {
+                                // Handle organization details fetch error
+                                $connection_status = [
+                                    'status' => false,
+                                    'error' => [
+                                        'code' => 20,
+                                        'message' => "Error fetching LinkedIn organization details: " . $orgDetailException->getMessage(),
+                                        'extra' => ['isConfigured' => false],
+                                    ],
+                                ];
+                            }
                         }
                     } else {
                         // Save user profile if no pages are found.
@@ -97,9 +119,10 @@ class OauthCallbackController extends BaseController
                                 'username' => $profile_information['localizedFirstName'],
                                 'access_token' => $access_token->getToken(),
                                 'is_page' => false,
+                                'pageName' => $profile_information['localizedFirstName'], // Add pageName explicitly
                             ])),
                         ];
-    
+
                         $AdminController = new AdminController();
                         $connection_status = $AdminController->saveConnectionConfiguration('linkedin', $connection_info, true);
                     }
@@ -128,11 +151,9 @@ class OauthCallbackController extends BaseController
                 ];
             }
         }
-    
+
         $connection_status['provider_connection_name'] = 'LinkedIn';
-    
         Session::set('CONNECTION_OAUTH_STATUS', $connection_status);
-    
         redirect($redirect_url);
     }
 
