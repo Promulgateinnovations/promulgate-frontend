@@ -288,74 +288,124 @@ class AdminController extends BaseController
 
 
 	public function showConnections()
-{
-    $this->Breadcrumbs->add([
-        'title' => 'Connections',
-        'url' => url('admin_connections'),
-    ]);
-
-    $organization_connections = $this->adminModel->getConnectionsList($this->organizationId)['body'] ?? [];
-    if (getValue('status', $organization_connections) != 'success') {
-        $organization_connections = [];
-    } else {
-        $organization_connections = getValue('connections', $organization_connections['data'], []);
-    }
-
-    $CampaignController = new CampaignController([
-        'context' => 'data',
-    ]);
-    $configured_connections = $CampaignController->getSocialMediaConnections(true);
-
-    $final_organization_connections = [];
-    $final_organization_connections_titles = [];
-
-    if ($organization_connections) {
-        foreach ($organization_connections as $connection) {
-            $unique_name = strtolower(preg_replace('/[^a-zA-Z0-9_]/', '_', $connection['name']));
-            $final_organization_connections[$connection['type']][$unique_name] = [
-                'name' => $connection['name'],
-                'unique_name' => $unique_name,
-                'id' => $connection['id'] ?? 0,
-                'type' => $connection['type'],
-            ];
-        }
-
-        // For looping in same order
-        $final_organization_connections = [
-            'ORGANIC' => $final_organization_connections['ORGANIC'] ?? [],
-            'PAID' => $final_organization_connections['PAID'] ?? [],
-        ];
-
-        $final_organization_connections_titles = [
-            'ORGANIC' => "Organic",
-            'PAID' => "Paid",
-        ];
-    }
-
-    // Fetch LinkedIn pages
-    $linkedin_pages = $this->getLinkedInPages();
-
-    $this->setViewData('connections.html', [
-        'form_action' => url('admin_ajax'),
-        'page_title' => "Admin Connections",
-        'organization_connections' => $final_organization_connections,
-        'organization_connections_titles' => $final_organization_connections_titles,
-        'supported_api_connections' => Config::API_CONFIGURATION_CONNECTIONS,
-        'configured_connections' => $configured_connections,
-        'plugins_google_youtube' => true,
-        'plugins_facebook' => true,
-        'plugins_linkedin' => true,
-        'facebook_app_id' => env('FACEBOOK_APP_ID'),
-        'facebook_app_client_id' => env('FACEBOOK_CLIENT_ID'),
-        'facebook_app_client_secret' => env('FACEBOOK_CLIENT_SECRET'),
-        'facebook_graph_api_version' => env('FACEBOOK_GRAPH_API_VERSION'),
-        'GOOGLE_OAUTH_CLIENT_ID' => env('GOOGLE_OAUTH_CLIENT_ID'),
-        'GOOGLE_YOUTUBE_API_KEY' => env('GOOGLE_YOUTUBE_API_KEY'),
-        'CONNECTION_OAUTH_STATUS' => json_encode(Session::pull('CONNECTION_OAUTH_STATUS') ?? []),
-        'organization_name' => $this->adminModel->getOrganizationDetails($this->organizationId)['body']['data']['name'] ?? '',
-        'linkedin_pages' => $linkedin_pages, // Add linkedin_pages to the view data
-    ]);
-}
+	{
+		$this->Breadcrumbs->add([
+			'title' => 'Connections',
+			'url' => url('admin_connections'),
+		]);
+	
+		// Fetch Organization Connections (Facebook, Instagram, etc.)
+		$organization_connections = [];
+		$organization_data = $this->adminModel->getConnectionsList($this->organizationId)['body'] ?? [];
+		if (getValue('status', $organization_data) == 'success') {
+			$organization_connections = getValue('connections', $organization_data['data'], []);
+		}
+	
+		$CampaignController = new CampaignController([
+			'context' => 'data',
+		]);
+		$configured_connections = $CampaignController->getSocialMediaConnections(true);
+	
+		// Get Organization Details (For WhatsApp & Display)
+		$organization_details = $this->adminModel->getOrganizationDetails($this->organizationId)['body'] ?? [];
+		$organization_name = getValue('name', $organization_details['data'] ?? [], '');
+	
+		// 🔹 LINKEDIN INTEGRATION - FETCH PROFILE & ORGANIZATION PAGES
+		$linkedInProfileName = "";
+		$linkedInPages = [];
+		try {
+			$LinkedInClient = new \LinkedIn\Client(env('LINKEDIN_CLIENT_ID'), env('LINKEDIN_CLIENT_SECRET'));
+			$LinkedInClient->setRedirectUrl(getAbsoluteUrl('oauth_linkedin_callback', NULL, ['source' => 'connection']));
+			Session::set('linkedin_oauth_state', $LinkedInClient->getState());
+	
+			// Fetch LinkedIn Pages (Organizations)
+			$accessToken = Session::get('linkedin_access_token'); // Retrieve stored access token
+			if ($accessToken) {
+				$LinkedInClient->setAccessToken($accessToken);
+				// Fetch LinkedIn Profile Name
+				$profileResponse = $LinkedInClient->api('/v2/me');
+	
+				if (!empty($profileResponse['localizedFirstName'])) {
+					$linkedInProfileName = $profileResponse['localizedFirstName'] . " " . ($profileResponse['localizedLastName'] ?? "");
+				}
+	
+				// Fetch Administered LinkedIn Pages
+				$linkedInPagesResponse = $LinkedInClient->api('/v2/organizationalEntityAcls?q=roleAssignee');
+	
+				if (!empty($linkedInPagesResponse['elements']) && is_array($linkedInPagesResponse['elements'])) {
+					foreach ($linkedInPagesResponse['elements'] as $page) {
+						$orgId = str_replace('urn:li:organization:', '', $page['organizationalTarget']);
+	
+						// Fetch organization details
+						$orgDetails = $LinkedInClient->api("/v2/organizations/{$orgId}");
+	
+						if (!empty($orgDetails['localizedName'])) {
+							$linkedInPages[] = [
+								'id' => $orgId,
+								'name' => $orgDetails['localizedName']
+							];
+						}
+					}
+				}
+			}
+		} catch (\Exception $e) {
+			error_log("LinkedIn API Error: " . $e->getMessage());
+		}
+	
+		// Organize Social Media Connections
+		$final_organization_connections = [];
+		$final_organization_connections_titles = [];
+	
+		if (!empty($organization_connections)) {
+			foreach ($organization_connections as $connection) {
+				$unique_name = strtolower(preg_replace('/[^a-zA-Z0-9_]/', '_', $connection['name']));
+				$final_organization_connections[$connection['type']][$unique_name] = [
+					'name' => $connection['name'],
+					'unique_name' => $unique_name,
+					'id' => $connection['id'] ?? 0,
+					'type' => $connection['type'],
+				];
+			}
+	
+			// Maintain Connection Order (Facebook, Instagram, LinkedIn, etc.)
+			$final_organization_connections = [
+				'ORGANIC' => $final_organization_connections['ORGANIC'] ?? [],
+				'PAID' => $final_organization_connections['PAID'] ?? [],
+			];
+	
+			$final_organization_connections_titles = [
+				'ORGANIC' => "Organic",
+				'PAID' => "Paid",
+			];
+		}
+	
+		// Set View Data
+		$this->setViewData('connections.html', [
+			'form_action' => url('admin_ajax'),
+			'page_title' => "Admin Connections",
+			'organization_connections' => $final_organization_connections ?? [],
+			'organization_connections_titles' => $final_organization_connections_titles ?? [],
+			'supported_api_connections' => Config::API_CONFIGURATION_CONNECTIONS,
+			'configured_connections' => $configured_connections ?? [],
+			'plugins_google_youtube' => true,
+			'plugins_facebook' => true,
+			'plugins_linkedin' => true,
+			'facebook_app_id' => env('FACEBOOK_APP_ID'),
+			'facebook_app_client_id' => env('FACEBOOK_CLIENT_ID'),
+			'facebook_app_client_secret' => env('FACEBOOK_CLIENT_SECRET'),
+			'facebook_graph_api_version' => env('FACEBOOK_GRAPH_API_VERSION'),
+			'GOOGLE_OAUTH_CLIENT_ID' => env('GOOGLE_OAUTH_CLIENT_ID'),
+			'GOOGLE_YOUTUBE_API_KEY' => env('GOOGLE_YOUTUBE_API_KEY'),
+			'CONNECTION_OAUTH_STATUS' => json_encode(Session::pull('CONNECTION_OAUTH_STATUS') ?? []),
+	
+			// LinkedIn Data
+			'linkedInProfileName' => $linkedInProfileName,
+			'linkedInPages' => $linkedInPages ?? [],
+			'linkedin_oauth_authorization_url' => $LinkedInClient->getLoginUrl([
+				'r_organization_admin', 'w_organization_social'
+			]),
+		]);
+	}
 
 
 	public function addWhatsapp()
@@ -951,172 +1001,172 @@ class AdminController extends BaseController
 
 	public function saveConnectionConfiguration($connection_type, $all_input, $return_connection_status_array = false)
 {
-	$selected_config_info = json_decode(urldecode($all_input[$connection_type] ?? ""), true);
-	$connection_name = $all_input['connection_name'];
-	$connection_media_type = $all_input['connection_media_type'];
-	$organization_id = Session::get('organization', 'id');
-	$connection_config_data = [];
-	$connection_status_message = "";
+    $selected_config_info = json_decode(urldecode($all_input[$connection_type] ?? ""), true);
+    $connection_name = $all_input['connection_name'];
+    $connection_media_type = $all_input['connection_media_type'];
+    $organization_id = Session::get('organization', 'id');
+    $connection_config_data = [];
+    $connection_status_message = "";
 
-	switch ($connection_type) {
-		case 'facebook_page':
-			$connection_config_data = [
-				'name' => $connection_name,
-				'socialMediaType' => $connection_media_type,
-				'socialMediaHandle' => $selected_config_info['user_id'],
-				'password' => $selected_config_info['access_token'],
-				'orgId' => $organization_id,
-				'tokenExpiry' => getCustomUtcDate(strtotime("+3 months", strtotime(date("Y-m-d H:i:s")))),
-				'status' => 'Active',
-				'isConfigured' => true,
-				'pageId' => $selected_config_info['id'],
-				'pageToken' => $selected_config_info['access_token'],
-				'description' => $selected_config_info['category'],
-				'title' => $selected_config_info['name'],
-			];
-			break;
+    switch ($connection_type) {
+        case 'facebook_page':
+            $connection_config_data = [
+                'name' => $connection_name,
+                'socialMediaType' => $connection_media_type,
+                'socialMediaHandle' => $selected_config_info['user_id'],
+                'password' => $selected_config_info['access_token'],
+                'orgId' => $organization_id,
+                'tokenExpiry' => getCustomUtcDate(strtotime("+3 months", strtotime(date("Y-m-d H:i:s")))),
+                'status' => 'Active',
+                'isConfigured' => true,
+                'pageId' => $selected_config_info['id'],
+                'pageToken' => $selected_config_info['access_token'],
+                'description' => $selected_config_info['category'],
+                'title' => $selected_config_info['name'],
+            ];
+            break;
 
-		case 'youtube_channel':
-			$GoogleApiClient = new GoogleAPIClient();
-			$user_tokens = $GoogleApiClient->getTokensByAuthCode($selected_config_info['userAccountAuthCode']);
+        case 'youtube_channel':
+            $GoogleApiClient = new GoogleAPIClient();
+            $user_tokens = $GoogleApiClient->getTokensByAuthCode($selected_config_info['userAccountAuthCode']);
 
-			if (!isset($user_tokens['error'])) {
-				$user_details = $GoogleApiClient->verifyUserCredentialsValidToken($user_tokens['id_token']);
-				$connection_config_data = [
-					'name' => $connection_name,
-					'socialMediaType' => $connection_media_type,
-					'socialMediaHandle' => $user_details['sub'] ?? "",
-					'password' => $user_tokens['access_token'],
-					'orgId' => $organization_id,
-					'tokenExpiry' => getCustomUtcDate(strtotime("+1 hour", strtotime(date("Y-m-d H:i:s")))),
-					'status' => 'Active',
-					'isConfigured' => true,
-					'pageId' => $selected_config_info['channel_id'],
-					'pageToken' => json_encode($user_tokens),
-					'description' => $selected_config_info['description'],
-					'title' => $selected_config_info['title'],
-				];
-			} else {
-				$connection_status_message = "Could not get the channel details from " . $connection_name . ", Please try again";
-			}
-			break;
+            if (!isset($user_tokens['error'])) {
+                $user_details = $GoogleApiClient->verifyUserCredentialsValidToken($user_tokens['id_token']);
+                $connection_config_data = [
+                    'name' => $connection_name,
+                    'socialMediaType' => $connection_media_type,
+                    'socialMediaHandle' => $user_details['sub'] ?? "",
+                    'password' => $user_tokens['access_token'],
+                    'orgId' => $organization_id,
+                    'tokenExpiry' => getCustomUtcDate(strtotime("+1 hour", strtotime(date("Y-m-d H:i:s")))),
+                    'status' => 'Active',
+                    'isConfigured' => true,
+                    'pageId' => $selected_config_info['channel_id'],
+                    'pageToken' => json_encode($user_tokens),
+                    'description' => $selected_config_info['description'],
+                    'title' => $selected_config_info['title'],
+                ];
+            } else {
+                $connection_status_message = "Could not get the channel details from " . $connection_name . ", Please try again";
+            }
+            break;
 
-		case 'instagram_account':
-			$connection_config_data = [
-				'name' => $connection_name,
-				'socialMediaType' => $connection_media_type,
-				'socialMediaHandle' => $selected_config_info['instagram_account_username'],
-				'password' => $selected_config_info['page_access_token'],
-				'orgId' => $organization_id,
-				'tokenExpiry' => getCustomUtcDate(strtotime("+3 months", strtotime(date("Y-m-d H:i:s")))),
-				'status' => 'Active',
-				'isConfigured' => true,
-				'pageId' => $selected_config_info['instagram_account_id'],
-				'pageToken' => $selected_config_info['page_access_token'],
-				'description' => "Instagram business account",
-				'title' => $all_input['instagram_pagename'],
-			];
-			break;
+        case 'instagram_account':
+            $connection_config_data = [
+                'name' => $connection_name,
+                'socialMediaType' => $connection_media_type,
+                'socialMediaHandle' => $selected_config_info['instagram_account_username'],
+                'password' => $selected_config_info['page_access_token'],
+                'orgId' => $organization_id,
+                'tokenExpiry' => getCustomUtcDate(strtotime("+3 months", strtotime(date("Y-m-d H:i:s")))),
+                'status' => 'Active',
+                'isConfigured' => true,
+                'pageId' => $selected_config_info['instagram_account_id'],
+                'pageToken' => $selected_config_info['page_access_token'],
+                'description' => "Instagram business account",
+                'title' => $all_input['instagram_pagename'],
+            ];
+            break;
 
-		case 'linkedin':
-			$connection_config_data = [
-				'name' => $connection_name,
-				'socialMediaType' => $connection_media_type,
-				'socialMediaHandle' => $selected_config_info['user_id'],
-				'password' => $selected_config_info['access_token'],
-				'orgId' => $organization_id,
-				'tokenExpiry' => getCustomUtcDate(strtotime("+2 months", strtotime(date("Y-m-d H:i:s")))),
-				'status' => 'Active',
-				'isConfigured' => true,
-				'pageId' => $selected_config_info['id'], // Use the page ID from the selected config
-				'pageToken' => $selected_config_info['access_token'],
-				'description' => "LinkedIn Page", // Assuming you're selecting a page
-				'title' => $selected_config_info['name'], // Use the name from the selected page
-			];
-			break;
+        case 'linkedin':
+            $connection_config_data = [
+                'name' => $connection_name,
+                'socialMediaType' => $connection_media_type,
+                'socialMediaHandle' => $selected_config_info['user_id'],
+                'password' => $selected_config_info['access_token'],
+                'orgId' => $organization_id,
+                'tokenExpiry' => getCustomUtcDate(strtotime("+2 months", strtotime(date("Y-m-d H:i:s")))),
+                'status' => 'Active',
+                'isConfigured' => true,
+                'pageId' => $selected_config_info['user_id'],
+                'pageToken' => $selected_config_info['access_token'],
+                'description' => $selected_config_info['page_description'] ?? "LinkedIn Profile",
+                'title' => $selected_config_info['pageName'] ?? $selected_config_info['username'],
+            ];
+            break;
 
-		case 'E-Mail':
-			$connection_config_data = [
-				'name' => $connection_name,
-				'socialMediaType' => $connection_media_type,
-				'socialMediaHandle' => md5($connection_type),
-				'password' => $all_input['email_api_key'],
-				'orgId' => $organization_id,
-				'tokenExpiry' => getCustomUtcDate(strtotime("+3 months", strtotime(date("Y-m-d H:i:s")))),
-				'status' => 'Active',
-				'isConfigured' => true,
-				'pageId' => sha1($connection_name),
-				'pageToken' => json_encode([
-					'from_email' => $all_input['email_from_address'],
-					'api_key' => $all_input['email_api_key'],
-				]),
-				'description' => "E-Mail Provider details",
-			];
-			break;
+        case 'E-Mail':
+            $connection_config_data = [
+                'name' => $connection_name,
+                'socialMediaType' => $connection_media_type,
+                'socialMediaHandle' => md5($connection_type),
+                'password' => $all_input['email_api_key'],
+                'orgId' => $organization_id,
+                'tokenExpiry' => getCustomUtcDate(strtotime("+3 months", strtotime(date("Y-m-d H:i:s")))),
+                'status' => 'Active',
+                'isConfigured' => true,
+                'pageId' => sha1($connection_name),
+                'pageToken' => json_encode([
+                    'from_email' => $all_input['email_from_address'],
+                    'api_key' => $all_input['email_api_key'],
+                ]),
+                'description' => "E-Mail Provider details",
+            ];
+            break;
 
-		default:
-			$connection_config_data = [
-				'name' => $connection_name,
-				'socialMediaType' => $connection_media_type,
-				'socialMediaHandle' => md5($connection_type),
-				'password' => sha1($connection_name),
-				'orgId' => $organization_id,
-				'tokenExpiry' => getCustomUtcDate(strtotime("+3 months", strtotime(date("Y-m-d H:i:s")))),
-				'status' => 'Active',
-				'isConfigured' => true,
-				'pageId' => sha1($connection_name),
-				'pageToken' => sha1($connection_media_type . $connection_name),
-				'description' => "Info about channel",
-			];
-			break;
-	}
+        default:
+            $connection_config_data = [
+                'name' => $connection_name,
+                'socialMediaType' => $connection_media_type,
+                'socialMediaHandle' => md5($connection_type),
+                'password' => sha1($connection_name),
+                'orgId' => $organization_id,
+                'tokenExpiry' => getCustomUtcDate(strtotime("+3 months", strtotime(date("Y-m-d H:i:s")))),
+                'status' => 'Active',
+                'isConfigured' => true,
+                'pageId' => sha1($connection_name),
+                'pageToken' => sha1($connection_media_type . $connection_name),
+                'description' => "Info about channel",
+            ];
+            error_log("Unknown connection type: " . $connection_type);
+            break;
+    }
 
-	$connection_status = [];
+    $connection_status = [];
 
-	if ($connection_config_data) {
-		$saved_connection_configuration = $this->adminModel->saveConnectionConfiguration($connection_config_data)['body'];
+    if ($connection_config_data) {
+        $saved_connection_configuration = $this->adminModel->saveConnectionConfiguration($connection_config_data)['body'];
 
-		if (getValue('status', $saved_connection_configuration) != 'success') {
-			$connection_status = [
-				'status' => false,
-				'error' => [
-					'code' => 20,
-					'message' => $saved_connection_configuration['message'] ?? "Some problem from API",
-					'extra' => [
-						'isConfigured' => false,
-					],
-				],
-			];
-		} else {
-			$connection_status = [
-				'status' => true,
-				'data' => [
-					'extra' => [
-						'isConfigured' => true,
-					],
-				],
-			];
-		}
-	} else {
-		$connection_status = [
-			'status' => false,
-			'error' => [
-				'code' => 20,
-				'message' => $connection_status_message ?? "Connection not supported currently",
-				'extra' => [
-					'isConfigured' => false,
-				],
-			],
-		];
-	}
+        if (getValue('status', $saved_connection_configuration) != 'success') {
+            $connection_status = [
+                'status' => false,
+                'error' => [
+                    'code' => 20,
+                    'message' => $saved_connection_configuration['message'] ?? "Some problem from API",
+                    'extra' => [
+                        'isConfigured' => false,
+                    ],
+                ],
+            ];
+        } else {
+            $connection_status = [
+                'status' => true,
+                'data' => [
+                    'extra' => [
+                        'isConfigured' => true,
+                    ],
+                ],
+            ];
+        }
+    } else {
+        $connection_status = [
+            'status' => false,
+            'error' => [
+                'code' => 20,
+                'message' => $connection_status_message ?? "Connection not supported currently",
+                'extra' => [
+                    'isConfigured' => false,
+                ],
+            ],
+        ];
+    }
 
-	if (!$return_connection_status_array) {
-		response()->json($connection_status);
-	} else {
-		return $connection_status;
-	}
+    if (!$return_connection_status_array) {
+        response()->json($connection_status);
+    } else {
+        return $connection_status;
+    }
 }
-
 
 private function updateConnectionConfiguration($all_input, $status_key)
 {
