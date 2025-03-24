@@ -27,34 +27,31 @@
                                         <label class="form-check-label" for="connection_{{ sub_type.unique_name }}">
                                             {{ sub_type.name }}
                                         </label>
-                                        {% if configured_connections[sub_type.unique_name]['pageName'] and
-                                        configured_connections[sub_type.unique_name]['isConfigured'] %}
+                                        {% if sub_type.name == "LinkedIn" %}
                                         <p class="pageName">
-                                            {% if sub_type.name == 'WhatsApp' %}
-                                            <a href="{{ url('connect_whatsapp') }}" target="_blank">{{
-                                                organization_name }} </a>
-                                            {% elseif sub_type.name == 'Google Reviews' %}
-                                            <a href="{{ url('connect_google_reviews') }}" target="_blank">{{
-                                                configured_connections[sub_type.unique_name]['pageName'] }} </a>
+                                            {% if linkedInProfileName %}
+                                            <strong>{{ linkedInProfileName }}</strong> -
+                                            {% endif %}
+                                            {% if linkedInPages is not empty %}
+                                            {% for page in linkedInPages %}
+                                            <strong>{{ page.name }}</strong><br>
+                                            {% endfor %}
                                             {% else %}
-                                                {% if configured_connections[sub_type.unique_name]['description'] == "LinkedIn Page" %}
-                                                    {{ configured_connections[sub_type.unique_name]['pageName'] }} (Page)
-                                                {% else %}
-                                                    {{ configured_connections[sub_type.unique_name]['pageName'] }}
-                                                {% endif %}
-
+                                            <strong>No Pages Found</strong>
                                             {% endif %}
                                         </p>
-
+                                        {% else %}
+                                        {% if configured_connections[sub_type.unique_name]['pageName'] and configured_connections[sub_type.unique_name]['isConfigured'] %}
+                                        <p class="pageName">
+                                            {{ configured_connections[sub_type.unique_name]['pageName'] }}
+                                        </p>
+                                        {% endif %}
                                         {% endif %}
                                     </div>
 
                                     <div class="settings">
-
-                                        {% set is_already_configured =
-                                        configured_connections[sub_type.unique_name]['isConfigured'] %}
-                                        {% set is_already_enabled =
-                                        (configured_connections[sub_type.unique_name]['status'] == 'Active') %}
+                                        {% set is_already_configured = configured_connections[sub_type.unique_name]['isConfigured'] %}
+                                        {% set is_already_enabled = (configured_connections[sub_type.unique_name]['status'] == 'Active') %}
 
                                         <a class="btn btn-sm info-btn" href="javascript:void(0);" onclick="showPopup('{{ sub_type.name }}')">
                                             <i class="fa fa-info-circle"></i>
@@ -65,31 +62,25 @@
                                                 id="connection_{{ sub_type.unique_name }}_config"
                                                 value="{{ sub_type.unique_name }}_config"
                                                 class="organization_connection_configuration"
-                                                data-api_connection="{{supported_api_connections[sub_type.unique_name]['status']}}"
-                                                data-api_custom_callback="{{supported_api_connections[sub_type.unique_name]['js_callback_function']}}"
-                                                data-oauth_authorization_url_constant="{{supported_api_connections[sub_type.unique_name]['oauth_authorization_url_constant']}}"
+                                                data-api_connection="{{ supported_api_connections[sub_type.unique_name]['status'] }}"
+                                                data-api_custom_callback="{{ supported_api_connections[sub_type.unique_name]['js_callback_function'] }}"
+                                                data-oauth_authorization_url_constant="{{ supported_api_connections[sub_type.unique_name]['oauth_authorization_url_constant'] }}"
                                                 data-connection_setting_id="connection_{{ sub_type.unique_name }}"
                                                 data-connection_setting_name="{{ sub_type.name }}"
                                                 data-connection_media_type="{{ sub_type.type }}"
                                                 data-social_media_connection_id="{{ configured_connections[sub_type.unique_name]['socialMediaConnectionId'] }}"
-                                                {% if is_already_configured %} checked {% endif %} {% if
-                                                (sub_type.name=='WhatsApp' ) and (is_already_configured==1) %} disabled
-                                                {% endif %} {% if (sub_type.name=='Reddit' ) or
-                                                (sub_type.name=='Twitter' ) or (sub_type.name=='E-Mail' ) or
-                                                (sub_type.name=='SMS' ) or (sub_type.name=='Google Reviews' ) or
-                                                (sub_type.name=='Facebook Ads' ) or (sub_type.name=='Twitter promotions'
-                                                ) %} disabled {% endif %} data-toggle="toggle" data-onstyle="success"
+                                                {% if is_already_configured %} checked {% endif %}
+                                                data-toggle="toggle" data-onstyle="success"
                                                 data-offstyle="outline-danger" data-size="xs" data-width="120px"
                                                 data-on="Connected <i class='fa fa-chain'></i>"
                                                 data-off="Connect <i class='fa fa-chain-broken'></i>">
-
                                         </div>
+
                                         <div class="toggle-switch">
-                                            <input type="checkbox" {% if not is_already_configured %} disabled {% endif
-                                                %} {% if is_already_enabled %} checked {% endif %}
+                                            <input type="checkbox" {% if not is_already_configured %} disabled {% endif %}
+                                                {% if is_already_enabled %} checked {% endif %}
                                                 name="organization_connections[]"
                                                 id="connection_{{ sub_type.unique_name }}" value="{{ sub_type.name }}"
-                                                data-connection_setting_name="{{ sub_type.name }}"
                                                 class="organization_connection_active_toggle"
                                                 data-social_media_connection_id="{{ configured_connections[sub_type.unique_name]['socialMediaConnectionId'] }}"
                                                 data-toggle="toggle" data-offstyle="danger"
@@ -97,9 +88,7 @@
                                                 data-width="100px" data-off="Disabled <i class='fa fa-pause'></i>"
                                                 data-on="Enabled <i class='fa fa-play'></i>">
                                         </div>
-
                                     </div>
-
                                 </div>
                                 {% endfor %}
                             </div>
