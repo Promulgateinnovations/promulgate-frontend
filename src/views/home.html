@@ -1,0 +1,71 @@
+<h3 class="home-title">Welcome to {{ site_name }}</h3>
+
+<div class="text-center">
+	<div class="site-home ">
+		<div class="row d-flex justify-content-evenly">
+			<div class="card admin-card col-4">
+				<div class="card-body">
+					<h3 class="card-title">Admin</h3>
+					<p class="card-text text-muted">Manage your company information</p>
+					<p>
+						<i class="fa fa-user fa-5x"></i>
+					</p>
+					<ul class="list-group list-group-flush">
+						<li class="card-link list-group-item">
+							<a href="{{ url('admin_organization') }}">Organization</a>
+						</li>
+						<li class="card-link list-group-item">
+							<a href="{{ url('admin_team_list') }}">Team</a>
+						</li>
+						<li class="card-link list-group-item">
+							<a href="{{ url('admin_business') }}">Business</a>
+						</li>
+						<li class="card-link list-group-item">
+							<a class="Connections" href="{{ url('admin_connections') }}">Connections</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div class="card admin-card col-4">
+				<div class="card-body">
+					<h3 class="card-title">Campaign</h3>
+					<p class="card-text text-muted">Reach your customers</p>
+					<p>
+						<i class="fa fa-bullhorn fa-5x"></i>
+					</p>
+					<ul class="list-group list-group-flush">
+						<li class="card-link list-group-item">
+							<a href="{{ url('campaign_initiation') }}">Initiation</a>
+						</li>
+						<li class="card-link list-group-item">
+							<a href="{{ url('campaign_strategy_definition', {}) }}">Start new campaign</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div class="card admin-card col-4">
+				<div class="card-body">
+					<h3 class="card-title">Analytics & Reports</h3>
+					<p class="card-text text-muted">View your business progress & reports</p>
+					<p>
+						<i class="fa fa-line-chart fa-5x"></i>
+					</p>
+					<ul class="list-group list-group-flush">
+						<li class="card-link list-group-item">
+							<a href="{{ url('analytics_channels') }}">Subscription Analysis</a>
+						</li>
+						<li class="card-link list-group-item">
+							<a href="{{ url('analytics_competitors') }}">Competitor Analysis</a>
+						</li>
+						<li class="card-link list-group-item">
+							<a href="{{ url('analytics_campaigns') }}">Campaigns Analysis</a>
+						</li>
+						<li class="card-link list-group-item">
+							<a href="{{ url('analytics_views') }}">Viewership Analysis</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

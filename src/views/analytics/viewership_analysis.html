@@ -1,0 +1,145 @@
+{% include '/analytics/tab_bar.html' %}
+<div class="admin_content active">
+	<div class="row content_header">
+		<div class="col-6">
+			<h1 class="title">
+				<i class="fa fa-link"></i> Viewership Analysis
+			</h1>
+		</div>
+	</div>
+	<div class="content_body">
+		<div class="row">
+			<h3 class="text-center">https://nammabnp.org</h3>
+		</div>
+		<div class="row">
+			<div class="channel_stats">
+				<h2 class="title">Viewers</h2>
+				<div class="users_stats_block">
+					<div class="row d-flex justify-content-center align-items-center">
+						<div class="col-3">
+							<div class="user_count_card sessions_count_card">
+								<div class="icon-section d-flex flex-row">
+									<i class="fa fa-users fa-3x" aria-hidden="true"></i><br>
+									<i class="fa fa-plus fa-2x" aria-hidden="true"></i><br>
+								</div>
+								<div class="content-section">
+									<h4>Sessions</h4>
+									<h1>{{ last_days_users_session_count }}</h1>
+									<h5>{{last_days_average_users_sessions_count}}/day</h5>
+								</div>
+							</div>
+						</div>
+						<div class="col-9">
+							<div id="users_session_stats_columns_bar_chart"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="channel_stats">
+				<h2 class="title">Viewers By Channel</h2>
+				{% if channel_viewers_count %}
+				<table class="table table-hover table-bordered align-middle">
+					<thead>
+					<tr class="text-center">
+						<th>Platform</th>
+						<th>Visitors</th>
+						<th>Goals</th>
+						<th>GC%</th>
+					</tr>
+					</thead>
+					<tbody>
+					{% for index, channel_data in channel_viewers_count %}
+					<tr>
+						<td>{{ channel_data.name }}</td>
+						<td>{{ channel_data.visitors }}</td>
+						<td>{{ channel_data.goals }}</td>
+						<td>{{ channel_data.gc }} % <i class="fa fa-caret-up"></i></td>
+					</tr>
+					{% endfor %}
+					</tbody>
+				</table>
+				{% else %}
+				<h4 class="text-center">No Channels available for your organization</h4>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+    google.charts.load('current', {'packages': ['bar']});
+    google.charts.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+        var users_data = [
+            ['Date', 'Sessions Active', {role: 'style'}],
+        ].concat({{graph_session_users_count | raw}})
+        ;
+
+        var data = google.visualization.arrayToDataTable(users_data);
+
+        var options = {
+            height: 400,
+            titleTextStyle: {
+                color: '#1998bf',
+				fontSize: 30,
+                bold: true,
+                italic: false
+            },
+            chart: {
+                title: 'Sessions Stats',
+                subtitle: 'Active Users count per day',
+            },
+            titlePosition: 'in',
+            legend: {
+                position: 'none', // top
+                maxLines: 3,
+                textStyle: {
+                    color: 'grey', fontSize: 18,
+                    bold: true,
+                    italic: false
+                },
+                alignment: 'center',
+            },
+
+            hAxis: {
+                titleTextStyle: {
+                    color: '#1998bf',
+                    fontSize: 20,
+                    bold: true,
+                    italic: false
+                },
+                textPosition: 'in',
+                title: 'Date'
+            },
+            vAxis: {
+                titleTextStyle: {
+                    color: '#1998bf',
+                    fontSize: 20,
+                    bold: true,
+                    italic: false
+                },
+                minValue: 0,
+                format: 'decimal',
+                title: 'No. Of Active Sessions'
+            },
+            axes: {
+                x: {
+                    0: {
+                        side: 'bottom',
+                    },
+                },
+            },
+            bars: 'vertical',
+            bar: {
+                groupWidth: "80%"
+            },
+        };
+
+        var chart = new google.charts.Bar(document.getElementById('users_session_stats_columns_bar_chart'));
+
+        chart.draw(data, google.charts.Bar.convertOptions(options));
+    }
+</script>

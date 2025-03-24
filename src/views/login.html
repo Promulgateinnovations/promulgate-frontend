@@ -1,0 +1,58 @@
+<div class="container mt-5">
+	<div class="row justify-content-center">
+
+		<div class="col-4"></div>
+		<div class="col-4">
+			<div class="card border-0 mb-0">
+				<div class="card-body ">
+					<div class="text-center mb-4">
+						<h2 class="text-promulgate-primary">Login</h2>
+					</div>
+					<p class="text-center text-muted">via Social Media</p>
+					<div class="form-group">
+						<div class="d-flex justify-content-center align-items-center">
+							<div id="g_id_onload"
+									data-client_id="{{GOOGLE_OAUTH_CLIENT_ID}}"
+									data-login_uri="https://{{ absolute_url('login')}}"
+									data-context="signin"
+									data-ux_mode="popup"
+									data-callback="handleGoogleAuthLoginResponse"
+									data-auto_select="false"
+							>
+							</div>
+							<div class="g_id_signin"
+									data-type="standard"
+									data-shape="rectangular"
+									data-theme="filled_blue"
+									data-text="signin_with"
+									data-size="large"
+									data-logo_alignment="left"
+							>
+							</div>
+						</div>
+					</div>
+					<br>
+					<p class="text-center text-muted"> OR  </p>
+					<form class="needs-validation" action="{{ form_action }}" novalidate>
+						<input type="hidden" name="form_source" id="form_source" value="login">
+						<input type="hidden" name="login_type" id="login_type" value="normal">
+						<input type="hidden" name="login_provider" id="login_provider" value="self">
+
+						<div class="form-group">
+							<label for="email" class="form-label">Email</label>
+							<input type="email" class="form-control" name="email" id="email" placeholder="Email">
+						</div>
+						<div class="form-group">
+							<label for="password" class="form-label">Password</label>
+							<input type="password" class="form-control" name="password" id="password" placeholder="Password">
+						</div>
+						<div class="mt-5 text-center">
+							<button type="submit" class="btn btn-promulgate-primary btn-min">Sign in</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+		<div class="col-4"></div>
+	</div>
+</div>

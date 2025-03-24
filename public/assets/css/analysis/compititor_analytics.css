@@ -1,0 +1,204 @@
+.dev_parent_section{
+	background: #f6f7ff;
+	padding: 35px 20px;
+	border-radius: 6px;
+}
+
+.dev_parent_section .heading_area .top_heading {
+	color: #606060;
+	font-size: x-large;
+	margin-bottom: 0;
+	text-align: center;
+}
+
+.dev_parent_section .heading_area .top_heading_filter {
+	background: #ec3935;
+	border: 0;
+	color: white;
+	font-size: 16px;
+	float: right;
+	border-radius: 5px;
+	padding: 10px;
+	margin: 15px 0;
+}
+
+.channel_search_parent {
+	display: flex;
+	margin: 15px 0;
+	margin-bottom: 30px;
+}
+
+
+.channel_search_parent .input-group-text {
+	background: white;
+	border-left: 0;
+	cursor: pointer;
+}
+
+.channel_search_parent .input-group{
+	min-height: 50px;
+	width: 300px;
+	margin: 0 auto;
+}
+
+.channel_search_parent .input-group input {
+	border-right: 0;
+}
+
+.channel_search_parent .right_part_right {
+	margin-left: 10px;
+}
+
+.channel_search_parent .right_part_left span, .channel_search_parent .right_part_right span {
+	color: #606060;
+	font-size: 18px;
+	margin-bottom: 0;
+	text-align: center;
+	font-weight: bold;
+	line-height: 50px;
+}
+
+.channel_info .channel_img {
+	width: 200px;
+	/* border-radius: 50%; */
+	height: 200px;
+	display: block;
+	margin: 15px auto;
+}
+
+.channel_info .channel_name {
+	color: #606060;
+	font-size: 20px;
+	text-align: center;
+}
+
+.channel_info .channel_sub_heading {
+	color: #606060;
+	font-size: 16px;
+	text-align: center;
+}
+
+.channel_info .channel_sub_heading .fa{
+	color: #ec3935;
+	font-size: 10px;
+	vertical-align: middle;
+	margin: 0px 5px;
+}
+
+
+.channel_info .content {
+  padding: 15px;
+  background: white;
+  margin: 30px auto;
+  max-width: 350px;
+}
+
+.channel_info .content .box_heading {
+	color: #606060;
+	font-size: larger;
+	margin-bottom: 0;
+}
+
+.channel_info .content .box_heading_numbers {
+	text-align: center;
+	font-weight: bold;
+	font-size: 2rem;
+	margin-bottom: 0;
+}
+
+.channel_info .content .box_sub_heading{
+	text-align: center;
+	color: #606060;
+	margin-bottom: 0;
+}
+
+.channel_info .content .inc_num span, .channel_info .content .inc_num .fa {
+	color: #5aec00;
+	font-size: 16px;
+}
+
+.channel_info .content .desc_num span, .channel_info .content .desc_num .fa {
+	color: #e43834;
+	font-size: 16px;
+}
+
+.channel_info_box {
+	margin: 30px 0;
+}
+
+.channel_info_box .channel_rank {
+  color: black;
+  font-size: 30px;
+  margin-bottom: 0;
+  text-align: center;
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+.channel_info_box .channel_rank_label {
+	color: #606060;
+	font-size: 20px;
+	margin-bottom: 0;
+	text-align: center;
+	margin-top: 5px;
+}
+
+.competitor_graph_box .content {
+	width: 80%;
+	margin: 25px auto;
+	background: white;
+	padding: 20px;
+}
+
+.competitor_graph_box .content .box_heading{
+	color: #606060;
+	font-size: larger;
+	margin-bottom: 0;
+}
+
+.competitor_graph_box .content .box_heading .stat_filters {
+	padding: 0;
+	list-style: none;
+	float: right;
+}
+
+.competitor_graph_box .content .box_heading .stat_filters li {
+	display: inline-block;
+	padding: 5px 10px;
+	border-radius: 3px;
+	cursor: pointer;
+}
+
+.competitor_graph_box .content .box_heading .stat_filters li:last-child {
+	margin-right: 0;
+}
+
+.competitor_graph_box .content .box_heading .stat_filters li h3 {
+	color: #606060;
+	font-size: 15px;
+	margin-bottom: 0;
+}
+
+.competitor_graph_box .content .box_heading .stat_filters .active_filter {
+	background: #7c7c7c;
+}
+
+.competitor_graph_box .content .box_heading .stat_filters .active_filter h3 {
+	color: white;
+}
+
+.competitor_graph_box .content .stat_select_filter {
+	background: transparent;
+	border: 0;
+	color: #606060;
+	font-size: 16px;
+	float: right;
+	margin-bottom: 5px;
+}
+
+@media screen and (max-width: 1200px)
+{
+	.channel_search_parent .right_part_right {
+		display: none;
+	}
+}

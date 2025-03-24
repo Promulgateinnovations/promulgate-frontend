@@ -1,0 +1,30 @@
+{% for api_log in debug_api_logs %}
+<div class="each_row">
+	<div class="request">
+		<b class="section_title">Request</b>
+		<div>
+			<b>Method</b>
+			<p>{{ api_log.method | upper }}</p>
+		</div>
+		<div>
+			<b>Endpoint</b>
+			<p>{{ api_log.url }}</p>
+		</div>
+		<div class="json_text">
+			<b>Params</b>
+			<pre> {{ api_log.request | json_encode(constant('JSON_PRETTY_PRINT')) }}</pre>
+		</div>
+	</div>
+	<div class="response">
+		<b class="section_title">Response</b>
+		<div>
+			<b>Code</b>
+			<p>{{ api_log.response_code | upper }}</p>
+		</div>
+		<div class="json_text">
+			<b>Data</b>
+			<pre> {{ api_log.response  | json_encode(constant('JSON_PRETTY_PRINT')) }}</pre>
+		</div>
+	</div>
+</div>
+{% endfor %}

@@ -1,0 +1,155 @@
+.lead_table_parent {
+    box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15) !important;
+    border: 1px solid #e3e6f0;
+    border-radius: 0.35rem;
+    background: #fff;
+    height: 100%;
+}
+
+.lead_table_parent table {
+    margin-bottom: 0;
+}
+
+.lead_table_parent table th {
+    color: #6c757d;
+    background-color: #f2f2f2;
+}
+
+.lead_table_parent table th,
+.lead_table_parent table td {
+    font-size: 0.8rem;
+    font-weight: normal;
+    padding: 0.5rem 1rem;
+    text-align: center;
+}
+
+.no_of_camp_icons {
+    background: #eabfc7;
+    padding: 10px;
+    border-radius: 50%;
+    color: #e66078 !important;
+    margin-top: 0;
+}
+
+.money_of_camp_icons {
+    background: #f9e8c9;
+    padding: 10px;
+    border-radius: 50%;
+    color: orange !important;
+    margin-top: 0;
+}
+
+.whatsapp_analysis_parent .info_content {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 1px 2px 2px 2px #dfd3d3;
+}
+
+.filter_by_campaign {
+    background: white;
+    box-shadow: 0px 2px 2px 1px #dfd3d3;
+    width: max-content;
+    padding: 6px 20px;
+    border-radius: 25px;
+    min-width: 300px;
+}
+
+.filter_by_campaign .wa_campaign_type {
+    display: inline-block;
+    width: fit-content;
+    border: 0;
+    appearance: auto;
+}
+
+.filter_by_campaign .wa_campaign_type:focus {
+    box-shadow: none;
+}
+
+.total_msg_section {
+    margin-top: 30px;
+}
+
+.total_msgs {
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+.total_msgs span {
+    font-size: 1.5rem;
+}
+
+.whatsapp_analysis_chart {
+    width: 80%;
+    margin: 0 auto;
+    height: 300px;
+}
+
+.whatsapp_analysis_filter .form-control:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+.whatsapp_analysis_filter .date-picker,
+.whatsapp_analysis_filter .wa_analysis_duration,
+.wa_analysis_filter_by,
+.wa_analysis_type {
+    border-radius: 20px;
+}
+
+.whatsapp_analysis_filter .select2-selection {
+    min-height: 38px !important;
+}
+
+.whatsapp_analysis_filter .select2-selection__rendered {
+    min-height: 38px;
+    line-height: 38px !important;
+}
+
+#socialInbox {
+    width: 100%;
+}
+
+#socialInbox thead {
+    background: #e6f3f7;
+}
+
+.msg_body {
+    text-overflow: ellipsis;
+    width: 100%;
+    /* white-space: nowrap; */
+    overflow: hidden;
+    margin-bottom: 0;
+}
+
+.position-relative {
+    position: relative;
+}
+
+.dropdown-icon {
+    position: absolute;
+    top: 50%;
+    right: 15px;
+    transform: translateY(-50%);
+    pointer-events: none; /* Prevent interaction with the icon */
+    color: #666;
+}
+
+.wa_analysis_filter_by {
+    width: 100%; /* Ensures it stretches to the column width */
+    padding-right: 30px; /* Space for dropdown icon */
+    text-align: left; /* Align text to the left */
+    white-space: nowrap; /* Prevent text wrapping */
+    overflow: hidden; /* Hide overflow if the text is too long */
+    text-overflow: ellipsis; /* Add ellipsis for long text */
+}
+
+.wa_analysis_filter_by option {
+    padding-right: 10px; /* Add padding between text and dropdown icon */
+}
+
+.wa_analysis_filter_by::after {
+    content: "▼"; /* Add the dropdown arrow */
+    position: absolute;
+    right: 10px;
+    pointer-events: none; /* Ensure it doesn't block clicks */
+}

@@ -1,0 +1,55 @@
+<div class="admin_content active">
+	<div class="row content_header">
+		<div class="col-6">
+			<h1 class="title">
+				<i class="fa fa-link"></i> Connect Whatsapp
+			</h1>
+		</div>
+	</div>
+	<div class="content_body">
+		<form class="needs-validation" action="{{ form_action }}" novalidate>
+
+			<div class="row">
+				<div class="col-lg-6">
+					<div class="form-group">
+						<label for="Phone_number_id" class="form-label">Phone number ID</label>
+						<input type="text" class="form-control" name="phone_number_id" id="Phone_number_id" placeholder="Phone number ID"
+                        value="{{ whatsapp_details.socialMediaHandle|split(':')[0] }}">
+					</div>
+					<div class="form-group">
+						<label for="Whatsapp_busines_account_id" class="form-label">WhatsApp Business Account ID</label>
+						<input type="text" class="form-control" name="Whatsapp_busines_account_id" id="Whatsapp_busines_account_id" placeholder="WhatsApp Business Account ID" value="{{ whatsapp_details.socialMediaHandle|split(':')[1] }}">
+					</div>
+				</div>
+				<div class="col-lg-6 align-middle text-center">
+					{% if whatsapp_details.createdAt %}
+					<div class="form-group">
+						<label class="form-label">Created at</label>
+						<p>{{ get_date(whatsapp_details.createdAt, 4) }}</p>
+					</div>
+					{% endif %}
+					{% if whatsapp_details.updatedAt %}
+					<div class="form-group">
+						<label class="form-label">Last Modified at</label>
+						<p>{{ get_date(whatsapp_details.updatedAt, 4) }}</p>
+					</div>
+					{% endif %}
+				</div>
+				<input type="hidden" name="whatsapp_connection_id" id="whatsapp_connection_id" value="{{ whatsapp_details.socalMediaConnectionId }}">
+				<input type="hidden" name="form_source" id="form_source" value="connect_whatsapp">
+			</div>
+			<div class="row">
+				<div class="text-center">
+					<button class="btn btn-min btn-promulgate-primary" type="submit" id="form_main_action_button">
+						{% if whatsapp_details.socalMediaConnectionId %}
+							Update
+						{% else %}
+							Create
+						{% endif %}
+					</button>
+					<button class="btn btn-min btn-outline-danger" type="reset">Ignore Changes</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>

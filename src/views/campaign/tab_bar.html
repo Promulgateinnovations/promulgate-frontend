@@ -1,0 +1,37 @@
+<div class="tab-container">
+	<div class="uitabs">
+		<ul class="uitabs-container">
+			<li>
+				<a class="strategy_definition {% if current_url_name == 'campaign_strategy_definition' %} active {% endif %}" href="{{ url('campaign_strategy_definition',  {'campaign_id': current_campaign_strategy_definition_details.campaign_id }) }}">Strategy Definition</a>
+			</li>
+			{% if current_campaign_strategy_definition_details.campaign_id != 0 %}
+			<li class="target_viewers">
+				<a class="target_viewers {% if current_url_name == 'campaign_target_viewers' %} active {% endif %}"
+						href="{{ url('campaign_target_viewers', {'campaign_id': current_campaign_strategy_definition_details.campaign_id }) }}">Target Viewers</a>
+			</li>
+			<li>
+				<a class="channel_selection {% if current_url_name == 'campaign_channel_selection' %} active {% endif %}"
+						href="{{ url('campaign_channel_selection', {'campaign_id': current_campaign_strategy_definition_details.campaign_id }) }}">Channel Selection</a>
+			</li>
+			<li>
+				<a class="content_curation {% if current_url_name == 'campaign_content_curation' %} active {% endif %}"
+						href="{{ url('campaign_content_curation', {'campaign_id': current_campaign_strategy_definition_details.campaign_id }) }}">Content Curation</a>
+			</li>
+			<li>
+				<a class="content_curation {% if current_url_name == 'campaign_calendar' %} active {% endif %}"
+						href="{{ url('campaign_calendar', {'campaign_id': current_campaign_strategy_definition_details.campaign_id }) }}">Calendar</a>
+			</li>
+			{% endif %}
+		</ul>
+	</div>
+</div>
+
+{% if current_url_name != 'campaign_strategy_definition' %}
+<div class="d-none">
+	<input class="form-check-input" type="checkbox"
+			id="share_with_captive_members"
+			name="share_with_captive_members"
+			{% if current_campaign_strategy_definition_details.selected_share_with_captive_members== true %} checked {% endif %}
+			value="true">
+</div>
+{% endif %}

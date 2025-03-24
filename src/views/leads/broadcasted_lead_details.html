@@ -1,0 +1,30 @@
+<link rel="stylesheet" type="text/css" href="/assets/css/leads_section/leads_details.css">
+<div class="lead_table_parent">
+    <div class="content_body">
+        <table class="table table-bordered align-middle">
+            <thead>
+                <tr>
+                    <th>Sr no.</th>
+                    <th>Phone</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% set counter = 0 %}
+                {% for contact in lead_contacts %}
+                {% set counter = counter + 1 %}
+                <tr>
+                    <td>{{counter}}</td>
+                    <td>{{contact.phone_number}}</td>
+                    <td>{{contact.status == 0 ? 'Unsent' : 'Sent'}}</td>
+                </tr>
+                {% endfor %}
+                {% if lead_contacts|length == 0 %}
+                <tr>
+                    <td colspan="5">No Records Found</td>
+                </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>

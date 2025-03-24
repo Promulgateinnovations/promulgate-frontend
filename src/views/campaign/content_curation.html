@@ -1,0 +1,173 @@
+{% include '/campaign/tab_bar.html' %}
+
+<div class="campaign_content active">
+	<div class="row content_header">
+		<div class="col-6">
+			<h1 class="title">
+				<i class="fa fa-file"></i> Content Curation
+			</h1>
+		</div>
+	</div>
+	<div class="content_body">
+		<input type="hidden" id="comment_campaign_video_url" value="Please visit: {{ current_campaign_strategy_definition_details.campaign_video_url }} ">
+		{% if selected_social_media_channels_and_content %}
+		{% set social_icon_size = 'fa-1x' %}
+		<div class="accordion" id="curation_channels_accordion">
+			{% for channel in selected_social_media_channels_and_content %}
+			<div class="accordion-item">
+				<h2 class="accordion-header" id="channel_{{ channel.unique_name }}_heading">
+					<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#channel_{{ channel.unique_name }}_content" aria-expanded="true" aria-controls="channel_{{ channel.unique_name }}_content">
+						{{ channel.name | title }}
+					</button>
+				</h2>
+				<div id="channel_{{ channel.unique_name }}_content" class="accordion-collapse collapse  {% if loop.first %} show {% endif %}" aria-labelledby="channel_{{ channel.unique_name }}_heading" data-bs-parent="#curation_channels_accordion">
+					<div class="accordion-body accordion_channel_content">
+						<form class="needs-validation" action="{{ form_action }}" enctype="multipart/form-data" novalidate id="curation_channel_{{ channel.unique_name }}" disabled="disabled">
+							<input type="hidden" name="curation_channel" id="curation_channel" value="{{ channel.name }}">
+							<input type="hidden" name="curation_channel_unique_name" id="curation_channel_unique_name" value="{{ channel.unique_name }}">
+							<input type="hidden" name="campaign_channel_selection_id" id="campaign_channel_selection_id" value="{{ channel.campaignSelectionId }}">
+							<input type="hidden" name="form_source" id="form_source" value="content_curation">
+
+							<code class="social_icon_block d-none">
+								<span class="m-2 social-icons icon-circle icon-zoom">
+									{% set social_icon_unique_key = channel.unique_name %}
+									{% include 'social_icons.html' %}
+								</span>
+							</code>
+
+							{% if channel.name != 'E-Mail' %}
+								{% set channel_file_label = 'Provide an Image/Video URL' %}
+								{% set channel_comment_label = 'Comment' %}
+							{% endif %}
+							{% if channel.name == 'SMS' %}
+								{% set channel_file_label = '' %}
+								{% set channel_comment_label = 'Message' %}
+							{% endif %}
+							{% if channel.name == 'E-Mail' %}
+								{% set channel_file_label = 'Provide an Image Attachment for the email' %}
+								{% set channel_comment_label = 'Email Content' %}
+							{% endif %}
+							{% if channel.name != 'SMS' and channel.name == 'Youtube' %}
+								<div class="row align-items-center">
+									<div class="col-12">
+										<div class="form-group publish_video_form_group">
+											<label>Publish As ?</label>
+											{% if channel.campaignContents.publishVideoAs != '' %}
+											<input class="publish_video_as" data-width="100"  type="checkbox" name="publish_video_as" data-toggle="toggle" data-on="Video" data-off="Shorts" value="{{channel.campaignContents.publishVideoAs}}" disabled data-size="small">
+											<p class="shorts_warning_note">Note: Please upload a video with a 9:16 aspect ratio for Shorts rest all will be treated as Normal Video.</p>
+											{% else %}
+											<input class="publish_video_as" data-width="100"  type="checkbox" name="publish_video_as" data-toggle="toggle" data-on="Video" data-off="Shorts" value="Video" data-size="small">
+											<p class="shorts_warning_note hidden">Note: Please upload a video with a 9:16 aspect ratio for Shorts rest all will be treated as Normal Video.</p>
+											{% endif %}
+										</div>
+										
+										
+									</div>
+								</div>
+								{% endif %}
+							{% if channel.name != 'SMS' %}
+								
+							<div class="row align-items-center">
+								<div class="col-9">
+									<div class="form-group">
+										<label>{{ channel_file_label }}</label>
+										<input type="text" class="form-control" id="file_url" name="file_url" placeholder="{{ channel_file_label }}" value="{{ channel.campaignContents.url }}">
+									</div>
+								</div>
+								<div class="col-3 text-center">
+									<button type="button" data-channel-source="{{ channel.unique_name }}" class="btn btn-promulgate-primary btn-full open-google-drive">Open Google Drive</button>
+								</div>
+							</div>
+							{% endif %}
+							{% if channel.name == 'E-Mail' %}
+							<div class="form-group">
+								<label for="campaign_to" class="form-label">To Emails</label>
+								<input type="text" class="form-control" name="campaign_to" id="campaign_to" placeholder="To Emails" value="{{ channel.campaignContents.toEmail }}">							</div>
+							<div class="form-group">
+								<label for="campaign_subject" class="form-label">Subject</label>
+								<input type="text" class="form-control" name="campaign_subject" id="campaign_subject" placeholder="Subject" value="{{ channel.campaignContents.subject }}">
+							</div>
+							{% endif %}
+							<div class="row">
+								<div class="form-group">
+									<label for="campaign_comment">{{ channel_comment_label }}</label>
+									<div class="d-inline-block position-relative col-12">
+										<textarea type="textarea" class="form-control" id="campaign_comment" name="campaign_comment" placeholder="What's on your mind ?">{{ channel.campaignContents.descritption }}</textarea>
+										<button type="button" data-channel-source="{{ channel.unique_name }}"
+												class="btn btn-outline-promulgate-secondary btn-extra-sm-min mb-2 add-campaign-url-to-comment position-absolute">Include Campaign URL in comment
+										</button>
+									</div>
+								</div>
+							</div>
+							{% if channel.name != 'SMS' and channel.name != 'E-Mail' %}
+							<div class="form-group">
+								<label for="curation_tags" class="form-label">Tags</label>
+								{% if channel.campaignContents.tags %}
+								{% set curation_tags = channel.campaignContents.tags %}
+								{% else %}
+								{% set curation_tags = current_campaign_strategy_definition_details.page_description_tags %}
+								{% endif %}
+								<input type="text" class="form-control" name="curation_tags" id="curation_tags" placeholder="Tags" value="{{ curation_tags }}">
+							</div>
+							{% endif %}
+							{% if channel == 'whatsapp' %}
+							<div class="row text-end">
+								<div class="form-group">
+									<button type="button" data-channel-source="{{ channel.unique_name }}" data-video-url="{{ current_campaign_strategy_definition_details.campaign_video_url }}" class="btn btn-sm btn-promulgate-primary add_youtube_link">Add Youtube Link</button>
+								</div>
+							</div>
+							{% endif %}
+							<div class="row align-center">
+								<div class="form-group ">
+									{% if not channel.campaignContents %}
+									<label>When to Post
+										<i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="You can select multiple times by clicking on Add New"></i>
+									</label>
+									<button data-channel-source="{{ channel.unique_name }}" type="button" class="btn btn-promulgate-primary btn-sm add_new_post_at">
+										<span>Add New</span>
+										<i class="fa fa-calendar-plus-o"></i>
+									</button>
+									<div class="post_at_group mt-2">
+										<input autocomplete="off" class="form-control main_post_at date-time-picker-min-time" name="when_to_post[]" type="text" placeholder="Pick the time to post">
+									</div>
+									{% else %}
+									<label>Details will be posted to {{ channel.name }} at following times:</label>
+									<div class="post_at_group mt-2">
+										{% for post_at in channel.campaignContents.campaignContentPosts %}
+										<b>{{ get_date(post_at, 5) }}</b>
+										{% endfor %}
+									</div>
+									{% endif %}
+								</div>
+							</div>
+							<div class="row mt-4 content_action_buttons">
+								{% if not channel.campaignContents %}
+								<div class="text-center">
+									<button type="button" data-channel-source="{{ channel.unique_name }}" class="btn btn-promulgate-primary channel_data_preview">
+										Preview
+									</button>
+									<button data-channel-source="{{ channel.unique_name }}" class="btn btn-min btn-success" type="submit">Save & Continue</button>
+								</div>
+								{% endif %}
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+			{% endfor %}
+		</div>
+		{% else %}
+		<div class="row mt-5">
+			<div class="text-center">
+				<h3 class="mb-5 page-data-needed-block animate__animated animate__pulse">This campaign does not have any selected channels</h3>
+				<h5>
+					<a href="{{ url('campaign_channel_selection', {'campaign_id': current_campaign_strategy_definition_details.campaign_id}) }}" class="btn btn-promulgate-secondary">
+						Channels Selection
+					</a>
+				</h5>
+			</div>
+		</div>
+		{% endif %}
+	</div>
+</div>
+

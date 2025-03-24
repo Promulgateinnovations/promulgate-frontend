@@ -1,0 +1,894 @@
+{% include '/analytics/tab_bar.html' %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link rel="stylesheet" type="text/css" href="/assets/css/analysis/youtube_analysis.css">
+<div class="admin_content active">
+    <div class="row content_header">
+		<div class="col-6">
+			<h1 class="title">
+				<i class="fa fa-link"></i> Youtube Analysis 
+			</h1>
+		</div>
+	</div>
+   <!--  <div class="container-fluid" style="display: none;">
+			<section class="dev_parent_section">
+				<div class="row overview_row">
+					<div class="col-md-6">
+						<h3 class="top_heading">Overview</h3>
+					</div>
+					<div class="col-md-6 dev_text_right">
+						<select class="select_filter">
+							<option>Monthly</option>
+							<option>Weekly</option>
+						</select>
+					</div>
+				</div>
+			 	<div class="row row-flex content_row">
+			      <div class="col-md-4 col-sm-6 col-xs-12 bottom_gap">
+			        <div class="content">
+			          <h3 class="box_heading">Views</h3>
+			          <p class="box_heading_numbers inc_num">{{ yoututbe_analyticsData.viewCount }}  <span>+23% </span> <i class="fa fa-angle-up"></i></p>
+			          <p class="box_sub_heading">Compared to (112.3K last month)</p>
+			        </div>
+			      </div>
+			      <div class="col-md-4 col-sm-6 col-xs-12 bottom_gap">
+			        <div class="content">
+			          <h3 class="box_heading">Subscribers</h3>
+			          <p class="box_heading_numbers desc_num">{{ yoututbe_analyticsData.Subscribers }} <span>+23% </span> <i class="fa fa-angle-down"></i></p>
+			          <p class="box_sub_heading">Compared to (112.3K last month)</p>
+			        </div>
+			      </div>
+			      <div class="col-md-4 col-sm-6 col-xs-12 bottom_gap">
+			        <div class="content">
+			          <h3 class="box_heading">Revenue</h3>
+			          <p class="box_heading_numbers inc_num">123.5K <span>+23% </span> <i class="fa fa-angle-up"></i></p>
+			          <p class="box_sub_heading">Compared to (112.3K last month)</p>
+			        </div>
+			      </div>
+			    </div>
+				<div class="info_content bottom_gap">
+					<div class="info_content_box">
+						<div class="info_content_part_left">
+							<i class="fa fa-clock-o"></i>
+						</div>
+						<div class="info_content_part_right">
+							<h3 class="box_heading">Watch time</h3>
+							<p class="number_text">72h 12m</p>
+						</div>
+					</div>
+					<div class="info_content_box">
+						<div class="info_content_part_left">
+							<i class="fa fa-eye"></i>
+						</div>
+						<div class="info_content_part_right">
+							<h3 class="box_heading">Videos Published</h3>
+							<p class="number_text">{{yoututbe_analyticsData["Video Published"] }}</p>
+						</div>
+					</div>
+					<div class="info_content_box">
+						<div class="info_content_part_left">
+							<i class="fa fa-thumbs-up"></i>
+						</div>
+						<div class="info_content_part_right">
+							<h3 class="box_heading">Total likes</h3>
+							<p class="number_text">62</p>
+						</div>
+					</div>
+					 <div class="info_content_box">
+					 	<div class="info_content_part_left">
+							<i class="fa fa-list"></i>
+						</div>
+						<div class="info_content_part_right">
+							<h3 class="box_heading">playlists</h3>
+							<p class="number_text">{{yoututbe_analyticsData.playlist}}</p>
+						</div>
+					 </div>
+					<div class="info_content_box">
+						<div class="info_content_part_left">
+							<i class="fa fa-repeat"></i>
+						</div>
+						<div class="info_content_part_right">
+							<h3 class="box_heading">Audience Retention</h3>
+							<p class="number_text">3m 12sec</p>
+						</div>
+					</div>
+				</div>
+	            <div class="row row-flex graph_content">
+	                <div class="col-md-8 col-sm-8 col-xs-12 bottom_gap">
+	                  <div class="content">
+	                    <h3 class="box_heading">Statistics
+	                        <ul class="stat_filters">
+	                            <li>
+	                                <h3>Watch Time</h3>
+	                            </li>
+	                            <li class="active_filter">
+	                                <h3>Views</h3>
+	                            </li>
+	                            <li>
+	                                <h3>Subscribers</h3>
+	                            </li>
+	                        </ul>
+	                    </h3>
+	                    <div style="clear:both"></div>
+	                        <select class="stat_select_filter">
+	                          <option>Monthly</option>
+	                          <option>Weekly</option>
+	                      </select>
+	                    <canvas id="followers_chart"></canvas>
+	                  </div>
+	                </div>
+	                <div class="col-md-4 col-sm-4 col-xs-12 bottom_gap">
+	                  <div class="content recent_videos">
+	                        <h3 class="box_heading">Recent Videos</h3>
+	                      <ul class="video_list_ul">
+							{% for data in yoututbe_analyticsData.popularvideo %}
+								<li class="video_list_li">
+	                              <img src={{data.thumbnail.default.url}} />
+	                              <h3 class="video_heading">{{data.title}}</h3>
+	                              <p class="video_info">July 30 | 5:30pm</p>
+	                          </li>
+							{% endfor %}
+	                         
+	                      </ul>
+	                  </div>
+	                </div>
+	              </div>
+	              <div class="combine_graph bottom_gap">
+		    		<div class="graph_left">
+		    			<h3 class="box_heading">Audience by Countries</h3>
+		    			<canvas id="audience_chrt"></canvas>
+		    		</div>
+		    		<div class="graph_right">
+		    			<h3 class="box_heading">Audience Demographics</h3>
+		    			<ul class="aud_filters">
+			          		<li>
+			          			<h3>Age</h3>
+			          		</li>
+			          		<li class="active_filter">
+			          			<h3>Location</h3>
+			          		</li>
+			          		<li>
+			          			<h3>Source</h3>
+			          		</li>
+			          		<li>
+			          			<h3>Devices</h3>
+			          		</li>
+			          	</ul>
+			          	<div style="clear: both;"></div>
+			          	<div style="width:250px;height: 100%;overflow: auto;">
+			          		<canvas width="250px" height="250px" id="audience_chart"></canvas>
+			          	</div>
+		    		</div>
+			    </div>
+			    <div class="row row-flex graph_content">
+			      <div class="col-md-12 col-sm-12 col-xs-12 bottom_gap">
+			        <div class="content">
+			          <h3 class="box_heading">Top Videos
+			          	<select class="select_filter">
+							<option>Watch time</option>
+							<option>Weekly</option>
+						</select>
+			          </h3>
+			          <p class="graph_sub_heading">Watch Time (min)</p>
+			          <div class="top_videos_graph_row">
+						{% for data in yoututbe_analyticsData.popularvideo %}
+							<div class="row">
+								<div class="col-md-4">
+									<h3 class="label_heading">1. {{data.title}}</h3>
+								</div>
+								<div class="col-md-8">
+									<div class="right_graph_parent">
+										<div class="progress progress_box">
+											<div class="progress-bar bar_bg_1" 
+												style="width: 60%">
+											</div>
+										</div>
+										<div class="number_box">
+											<h3 class="number_heading">32.8K</h3>
+										</div>
+									</div>
+								</div>
+							</div>
+							{% endfor %}
+			          </div>
+			        </div>
+			      </div>
+			    </div>
+			    <div class="row row-flex graph_content">
+			      <div class="col-md-8 col-sm-8 col-xs-12 bottom_gap">
+			        <div class="content">
+			          <h3 class="box_heading">Watch time for Subscribers
+			          	<select class="select_filter">
+							<option>Monthly</option>
+							<option>Weekly</option>
+						</select>
+			          </h3>
+			          <canvas id="watchers_chart"></canvas>
+			        </div>
+			      </div>
+			      <div class="col-md-4 col-sm-4 col-xs-12 bottom_gap">
+			        <div class="content">
+			          <h3 class="box_heading">Subscriber Bell Notifications</h3>
+			        	<ul class="subscribers_info_ul">
+			        		<li class="subscribers_info_li">
+			        			<h3>Subscribers who turned ON your notifications</h3>
+			        			<p>
+			        				<i class="fa fa-bell"></i> <span class="on_ratio">67%</span>
+			        			</p>
+			        		</li>
+			        		<li class="subscribers_info_li">
+			        			<h3>Subscribers who turned OFF your notifications</h3>
+			        			<p>
+			        				<i class="fa fa-bell-slash"></i> <span class="off_ratio">33%</span>
+			        			</p>
+			        		</li>
+			        	</ul>
+			        </div>
+			      </div>
+			    </div>
+			    <div class="row row-flex graph_content">
+			      <div class="col-md-8 col-sm-8 col-xs-12 bottom_gap">
+			        <div class="content">
+			          <h3 class="box_heading">Traffic Source
+			          	<select class="select_filter">
+							<option>Monthly</option>
+							<option>Weekly</option>
+						</select>
+			          </h3>
+			          <div class="graph_row">
+						<div class="row">
+				          	<div class="col-md-6">
+				          		<h3 class="label_heading">1. Suggested Video</h3>
+				          	</div>
+				          	<div class="col-md-6">
+				          		<div class="right_graph_parent">
+				          			<div class="number_box">
+					          			<h3 class="number_heading">50%</h3>
+					          		</div>
+					          		<div class="progress progress_box">
+							            <div class="progress-bar" 
+							                style="width: 60%">
+							            </div>
+							        </div>
+				          		</div>
+				          	</div>
+			          	</div>
+			          	<div class="row">
+				          	<div class="col-md-6">
+				          		<h3 class="label_heading">2. Youtube Search</h3>
+				          	</div>
+				          	<div class="col-md-6">
+				          		<div class="right_graph_parent">
+				          			<div class="number_box">
+					          			<h3 class="number_heading">20%</h3>
+					          		</div>
+					          		<div class="progress progress_box">
+							            <div class="progress-bar" 
+							                style="width: 20%">
+							            </div>
+							        </div>
+				          		</div>
+				          	</div>
+			          	</div>
+			          </div>
+			        </div>
+			      </div>
+			      <div class="col-md-4 col-sm-4 col-xs-12 bottom_gap">
+			        <div class="content">
+			          <h3 class="box_heading">External Sources</h3>
+		        	<div class="graph_row_right">
+						<div class="row">
+				          	<div class="col-md-6">
+				          		<h3 class="label_heading">1. Facebook</h3>
+				          	</div>
+				          	<div class="col-md-6">
+				          		<div class="right_graph_parent">
+					          		<div class="progress progress_box">
+							            <div class="progress-bar" 
+							                style="width: 60%">
+							            </div>
+							        </div>
+							        <div class="number_box">
+					          			<h3 class="number_heading">50%</h3>
+					          		</div>
+				          		</div>
+				          	</div>
+			          	</div>
+			          	<div class="row">
+				          	<div class="col-md-6">
+				          		<h3 class="label_heading">2. Twitter</h3>
+				          	</div>
+				          	<div class="col-md-6">
+				          		<div class="right_graph_parent">
+					          		<div class="progress progress_box">
+							            <div class="progress-bar" 
+							                style="width: 20%">
+							            </div>
+							        </div>
+							        <div class="number_box">
+					          			<h3 class="number_heading">20%</h3>
+					          		</div>
+				          		</div>
+				          	</div>
+			          	</div>
+			          </div>
+			        </div>
+			      </div>
+			    </div>
+			</section>
+		</div> -->
+		<div class="container-fluid">
+		<section class="dev_parent_section">
+			<div class="row overview_row">
+				<div class="col-md-6">
+					<h3 class="top_heading">Overview</h3>
+				</div>
+				<div class="col-md-6 dev_text_right">
+					<select class="select_filter">
+						<option>Monthly</option>
+						<option>Weekly</option>
+					</select>
+				</div>
+			</div>
+		 	<div class="row row-flex content_row">
+		      <div class="col-md-4 col-sm-6 col-xs-12 bottom_gap">
+		        <div class="content">
+		          <h3 class="box_heading">Views</h3>
+		          <p class="box_heading_numbers inc_num video_views">113K  <span id="view_percentage_change">+13%</span> <i class="fa fa-angle-up"></i></p>
+		          <p class="box_sub_heading"> Compared to (<span id="prev_view">91K</span> last month)</p>
+		        </div>
+		      </div>
+		      <div class="col-md-4 col-sm-6 col-xs-12 bottom_gap">
+		        <div class="content">
+		          <h3 class="box_heading">Subscribers</h3>
+		          <p class="box_heading_numbers inc_num" id="video_subs" >67K <span id="subs_percentage_change">+18%</span> <i class="fa fa-angle-up"></i></p>
+		          <p class="box_sub_heading">  Compared to (<span id="prev_subs">58.6K</span> last month)</p>
+		        </div>
+		      </div>
+		      <div class="col-md-4 col-sm-6 col-xs-12 bottom_gap">
+		        <div class="content">
+		          <h3 class="box_heading">Revenue</h3>
+		          <p class="box_heading_numbers inc_num" id="total_revenue">89.1K<i class="fa fa-angle-up"></i></p>
+		          <p class="box_sub_heading"></p>
+		        </div>
+		      </div>
+		    </div>
+			<div class="info_content bottom_gap">
+				<div class="info_content_box">
+					<div class="info_content_part_left">
+						<i class="fa fa-clock-o"></i>
+					</div>
+					<div class="info_content_part_right">
+						<h3 class="box_heading">Watch time</h3>
+						<p class="number_text" id="watch_time">72h 12m</p>
+					</div>
+				</div>
+				<div class="info_content_box">
+					<div class="info_content_part_left">
+						<i class="fa fa-eye"></i>
+					</div>
+					<div class="info_content_part_right">
+						<h3 class="box_heading">Videos Published</h3>
+						<p class="number_text" id="total_video">96</p>
+					</div>
+				</div>
+				<div class="info_content_box">
+					<div class="info_content_part_left">
+						<i class="fa fa-thumbs-up"></i>
+					</div>
+					<div class="info_content_part_right">
+						<h3 class="box_heading">Total likes</h3>
+						<p class="number_text">1082</p>
+					</div>
+				</div>
+				 <div class="info_content_box">
+				 	<div class="info_content_part_left">
+						<i class="fa fa-list"></i>
+					</div>
+					<div class="info_content_part_right">
+						<h3 class="box_heading">Total Comments</h3>
+						<p class="number_text">865</p>
+					</div>
+				 </div>
+				<div class="info_content_box">
+					<div class="info_content_part_left">
+						<i class="fa fa-repeat"></i>
+					</div>
+					<div class="info_content_part_right">
+						<h3 class="box_heading">Audience Retention</h3>
+						<p class="number_text">3m 12sec</p>
+					</div>
+				</div>
+			</div>
+			
+		    
+		    <div class="row row-flex graph_content">
+		      <div class="col-md-8 col-sm-8 col-xs-12 bottom_gap">
+		        <div class="content">
+		          <h3 class="box_heading">Statistics
+		          	<ul class="stat_filters">
+		          		<li>
+		          			<h3>Watch Time</h3>
+		          		</li>
+		          		<li class="active_filter">
+		          			<h3>Views</h3>
+		          		</li>
+		          		<li>
+		          			<h3>Subscribers</h3>
+		          		</li>
+		          	</ul>
+		          </h3>
+		          <div style="clear:both"></div>
+		          	<select class="stat_select_filter">
+						<option>Monthly</option>
+						<option>Weekly</option>
+					</select>
+		          <canvas id="views_subs_chart"></canvas>
+		        </div>
+		      </div>
+		      <div class="col-md-4 col-sm-4 col-xs-12 bottom_gap">
+		        <div class="content recent_videos">
+         	 		<h3 class="box_heading">Recent Videos</h3>
+					<ul class="video_list_ul">
+						<li class="video_list_li">
+							<img class = "video_thumbnail" />
+							<h3 class="video_heading">Java Tutorials for Beginners</h3>
+							<p class="video_info published_time">July 30 | 5:30pm</p>
+						</li>
+						<li class="video_list_li">
+							<img class = "video_thumbnail" />
+							<h3 class="video_heading">Java Tutorials for Advance</h3>
+							<p class="video_info published_time">July 29 | 7:30pm</p>
+						</li>
+						<li class="video_list_li">
+							<img class = "video_thumbnail" />
+							<h3 class="video_heading">HTML Tutorials for Beginners</h3>
+							<p class="video_info published_time">July 28 | 3:00pm</p>
+						</li>
+						<li class="video_list_li">
+							<img class = "video_thumbnail" />
+							<h3 class="video_heading">Adobe Tutorials</h3>
+							<p class="video_info published_time">July 26 | 1:30pm</p>
+						</li>
+						<li class="video_list_li">
+							<img class = "video_thumbnail" />
+							<h3 class="video_heading">Figma Designing</h3>
+							<p class="video_info published_time">July 25 | 8:30pm</p>
+						</li>
+					</ul>
+		        </div>
+		      </div>
+		    </div>
+		    <div class="combine_graph bottom_gap">
+	    		<div class="graph_left">
+	    			<h3 class="box_heading">Audience by Countries</h3>
+	    			<canvas id="audience_chrt"></canvas>
+	    		</div>
+	    		<div class="graph_right">
+	    			<h3 class="box_heading">Audience Demographics</h3>
+	    			<ul class="aud_filters">
+		          		<li>
+		          			<h3>Age</h3>
+		          		</li>
+		          		<li class="active_filter">
+		          			<h3>Location</h3>
+		          		</li>
+		          		<li>
+		          			<h3>Source</h3>
+		          		</li>
+		          		<li>
+		          			<h3>Devices</h3>
+		          		</li>
+		          	</ul>
+		          	<div style="clear: both;"></div>
+		          	<div style="width:250px;height: 100%;overflow: auto;">
+		          		<canvas width="250px" height="250px" id="audience_chart"></canvas>
+		          	</div>
+	    		</div>
+		    </div>
+		    <div class="row row-flex graph_content">
+		      <div class="col-md-12 col-sm-12 col-xs-12 bottom_gap">
+		        <div class="content">
+		          <h3 class="box_heading">Top Videos
+		          	<select class="select_filter">
+						<option>Watch time</option>
+						<option>Weekly</option>
+					</select>
+		          </h3>
+		          <p class="graph_sub_heading">Watch Time (min)</p>
+		          <div class="top_videos_graph_row">
+					<div class="row">
+			          	<div class="col-md-4">
+			          		<h3 class="label_heading">1. Java Tutorial for Beginer</h3>
+			          	</div>
+			          	<div class="col-md-8">
+			          		<div class="right_graph_parent">
+				          		<div class="progress progress_box">
+						            <div class="progress-bar bar_bg_1" 
+						                style="width: 60%">
+						            </div>
+						        </div>
+						        <div class="number_box">
+				          			<h3 class="number_heading">32.8K</h3>
+				          		</div>
+			          		</div>
+			          	</div>
+		          	</div>
+		          	<div class="row">
+			          	<div class="col-md-4">
+			          		<h3 class="label_heading">2. Python Tutorial for Beginer</h3>
+			          	</div>
+			          	<div class="col-md-8">
+			          		<div class="right_graph_parent">
+				          		<div class="progress progress_box">
+						            <div class="progress-bar bar_bg_2" 
+						                style="width: 28.2%">
+						            </div>
+						        </div>
+						        <div class="number_box">
+				          			<h3 class="number_heading">28.2K</h3>
+				          		</div>
+			          		</div>
+			          	</div>
+		          	</div>
+		          	<div class="row">
+			          	<div class="col-md-4">
+			          		<h3 class="label_heading">3. React Tutorial for Beginer</h3>
+			          	</div>
+			          	<div class="col-md-8">
+			          		<div class="right_graph_parent">
+				          		<div class="progress progress_box">
+						            <div class="progress-bar bar_bg_3" 
+						                style="width: 22.7%">
+						            </div>
+						        </div>
+						        <div class="number_box">
+				          			<h3 class="number_heading">22.7K</h3>
+				          		</div>
+			          		</div>
+			          	</div>
+		          	</div>
+		          	<div class="row">
+			          	<div class="col-md-4">
+			          		<h3 class="label_heading">4. C++ Tutorial for Beginer</h3>
+			          	</div>
+			          	<div class="col-md-8">
+			          		<div class="right_graph_parent">
+				          		<div class="progress progress_box">
+						            <div class="progress-bar bar_bg_4" 
+						                style="width: 15%">
+						            </div>
+						        </div>
+						        <div class="number_box">
+				          			<h3 class="number_heading">15K</h3>
+				          		</div>
+			          		</div>
+			          	</div>
+		          	</div>
+		          	<div class="row">
+			          	<div class="col-md-4">
+			          		<h3 class="label_heading">5.  Springboot Tutorial for Beginer</h3>
+			          	</div>
+			          	<div class="col-md-8">
+			          		<div class="right_graph_parent">
+				          		<div class="progress progress_box">
+						            <div class="progress-bar bar_bg_5" 
+						                style="width: 13.4%">
+						            </div>
+						        </div>
+						        <div class="number_box">
+				          			<h3 class="number_heading">13.4K</h3>
+				          		</div>
+			          		</div>
+			          	</div>
+		          	</div>
+		          </div>
+		        </div>
+		      </div>
+		    </div>
+		    <div class="row row-flex graph_content">
+		      <div class="col-md-8 col-sm-8 col-xs-12 bottom_gap">
+		        <div class="content">
+		          <h3 class="box_heading">Watch time for Subscribers
+		          	<select class="select_filter">
+						<option>Monthly</option>
+						<option>Weekly</option>
+					</select>
+		          </h3>
+		          <canvas id="watchers_chart"></canvas>
+		        </div>
+		      </div>
+		      <div class="col-md-4 col-sm-4 col-xs-12 bottom_gap">
+		        <div class="content">
+		          <h3 class="box_heading">Subscriber Bell Notifications</h3>
+		        	<ul class="subscribers_info_ul">
+		        		<li class="subscribers_info_li">
+		        			<h3>Subscribers who turned ON your notifications</h3>
+		        			<p>
+		        				<i class="fa fa-bell"></i> <span class="on_ratio">67%</span>
+		        			</p>
+		        		</li>
+		        		<li class="subscribers_info_li">
+		        			<h3>Subscribers who turned OFF your notifications</h3>
+		        			<p>
+		        				<i class="fa fa-bell-slash"></i> <span class="off_ratio">33%</span>
+		        			</p>
+		        		</li>
+		        	</ul>
+		        </div>
+		      </div>
+		    </div>
+		    <div class="row row-flex graph_content">
+		      <div class="col-md-8 col-sm-8 col-xs-12 bottom_gap">
+		        <div class="content">
+		          <h3 class="box_heading">Traffic Source
+		          	<select class="select_filter">
+						<option>Monthly</option>
+						<option>Weekly</option>
+					</select>
+		          </h3>
+		          <div class="graph_row">
+					<div class="row">
+			          	<div class="col-md-6">
+			          		<h3 class="label_heading">1. Suggested Video</h3>
+			          	</div>
+			          	<div class="col-md-6">
+			          		<div class="right_graph_parent">
+			          			<div class="number_box">
+				          			<h3 class="number_heading">50%</h3>
+				          		</div>
+				          		<div class="progress progress_box">
+						            <div class="progress-bar" 
+						                style="width: 60%">
+						            </div>
+						        </div>
+			          		</div>
+			          	</div>
+		          	</div>
+		          	<div class="row">
+			          	<div class="col-md-6">
+			          		<h3 class="label_heading">2. Youtube Search</h3>
+			          	</div>
+			          	<div class="col-md-6">
+			          		<div class="right_graph_parent">
+			          			<div class="number_box">
+				          			<h3 class="number_heading">20%</h3>
+				          		</div>
+				          		<div class="progress progress_box">
+						            <div class="progress-bar" 
+						                style="width: 20%">
+						            </div>
+						        </div>
+			          		</div>
+			          	</div>
+		          	</div>
+		          </div>
+		        </div>
+		      </div>
+		      <div class="col-md-4 col-sm-4 col-xs-12 bottom_gap">
+		        <div class="content">
+		          <h3 class="box_heading">External Sources</h3>
+	        	<div class="graph_row_right">
+					<div class="row">
+			          	<div class="col-md-6">
+			          		<h3 class="label_heading">1. Facebook</h3>
+			          	</div>
+			          	<div class="col-md-6">
+			          		<div class="right_graph_parent">
+				          		<div class="progress progress_box">
+						            <div class="progress-bar" 
+						                style="width: 60%">
+						            </div>
+						        </div>
+						        <div class="number_box">
+				          			<h3 class="number_heading">50%</h3>
+				          		</div>
+			          		</div>
+			          	</div>
+		          	</div>
+		          	<div class="row">
+			          	<div class="col-md-6">
+			          		<h3 class="label_heading">2. Twitter</h3>
+			          	</div>
+			          	<div class="col-md-6">
+			          		<div class="right_graph_parent">
+				          		<div class="progress progress_box">
+						            <div class="progress-bar" 
+						                style="width: 20%">
+						            </div>
+						        </div>
+						        <div class="number_box">
+				          			<h3 class="number_heading">20%</h3>
+				          		</div>
+			          		</div>
+			          	</div>
+		          	</div>
+		          </div>
+		        </div>
+		      </div>
+		    </div>
+		</section>
+	</div>
+</div>
+<script src="/assets/js/analysis/youtube_analysis.js"></script>
+
+<!-- <script>
+
+    const audience_labels = ['India', 'Germany', 'China', 'Ukraine'];
+    const audience_country_data = {
+      labels: audience_labels,
+      datasets: [{
+        label: 'India',
+        data: [65],
+        backgroundColor: [
+          '#73c3c6'
+        ],
+        borderColor: [
+          '#73c3c6'
+        ],
+        borderWidth: 1
+      },{
+        label: 'Germany',
+        data: [0, 30],
+        backgroundColor: [
+          '#b0225f'
+        ],
+        borderColor: [
+          '#b0225f'
+        ],
+        borderWidth: 1
+      },{
+        label: 'China',
+        data: [0, 0, 20],
+        backgroundColor: [
+          '#f18319'
+        ],
+        borderColor: [
+          '#f18319'
+        ],
+        borderWidth: 1
+      },{
+        label: 'Ukraine',
+        data: [0, 0, 0, 10],
+        backgroundColor: [
+          '#03419f'
+        ],
+        borderColor: [
+          '#03419f'
+        ],
+        borderWidth: 1
+      }]
+    };
+
+    const audience_count_config = {
+        type: 'bar',
+        data: audience_country_data,
+        options: {}
+      };
+
+    const audience_chrt = new Chart(
+        document.getElementById('audience_chrt'),
+        audience_count_config
+      );
+
+  const labels = [
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec'
+  ];
+
+  const data = {
+    labels: labels,
+    datasets: [{
+      label: 'Followers',
+      backgroundColor: '#e43834',
+      borderColor: '#e43834',
+      data: [0, 5, 4, 10, 8, 10, 15, 10, 12, 15, 20, 30],
+    },{
+      label: 'Non Followers',
+      backgroundColor: '#23a0ed',
+      borderColor: '#23a0ed',
+      data: [20, 25, 20, 25, 30, 35, 40, 35, 30, 25, 20, 22],
+    }]
+  };
+
+  const config = {
+    type: 'line',
+    data: data,
+    options: {}
+  };
+
+   const followers_config = new Chart(
+    document.getElementById('followers_chart'),
+    config
+  );
+
+  const watchers_labels = [
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec',
+  ];
+
+  const watchers_data = {
+      labels: watchers_labels,
+      datasets: [{
+        label: 'Not Subscribed',
+        data: [65, 59, 80, 81, 56, 55, 40,56, 55, 40,10,4],
+        backgroundColor: [
+          '#e4ac87'
+        ],
+        borderColor: [
+          '#e4ac87'
+        ],
+        borderWidth: 1
+      },
+      {
+        label: 'Subscribed',
+        data: [65, 59, 80, 81, 56, 55, 40,56, 55, 40,10,2],
+        backgroundColor: [
+          '#26a12a'
+        ],
+        borderColor: [
+          '#26a12a'
+        ],
+        borderWidth: 1
+      }]
+    };
+
+  
+  const watchers_config = {
+    type: 'bar',
+    data: watchers_data,
+    options: {}
+  };
+
+   const watchers_chart = new Chart(
+    document.getElementById('watchers_chart'),
+    watchers_config
+  );
+
+
+   const audience_data = {
+       labels: [
+        'Red',
+        'Blue',
+        'Yellow'
+      ],
+      datasets: [{
+        label: 'My First Dataset',
+        data: [300, 50, 100],
+        backgroundColor: [
+          'rgb(255, 99, 132)',
+          'rgb(54, 162, 235)',
+          'rgb(255, 205, 86)'
+        ],
+        hoverOffset: 4
+      }]
+    };
+
+    const audience_config = {
+      type: 'doughnut',
+      data: audience_data,
+    };
+   const audience_chart = new Chart(
+    document.getElementById('audience_chart'),
+    audience_config
+  );
+</script> -->

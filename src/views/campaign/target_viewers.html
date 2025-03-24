@@ -1,0 +1,136 @@
+{% include '/campaign/tab_bar.html' %}
+<div class="campaign_content active">
+	<div class="row content_header">
+		<div class="col-6">
+			<h1 class="title">
+				<i class="fa fa-bullseye"></i> Target Viewers
+			</h1>
+		</div>
+	</div>
+	<div class="content_body">
+		<form class="needs-validation" action="{{ form_action }}">
+			<div class="row mb-4">
+				<div class="col-lg-6">
+					<div class="card mb-2">
+						<div class="card-header">
+							<label>Demographic</label>
+						</div>
+						<div class="card-body">
+							<div class="form-group">
+								<label>Gender</label>
+								<div class="form-check">
+									<input class="form-check-input" type="checkbox"
+											id="gender_male" name="gender[]" value="MALE"
+											{% if current_campaign_target_viewers.gender_male== true %} checked {% endif %}
+									>
+									<label for="gender_male" class="form-check-label">
+										Male
+									</label>
+								</div>
+								<div class="form-check">
+									{% set searchGender = "FEMALE" %}
+
+									<input class="form-check-input" type="checkbox"
+											id="gender_female" name="gender[]" value="FEMALE"
+											{% if current_campaign_target_viewers.gender_female== true %} checked {% endif %}
+									>
+									<label for="gender_female" class="form-check-label">
+										Female
+									</label>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="d-flex justify-content-between">
+									<label for="age_range">Age Group</label>
+									{% set age_range = current_campaign_target_viewers.age_range | json_encode %}
+									<input id="age_range" name="age_range" class="form-range age_range_slider"
+											data-slider-value="{{ age_range }}" type="text"/>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="card">
+						<div class="card-header">
+							<label for="psychographic">Psychographic</label>
+						</div>
+						<div class="card-body">
+							<div class="form-group">
+								<div class="form-group">
+									<textarea type="textarea" class="form-control" id="psychographic" name="psychographic" placeholder="Describe factors of audience that relate to their personalities and characteristics">{{current_campaign_target_viewers.psychographic}}</textarea>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-6">
+					<div class="card">
+						<div class="card-header">
+							<label>Geographic</label>
+						</div>
+						<div class="card-body">
+							<div class="form-group">
+								<label for="target_country">Target Country</label>
+								<select id="target_country" name="target_country" class="js-select-2 form-control"
+										data-placeholder--id="0"
+										data-placeholder--text="Target Country"
+								>
+									{% for code, name in countries %}
+									<option {% if current_campaign_target_viewers.target_country== code %} selected {% endif %} value="{{ code }}">{{ name }}</option>
+									{% endfor %}
+								</select>
+							</div>
+							<div class="form-group">
+								<label for="target_state">Target State</label>
+								<select id="target_state" name="target_state" class="js-select-2 form-control"
+										data-placeholder--id="0"
+										data-placeholder--text="Target State"
+										data-minimum-results-for-search="5"
+								>
+									{% for code, name in states %}
+									<option {% if current_campaign_target_viewers.target_state== code %} selected {% endif %} value="{{ code }}">{{ name }}</option>
+									{% endfor %}
+								</select>
+							</div>
+							<div class="form-group">
+								<label for="target_languages">Target Languages</label>
+								<select id="target_languages" name="target_languages" class="form-control js-select-2"
+										data-placeholder--id="0"
+										data-placeholder--text="Target Languages"
+										multiple="multiple">
+									{% for code, name in languages %}
+									<option {% if code in current_campaign_target_viewers.target_languages %} selected {% endif %} value="{{ code }}">{{ name }}</option>
+									{% endfor %}
+								</select>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row mb-4">
+				<h5 class="text-center">Your selection retrieves XXX number of user out of <span class="text-promulgate-primary bold">{{ current_campaign_strategy_definition_details.campaign_targeted_audience }}</span> total target</h5>
+				<input type="hidden" name="campaign_id" id="campaign_id" value="{{ current_campaign_strategy_definition_details.campaign_id }}">
+				<input type="hidden" name="campaign_viewers_id" id="campaign_viewers_id" value="{{ current_campaign_target_viewers.campaign_viewers_id }}">
+				<input type="hidden" name="form_source" id="form_source" value="target_viewers">
+				<input type="hidden" name="button_source" id="button_source" value>
+			</div>
+			<div class="row">
+				<div class="text-center">
+					{% if current_campaign_target_viewers.campaign_viewers_id %}
+					<button class="btn btn-min btn-promulgate-primary button_source" data-b-source="save" type="submit">
+						Update
+					</button>
+					{% endif %}
+					<button class="btn btn-min btn-success button_source" type="submit" data-b-source="save_continue" id="form_main_action_button">
+						{% if current_campaign_target_viewers.campaign_viewers_id %}
+							Update
+						{% else %}
+							Save
+						{% endif %} & Continue
+					</button>
+					<button class="btn btn-min btn-outline-danger" type="reset">Ignore Changes</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+

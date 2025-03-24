@@ -1,0 +1,120 @@
+{% include '/analytics/tab_bar.html' %}
+<link rel="stylesheet" type="text/css" href="/assets/css/leads_section/leads_details.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.dataTables.css" />
+
+<div class="admin_content active">
+    <div class="row content_header">
+        <div class="col-3">
+            <h1 class="title">
+                Social Inbox &nbsp;
+                <i class="fa fa-refresh refreshSocialMediaCron"></i>
+            </h1>
+        </div>
+        <div class="col-9">
+            <div class="row whatsapp_analysis_filter"style="margin-left:110px; width: 150%; max-width: 550px;">
+                <div class="col-3">
+                    <!-- <input autocomplete="off" class="form-control date-picker" name="start_date" type="text" placeholder="From date" value="{{start_date}}"> -->
+                </div>
+                <div class="col-3">
+                    <!-- <input autocomplete="off" class="form-control date-picker" name="end_date" type="text" placeholder="To date" value="{{end_date}}"> -->
+                </div>
+                <div class="col-3 position-relative">
+                    <!-- <select id="duration" name="duration" class="form-control wa_analysis_duration">
+                        <option value="">Select Duration</option>
+                        <option value="Weekly" {% if duration == "Weekly" %} selected {% endif %} >Weekly</option>
+                        <option value="Monthly" {% if duration == "Monthly" %} selected {% endif %}>Monthly</option>
+                        <option value="Quaterly" {% if duration == "Quaterly" %} selected {% endif %}>Quaterly</option>
+                        <option value="Annually" {% if duration == "Annually" %} selected {% endif %}>Annually</option>
+                    </select> -->
+                    {% if type == "INCOMING" %}
+                    <select id="filterBy" name="filterBy" class="form-control wa_analysis_filter_by">
+                        <option value="all" {% if filter_by=="all" %} selected {% endif %}>All</option>
+                        <option value="fb-comments" {% if filter_by=="fb-comments" %} selected {% endif %}>FB Comments
+                        </option>
+                        <option value="Instagram" {% if filter_by=="Instagram" %} selected {% endif %}>Instagram
+                        </option>
+                        <option value="Youtube" {% if filter_by=="Youtube" %} selected {% endif %}>Youtube
+                        </option>
+                        <option value="LinkedIn" {% if filter_by=="LinkedIn" %} selected {% endif %}>LinkedIn
+                        </option>
+                        <option value="fb-leads" {% if filter_by=="fb-leads" %} selected {% endif %}>FB Leads</option>
+                        <option value="WhatsApp" {% if filter_by=="WhatsApp" %} selected {% endif %}>WhatsApp</option>
+                        <option value="Google_Reviews" {% if filter_by=="Google_Reviews" %} selected {% endif %}>Google
+                            Reviews</option>
+                    </select>
+                    <i class="fa fa-chevron-down dropdown-icon"></i> <!-- Add your icon class -->
+                    {% endif %}
+                </div>
+                <div class="col-3 position-relative">
+                    <select id="type" name="type" class="form-control wa_analysis_type">
+                        <option value="INCOMING" {% if type=="INCOMING" %} selected {% endif %}>INCOMING</option>
+                        <option value="OUTGOING" {% if type=="OUTGOING" %} selected {% endif %}>OUTGOING</option>
+                    </select>
+                    <i class="fa fa-chevron-down dropdown-icon"></i> <!-- Add your icon class -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="whatsapp_analysis_parent">
+            <div class="content_body">
+                <div class="row">
+                    <input type="hidden" name="form_action" value="{{form_action}}" class="form_action" />
+                    <input type="hidden" name="filter_by" value="{{filter_by}}" class="filter_by" />
+                    <input type="hidden" name="type" value="{{type}}" class="type" />
+                    <table id="socialInbox" class="display">
+                        <thead>
+                            <tr class="table-head-bg">
+                                <th>Channel</th>
+                                <th style="width: 80px;">Customer ID</th>
+                                <th>Sent</th>
+                                <th>Message</th>
+                                <!-- {% if type == "OUTGOING" %}
+                                <th>Sent To</th>
+                                <th>Sent</th>
+                                <th>Read</th>
+                                <th>Replied</th>
+                                <th>Replied Msg</th>
+                                {% endif %} -->
+                                <!-- {% if filter_by == "Google_Reviews" %}
+                                <th>From</th>
+                                {% endif %} -->
+                                <th>Send to CRM</th>
+                                <th>Mark As Closed</th>
+                                <th>Created At</th>
+                            </tr>
+                        </thead>
+                        <!-- <tfoot>
+                            <tr>
+                                <th>First name</th>
+                                <th>Last name</th>
+                                <th>Position</th>
+                                <th>Office</th>
+                                <th>Start date</th>
+                                <th>Salary</th>
+                            </tr>
+                        </tfoot> -->
+                    </table>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="msgPreviewModal" tabindex="-1" role="dialog" aria-labelledby="msgPreviewModal"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="msgPreviewModalLabel">Modal title</h5>
+                    <button type="button" class="close hide_modal" data-dismiss="modal" aria-label="Close">
+                        <i class="fa fa-close"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p class="modal_body_msg"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

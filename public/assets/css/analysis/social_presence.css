@@ -1,0 +1,119 @@
+.dev_parent_section{
+	background: #f6f7ff;
+	padding: 35px 20px;
+	border-radius: 6px;
+}
+
+.dev_parent_section .heading_area .top_heading {
+	color: #606060;
+	font-size: x-large;
+	margin-bottom: 30px;
+	text-align: center;
+}
+
+.dev_parent_section .content {
+	background: white;
+	padding: 15px;
+	margin-bottom: 20px;
+	min-height: 239px;
+}
+
+.dev_parent_section .content .box_heading_name {
+	color: #606060;
+	font-size: larger;
+	margin-bottom: 0;
+}
+
+.dev_parent_section .content .box_heading_status {
+	color: #606060;
+	font-size: 16px;
+	margin-bottom: 0;
+	text-align: right;
+}
+
+.dev_parent_section .content .box_heading_status .fa{
+	color: #5aec00;
+	font-size: 10px;
+	vertical-align: middle;
+}
+
+
+.dev_parent_section .content .box_heading_status_label {
+	color: #5aec00;
+	font-size: 16px;
+	margin-bottom: 0;
+	text-align: right;
+}
+
+.dev_parent_section .content .box_heading_status_not_connected {
+	color: #606060;
+	font-size: 16px;
+	margin-bottom: 0;
+	text-align: right;
+}
+
+.dev_parent_section .content .box_heading_status_not_connected .fa{
+	color: #ff0301;
+	font-size: 10px;
+	vertical-align: middle;
+}
+
+.dev_parent_section .content .box_heading_status_label_not_connected {
+	color: #ff0301;
+	font-size: 16px;
+	margin-bottom: 0;
+	text-align: right;
+}
+
+.dev_parent_section .content .social_img {
+	height: 60px;
+	margin-left: 20px;
+	margin-top: 25px;
+	margin-bottom: 20px;
+	margin-right: 20px;
+	max-height: 45px;
+
+}
+
+.dev_parent_section .content .social_count {
+	text-align: center;
+	font-weight: bold;
+	font-size: 1.3rem;
+	margin-bottom: 0;
+}
+
+.dev_parent_section .content .social_label {
+	text-align: center;
+	color: #606060;
+	margin-bottom: 0;
+	font-size: 17px;
+}
+
+.dev_parent_section .content .recent_post_label {
+	text-align: center;
+	color: #606060;
+	margin-bottom: 0;
+	font-size: 20px;
+	margin-top: 24px;
+}
+
+.dev_parent_section .content .recent_post_count {
+	color: black;
+}
+
+.dev_parent_section .content .add_account_box {
+	text-align: center;
+}
+
+.dev_parent_section .content .add_account_box .fa {
+	font-size: 100px;
+	cursor: pointer;
+}
+
+.dev_parent_section .content .add_account_box p {
+	text-align: center;
+	color: #606060;
+	margin-bottom: 0;
+	font-size: 20px;
+	cursor: pointer;
+}

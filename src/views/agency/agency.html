@@ -1,0 +1,63 @@
+{% include '/agency/tab_bar.html' %}
+<div class="admin_content active">
+	<div class="row content_header">
+		<div class="col-9">
+			<h1 class="title">
+				<i class="fa fa-building"></i> Agency Details
+			</h1>
+		</div>
+		<div class="col-3 d-flex justify-content-end align-items-center">
+			<span class="required-text">All fields are required</span>
+		</div>
+	</div>
+	<div class="content_body">
+		<form class="needs-validation" action="{{ form_action }}" novalidate>
+
+			<div class="row">
+				<div class="col-lg-6">
+					<div class="form-group">
+						<label for="agency_name" class="form-label">Agency Name</label>
+						<input type="text" class="form-control" name="agency_name" id="agency_name" placeholder="Agency Name"
+								value="{{ agency_details.name }}">
+					</div>
+					<div class="form-group">
+						<label for="agency_email" class="form-label">Agency Email</label>
+						<input type="email" class="form-control" name="email" id="agency_email" placeholder="Agency Email" value="{{ agency_details.email }}">
+					</div>
+					<div class="form-group">
+						<label for="agency_description" class="form-label">Description</label>
+						<textarea class="form-control" id="agency_description" name="agency_description" placeholder="Please describe about your company operations in 5 to 256 words">{{ agency_details.description }}</textarea>
+					</div>
+				</div>
+				<div class="col-lg-6 align-middle text-center">
+					{% if agency_details.createdAt %}
+					<div class="form-group">
+						<label class="form-label">Created at</label>
+						<p>{{ get_date(agency_details.createdAt, 4) }}</p>
+					</div>
+					{% endif %}
+					{% if agency_details.updatedAt %}
+					<div class="form-group">
+						<label class="form-label">Last Modified at</label>
+						<p>{{ get_date(agency_details.updatedAt, 4) }}</p>
+					</div>
+					{% endif %}
+				</div>
+				<input type="hidden" name="agency_id" id="agency_id" value="{{ agency_details.agencyId }}">
+				<input type="hidden" name="form_source" id="form_source" value="agency">
+			</div>
+			<div class="row">
+				<div class="text-center">
+					<button class="btn btn-min btn-promulgate-primary" type="submit" id="form_main_action_button">
+						{% if agency_details.agencyId %}
+							Update
+						{% else %}
+							Create
+						{% endif %}
+					</button>
+					<button class="btn btn-min btn-outline-danger" type="reset">Ignore Changes</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>

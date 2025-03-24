@@ -1,0 +1,261 @@
+{% include '/admin/tab_bar.html' %}
+<div class="admin_content active">
+	<div class="row content_header">
+		<div class="col-9">
+			<h1 class="title">
+				<i class="fa fa-shopping-bag"></i> Business Details
+			</h1>
+		</div>
+		<div class="col-3 d-flex justify-content-end align-items-center">
+			<span class="required-text">All fields are required</span>
+		</div>
+	</div>
+	<div class="content_body">
+		{% if user_organization.id %}
+		<div class="row">
+			<form class="needs-validation" action="{{ form_action }}" novalidate>
+				<div class="row">
+					<div class="col-12">
+						<div class="form-group">
+							<label for="business_tag_line" class="form-label">Tag line about your business</label>
+							<input type="text" class="form-control" name="business_tag_line" id="business_tag_line" placeholder="Tag line about your business" value="{{ business_details.tagLine }}">
+						</div>
+						<div class="form-group">
+							<label for="about_business" class="form-label">About your business</label>
+							<textarea class="form-control" id="about_business" name="about_business" placeholder="Describe your business">{{business_details.description}}</textarea>
+						</div>
+						<div class="form-group">
+							<label for="page_description_tags" class="form-label">Standard Page Description Tags</label>
+							<input type="text" class="form-control" name="page_description_tags" id="page_description_tags" placeholder="Standard page description tags" value="{{ business_details.descriptionTags }}">
+						</div>
+						<div class="form-group">
+							<label for="hub_type_business" class="form-label mb-3">Hub Type</label>
+							<br>
+							<span class="btn-group btn-group-sm" role="group" id="hub_type_business">
+								<input type="radio" class="btn-check" name="hub_type" id="hub_type_youtube" value="youtube"
+										{% if business_details.type== 'youtube' %} checked {% endif %}
+								autocomplete="off">
+								<label class="btn btn-outline-promulgate-primary" for="hub_type_youtube">Youtube</label>
+
+								<input type="radio" class="btn-check" name="hub_type" id="hub_type_e_commerce" value="e_commerce"
+										{% if business_details.type== 'e_commerce' %} checked {% endif %}
+								autocomplete="off">
+								<label class="btn btn-outline-promulgate-primary" for="hub_type_e_commerce">E-Commerce</label>
+
+								<input type="radio" class="btn-check" name="hub_type" id="hub_type_website" value="website"
+										{% if business_details.type== 'website' %} checked {% endif %}
+									autocomplete="off">
+								<label class="btn btn-outline-promulgate-primary" for="hub_type_website">Website</label>
+							</span>
+
+							<div class="hub_type_fields mt-4">
+								<div class="hub_connection_type_fields hub_connection_type_youtube col-12
+								{% if business_details.type != 'youtube' %}
+									d-none
+								{% endif %}
+								">
+									<fieldset class="fieldset border p-2">
+										<legend class="legend">Youtube Configuration</legend>
+										<div class="d-flex flex-row align-items-center justify-content-between p-2">
+											<label>Connect your Youtube channel</label>
+											<div class="toggle-switch">
+												<input type="checkbox"
+														name="organization_hub_config[]"
+														id="hub_config_youtube"
+														value="hub_config_youtube"
+														class="organization_connection_configuration"
+														data-is_business="1"
+														data-api_connection="{{supported_api_connections['youtube']['status']}}"
+														data-api_custom_callback="{{supported_api_connections['youtube']['js_callback_function']}}"
+														data-connection_setting_id="connection_youtube"
+														data-connection_setting_name="youtube"
+														data-connection_media_type="hub_connection"
+													 {% if business_details.type== 'youtube' %} checked {% endif %}
+												data-toggle="toggle"
+												data-onstyle="success"
+												data-offstyle="outline-danger"
+												data-size="xs"
+												data-width="250px"
+												data-on="Channel Selected
+												<i class='fa fa-chain'></i>"
+												data-off="Select Youtube Channel<i class='fa fa-chain-broken'></i>">
+											</div>
+										</div>
+										<p class="pageName">{{ business_details.hub_url_youtube }}</p>
+										<input type="hidden" class="form-control"
+												placeholder="Youtube Credentials"
+												value="{{ business_details.hub_credentials_youtube }}"
+												name="hub_credentials_youtube"
+												id="hub_credentials_youtube"
+										/>
+									</fieldset>
+								</div>
+								<div class="hub_connection_type_fields hub_connection_type_e_commerce col-12
+								{% if business_details.type != 'e_commerce' %}
+									d-none
+								{% endif %}
+								">
+									<fieldset class="fieldset border p-2 ">
+										<legend class="legend">E-Commerce</legend>
+										<div class="d-flex flex-row align-items-center justify-content-between p-4">
+											<div class="form-group col-12">
+												<label for="hub_url_e_commerce" class="form-label">E-Commerce Website URL</label>
+												<input type="text" class="form-control" name="hub_url_e_commerce" id="hub_url_e_commerce" placeholder="E-Commerce Website URL" value="{% if business_details.hub_url_e_commerce %} {{ business_details.hub_url_e_commerce }} {% endif %}"
+												>
+											</div>
+										</div>
+									</fieldset>
+								</div>
+								<div class="hub_connection_type_fields hub_connection_type_website col-12
+								{% if business_details.type != 'website' %}
+									d-none
+								{% endif %}
+								">
+									<fieldset class="fieldset border p-2">
+										<legend class="legend">Website</legend>
+										<div class="d-flex flex-row align-items-center justify-content-between p-4">
+											<div class="form-group col-12">
+												<label for="hub_url_website" class="form-label">Website URL</label>
+												<input type="text" class="form-control" name="hub_url_website" id="hub_url_website" placeholder="Website URL"
+														value="{% if business_details.hub_url_website %} {{ business_details.hub_url_website }} {% endif %}"
+												>
+											</div>
+										</div>
+									</fieldset>
+								</div>
+							</div>
+						</div>
+						<div class="competitor_main_section d-none">
+						<div>
+							<label for="competitor_1" class="form-label">Competitor 1</label>
+							<div class="row">
+								<div class="col-10">
+									<div class="input-group mb-3">
+										<div class="input-group-prepend">
+											<span class="input-group-text" id="competitor_1_prefix">https://youtube.com/</span>
+										</div>
+										<input aria-describedby="competitor_1_prefix" type="text" class="form-control" name="competitor_1" id="competitor_1" placeholder="Competitor 1" value="{{ business_details.competitor1 }}">
+									</div>
+								</div>
+								<div class="col-2">
+									<a href="#" target="_blank" class="btn btn-outline-promulgate-primary btn-min competitor_1_preview">
+										<span>Preview </span>
+										<i class="fa fa-external-link fa-1x"></i>
+									</a>
+								</div>
+							</div>
+						</div>
+						<div>
+							<label for="competitor_2" class="form-label">Competitor 2</label>
+							<div class="row">
+								<div class="col-10">
+									<div class="input-group mb-3">
+										<div class="input-group-prepend">
+											<span class="input-group-text" id="competitor_2_prefix">https://youtube.com/</span>
+										</div>
+										<input aria-describedby="competitor_2_prefix" type="text" class="form-control" name="competitor_2" id="competitor_2" placeholder="Competitor 2" value="{{ business_details.competitor2 }}">
+									</div>
+								</div>
+								<div class="col-2">
+									<a href="#" target="_blank" class="btn btn-outline-promulgate-primary btn-min competitor_2_preview">
+										<span>Preview </span>
+										<i class="fa fa-external-link fa-1x"></i>
+									</a>
+								</div>
+							</div>
+						</div>
+						</div>
+						<div class="form-group">
+							<label for="use_dam" class="form-label mb-3">Digital Assess Management</label>
+							<br>
+							<div class="form-check no_opacity">
+								<input class="form-check-input no_opacity" type="checkbox" value="dam" id="use_dam" name="use_dam" checked disabled>
+								<label class="form-check-label no_opacity bold" for="use_dam">
+									Use Digital Asset Management for all images & videos
+								</label>
+							</div>
+							<div class="dam_management_tools mt-4">
+								<fieldset class="fieldset border p-2">
+									<legend class="legend">Digital Assess Management tools</legend>
+									<div class="form-group">
+										<div class="d-flex flex-row align-items-center justify-content-between p-4">
+											<label>Connect your Google Drive</label>
+											<div class="toggle-switch">
+												<input type="checkbox"
+														name="organization_google_drive[]"
+														id="google_drive"
+														value="google_drive"
+														class="organization_connection_configuration"
+														data-is_business="1"
+														data-api_connection="{{supported_api_connections['google_drive']['status']}}"
+														data-api_custom_callback="{{supported_api_connections['google_drive']['js_callback_function']}}"
+														data-connection_setting_id="google_drive"
+														data-connection_setting_name="Google Drive"
+														data-connection_media_type="dam_organization_assets"
+														{% if business_details.assetName== 'google_drive' %} checked {% endif %}
+														data-toggle="toggle"
+														data-onstyle="success"
+														data-offstyle="outline-danger"
+														data-size="xs"
+														data-width="250px"
+														data-on="Connected <i class='fa fa-chain'></i>"
+														data-off="Not connected <i class='fa fa-chain-broken'></i>">
+											</div>
+											<input 
+												type="hidden" 
+												class="form-control" 
+												placeholder="Organization Id" 
+												value="{{ organization_id }} "
+												name="dam_organization_id" 
+												id="dam_organization_id" 
+											/>
+										</div>
+
+										<input type="hidden" class="form-control"
+												placeholder="Google Drive Credentials"
+												value="{{ business_details.credentials_google_drive }}"
+												name="dam_credentials_google_drive"
+												id="dam_credentials_google_drive"
+										/>
+									</div>
+									<input type="hidden" class="form-control"
+											placeholder="Google Drive Credentials"
+											value="google_drive"
+											name="dam_credentials_type"
+											id="dam_credentials_type"
+									/>
+								</fieldset>
+							</div>
+
+							<input type="hidden" name="business_id" id="business_id" value="{{ business_details.businessId }}">
+							<input type="hidden" name="form_source" id="form_source" value="business">
+						</div>
+						<div class="row mt-5">
+							<div class="text-center">
+								<button class="btn btn-min btn-promulgate-primary" type="submit" id="form_main_action_button">
+									{% if business_details.businessId %}
+									Update
+									{% else %}
+									Save
+									{% endif %}
+								</button>
+								<button class="btn btn-min btn-outline-danger" type="reset">Ignore Changes</button>
+							</div>
+						</div>
+					<!-- </div> -->
+			</form>
+		</div>
+		{% else %}
+		<div class="row mt-5">
+			<div class="text-center">
+				<h3 class="page-data-needed-block animate__animated animate__pulse">Please create organization for adding more info about your business</h3>
+				<h5 class="mt-5">
+					<a href="{{ url('admin_organization') }}" class="btn btn-promulgate-secondary">
+						Create Organization
+					</a>
+				</h5>
+			</div>
+		</div>
+		{% endif %}
+	</div>
+</div>

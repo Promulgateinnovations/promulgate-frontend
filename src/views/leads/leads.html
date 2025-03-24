@@ -1,0 +1,116 @@
+    <link rel="stylesheet" type="text/css" href="/assets/css/leads_section/leads_table.css">
+    <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <div class="row">
+        <div class="col-12 action_buttons text_right">
+            <a class="btn btn-promulgate-primary btn-sm" href="{{ url('lead_upload') }}">
+                <span>Add New</span>
+                <i class="fa fa-plus"></i>
+            </a>
+            <a class="btn btn-promulgate-primary btn-sm" href="javascript:void(0)" onclick="broadcastLead()">
+                <span>Broadcast</span>
+                <i class="fa fa-bullhorn"></i>
+            </a>
+            <a class="btn btn-sm" href="/assets/sample.xlsx" download>
+                <span>Sample</span>
+                <i class="fa fa-download"></i>
+            </a>
+            <!-- <span class="search_span">
+                <a href="#">
+                    <i class="fa fa-search" style="margin-left: 0;color: black;"></i>
+                </a>
+            </span> -->
+        </div>
+    </div>
+    <div class="lead_table_parent" style="padding:10px;">
+        <div class="content_body">
+            <table class="table table-bordered align-middle" id="userTable">
+                <thead>
+                    <tr>
+                        <th><input type="checkbox" name="lead" value="all" onClick="checkLeads(this)"></th>
+                        <th>Sr no.</th>
+                        <th>Source</th>
+                        <th>No of records</th>
+                        <th>Duplicates</th>
+                        <th>Date Uploaded</th>
+                        <th>Status</th>
+                        <th>Excel File</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% set counter = 0 %}
+                    {% for lead in lead_details %}
+                    {% set counter = counter + 1 %}
+                    <tr>
+                        <td>
+                            <input type="checkbox" name="lead" value="{{lead.id}}_{{lead.total_records}}">
+                        </td>
+                        <td>{{counter}}</td>
+                        <td>{{lead.source}}</td>
+                        <td>{{lead.total_records}}</td>
+                        <td>{{lead.duplicates}}</td>
+                        <td><i class="fa fa-calendar"></i> {{ get_date(lead.createdAt, 4) }} </td>
+                        <td>{{lead.status == 0 ? 'Not Published' : 'Published'}}</td>
+                        <td>
+                           <a href="{{ url('lead_details', {lead_id : lead.id}) }}" class="link-in-iframe">
+                                {{lead.file_name}}
+                            </a>
+                        </td>
+                        <td>
+                            <i class="fa fa-trash-o delete_lead" onclick="deleteLead('{{lead.id}}')"></i>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    {% if lead_details|length == 0 %}
+                    <tr>
+                        <td colspan="10">No Records Found</td>
+                    </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        function togglePopup() {
+            const popup = document.getElementById('popup');
+            popup.style.display = (popup.style.display === 'none' || popup.style.display === '') ? 'block' : 'none';
+        }
+
+        function deleteLead(id) {
+            var html = "<br /><button type='button' class='btn do_action'>Yes</button><button type='button' class='btn no_action'>No</button>";
+             toastr.info(html,'Are you sure to delete this?',
+                {
+                  allowHtml: true,
+                  timeOut: 50000,
+                  tapToDismiss: true,
+                  extendedTimeOut: 100000,
+                  onShown: function (toast) {
+                    $(".do_action").click(function(){
+                        //console.log('clicked do_action');
+                        deleteLeadFromDb(id);
+                        //showProcessingToast();
+                      });
+                    $(".no_action").click(function(){
+                        //console.log('clicked no_action');
+                      });
+                  }
+                });
+        }
+        $(document).ready(function() {
+        // Initialize DataTable
+        var userTable = $('#userTable').DataTable({
+            "paging": true,
+            "searching": true,  // Enables DataTable's internal search box
+            "ordering": true,
+            "info": true
+        });
+
+        // Use the custom input search field to trigger the DataTable search
+        $('#searchInput').on('keyup', function() {
+            userTable.search(this.value).draw();  // Use DataTable's internal search
+        });
+    });
+
+    </script>

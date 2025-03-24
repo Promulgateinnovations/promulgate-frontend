@@ -1,0 +1,992 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+    :root {
+        --color-blue-light: rgba(33, 150, 243, 0.1);
+        --color-green-light: rgba(76, 175, 80, 0.1);
+        --color-purple-light: rgba(156, 39, 176, 0.1);
+        --color-orange-light: rgba(255, 152, 0, 0.1);
+        --color-pink-light: rgba(233, 30, 99, 0.1);
+        --color-teal-light: rgba(0, 150, 136, 0.1);
+        --color-yellow-light: rgba(255, 235, 59, 0.1);
+        --color-indigo-light: rgba(63, 81, 181, 0.1);
+        --primary-color: #1998bf;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        background: #f5f5f5;
+        color: #333;
+        background-color: #e8f4fc;
+        /* Light blue background */
+    }
+
+    .dashboard-container {
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+
+    /*month and year selection*/
+    .month-selector-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 20px;
+        border-radius: 8px;
+    }
+
+    .choose-label {
+        font-size: 14px;
+        font-weight: 500;
+        color: #4a4a4a;
+        margin-right: 10px;
+    }
+
+    .month-selector {
+        display: flex;
+        gap: 5px;
+        margin-right: 380px;
+    }
+
+    .arrow-btn {
+        background-color: #ffffff;
+        border: 1px solid #dcdcdc;
+        padding: 5px 10px;
+        border-radius: 5px;
+        font-size: 14px;
+        cursor: pointer;
+        color: #4a4a4a;
+    }
+
+    .arrow-btn:hover {
+        background-color: #f2f2f2;
+    }
+
+    .month-dropdown,
+    .year-dropdown {
+        background-color: #ffffff;
+        border: 1px solid #dcdcdc;
+        border-radius: 5px;
+        padding: 5px 10px;
+        font-size: 14px;
+        color: #4a4a4a;
+        cursor: pointer;
+    }
+
+    .action-buttons {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .reportSection,
+    .download-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #ffffff;
+        border: 1px solid #dcdcdc;
+        border-radius: 5px;
+        padding: 5px 15px;
+        font-size: 14px;
+        cursor: pointer;
+        color: #4a4a4a;
+        transition: all 0.3s ease-in-out;
+    }
+
+    .download-btn {
+        background-color: #007bff;
+        color: #ffffff;
+    }
+
+    .reportSection i,
+    .download-btn i {
+        margin-right: 5px;
+    }
+
+    .reportSection:hover {
+        background-color: #f2f2f2;
+    }
+
+    .download-btn:hover {
+        background-color: #0056b3;
+    }
+
+    /*key metrics across all dealership*/
+    .title {
+        font-size: 20px;
+        font-weight: bold;
+        margin-bottom: 15px;
+    }
+
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+    }
+
+    .card {
+        border-radius: 20px;
+        padding: 5px;
+        text-align: center;
+    }
+
+    .mid-card {
+        border-radius: 20px;
+        padding: 6px;
+        text-align: center;
+        width: 250px;
+        height: 135px;
+        background-color: #fff;
+    }
+
+    .last-card {
+        border-radius: 20px;
+        padding: 10px;
+        text-align: center;
+        width: 450px;
+        height: 135px;
+        background-color: #fff;
+    }
+
+    .pie-chart-container {
+        width: 130px;
+        height: 130px;
+        margin: auto;
+        padding: 5px;
+    }
+
+    .size {
+        font-size: 13px;
+    }
+
+    .dealers {
+        /* font-weight: bold; */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 2px;
+    }
+
+    .circle {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        display: inline-block;
+    }
+
+    .active-circle {
+        background-color: #4caf50;
+    }
+
+    .inactive-circle {
+        background-color: #f44336;
+    }
+
+    .whatsapp-icon {
+        color: #25d366;
+    }
+
+    .facebook-icon {
+        color: #3b5998;
+    }
+
+    .instagram-icon {
+        color: #e4405f;
+    }
+
+    .icon {
+        font-size: 20px;
+        margin-right: 10px;
+    }
+
+    .ions-test {
+        font-size: 20px;
+        font-weight: 500;
+    }
+
+    .small-text {
+        font-size: 0.85rem;
+        color: #888;
+    }
+
+    h6 {
+        font-weight: bold;
+    }
+
+
+    .secound-card {
+        border-radius: 20px;
+        padding: 10px;
+        width: 450px;
+        background-color: #fff;
+    }
+
+    .sec-mid-card {
+        border-radius: 20px;
+        padding: 4px;
+        background-color: #fff;
+        text-align: center;
+    }
+
+    .whatsapp {
+        background-color: #34c759;
+    }
+
+    .facebook {
+        background-color: #f4c542;
+    }
+
+    .amount {
+        font-weight: bold;
+        font-size: 18px;
+    }
+
+    .section {
+        padding: 10px;
+        border-radius: 10px;
+        background-color: #e8f4fc;
+        /* Light blue background */
+
+        /* margin-bottom: 5px; */
+
+
+    }
+
+    .section1 {
+        background-color: #fff;
+        padding: 10px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        height: 350px;
+        width: 430px;
+    }
+
+    .section h2 {
+        margin-bottom: 15px;
+    }
+
+    .grid.two-column {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+    }
+
+    /* Equal width for both sections */
+    .section1,
+    .section {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        /* align-items: center; */
+        justify-content: center;
+    }
+
+    .grid.four-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        /* Two cards per row */
+        gap: 20px;
+        width: 100%;
+        text-align: center;
+    }
+
+    .card1 {
+        padding: 5px;
+        border: 1px solid #ccc;
+        height: 100px;
+        border-radius: 8px;
+        box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        background: #fff;
+    }
+
+    /* .title {
+        text-align: center;
+        font-size: 24px;
+        margin-bottom: 10px;
+    } */
+
+    canvas {
+        width: 50px;
+        height: 50px;
+    }
+
+    /* .card {
+        background-color: #fff;
+        padding: 15px;
+        border-radius: 10px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    } */
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 15px;
+        background-color: #fff;
+    }
+
+    th,
+    td {
+        border: 1px solid #ddd;
+        padding: 5px;
+        text-align: center;
+    }
+
+    th {
+        background-color: #f4f4f4;
+    }
+
+    .btn1 {
+        background-color: #00aaff;
+        color: white;
+        padding: 5px 5px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .btn1:hover {
+        background-color: #008ecc;
+    }
+
+    canvas {
+        max-width: 100%;
+        height: 120px;
+    }
+
+    .horizontal-bar {
+        height: 30px;
+        border-radius: 15px;
+        background: linear-gradient(to right, lightblue 50%, darkblue 50%);
+        position: relative;
+        display: flex;
+        align-items: center;
+        padding-left: 10px;
+        font-weight: bold;
+    }
+
+    .pie-chart-container1 {
+        display: flex;
+        align-items: center;
+    }
+
+    .pie-chart-container1 canvas {
+        max-width: 400px;
+        max-height: 250px;
+    }
+
+    .pie-chart-content1 {
+        padding-left: 20px;
+    }
+</style>
+
+<div id="reportSection">
+    <div class="dashboard-container">
+        <header>
+            <section class="section">
+                <div class="month-selector-container">
+                    <label for="month" class="choose-label">Choose month:</label>
+                    <div class="month-selector">
+                        <button class="arrow-btn left-arrow">←</button>
+                        <select id="month" class="month-dropdown">
+                            <option>January</option>
+                            <option>February</option>
+                            <option selected>March</option>
+                            <option>April</option>
+                            <option>May</option>
+                            <option>June</option>
+                            <option>July</option>
+                            <option>August</option>
+                            <option>September</option>
+                            <option>October</option>
+                            <option>November</option>
+                            <option>December</option>
+                        </select>
+                        <select id="year" class="year-dropdown">
+                            <option>2020</option>
+                            <option selected>2021</option>
+                            <option>2022</option>
+                            <option>2023</option>
+                        </select>
+                        <button class="arrow-btn right-arrow">→</button>
+                    </div>
+                    <div class="action-buttons">
+                        <a class="link-in-iframe1">
+                            <i class="fas fa-print"></i> Print
+                        </a>
+
+                        <a class="download download-btn">
+                            <i class="fas fa-download"></i> Download
+                        </a>
+                    </div>
+                </div>
+                <b>
+                    <hr
+                        style="margin-bottom: 20px; margin-top: 0px; padding: 0; position: relative; border-bottom: 2px solid var(--primary-color);">
+                </b>
+            </section>
+        </header>
+
+        <!---Key metrics across all dealerships-->
+        <section class="section">
+            <div class="title">Key Metrics Across All Dealerships</div>
+            <div class="grid">
+                <div class="card">
+                    <h5>Total Dealers - 100 <span class="text-success size">+2↑</span></h5>
+                    <p class="small-text">Compared to 800 last month</p>
+                    <div class="pie-chart-container">
+                        <canvas id="dealersPieChart"></canvas>
+                    </div>
+                    <p class="dealers"><span class="circle active-circle"></span>Active Dealers <span
+                            class="text-success size">+2↑</span></p>
+                    <p class="dealers"><span class="circle inactive-circle"></span>Inactive Dealers <span
+                            class="text-danger size">-2↓</span></p>
+                </div>
+
+                <div class="d-flex flex-column justify-content-between align-items-center">
+                    <div class="mid-card d-flex flex-column justify-content-center align-items-center">
+                        <h6>Active Channels</h6>
+                        <div class="d-flex justify-content-around align-items-center">
+                            <div class="mr-2">
+                                <i class="icon facebook-icon fa-brands fa-facebook"></i>
+                                <span class="ions-test">{{dealerships.data.ActiveChannels.facebook}}</span> posts
+                            </div>
+                            <div>
+                                <i class="icon whatsapp-icon fa-brands fa-whatsapp"></i>
+                                <span class="ions-test">{{dealerships.data.ActiveChannels.WhatsApp}}</span> posts
+                            </div>
+                        </div>
+                        <div class="mt-2">
+                            <i class="icon instagram-icon fa-brands fa-instagram"></i>
+                            <span class="ions-test">{{dealerships.data.ActiveChannels.Instagram}}</span> posts
+                        </div>
+                    </div>
+                    <div class="mid-card d-flex flex-column justify-content-center align-items-center">
+                        <h6>Inactive Channels</h6>
+                        <div>
+                            <i class="icon fa-brands fa-x-twitter"></i>
+                            <span class="ions-test">{{dealerships.data.InActiveChannels.facebook}}</span> posts
+                        </div>
+                        <div>
+                            <i class="icon fa fa-envelope" aria-hidden="true"></i>
+                            <span class="ions-test">{{dealerships.data.InActiveChannels.WhatsApp}}</span> posts
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex flex-column justify-content-between">
+                    <div class="last-card d-flex flex-column justify-content-center align-items-center">
+                        <div class="d-flex flex-row justify-content-around">
+                            <div>
+                                <h6>Total Campaigns</h6>
+                                <h5>{{dealerships.data.TotalCampaigns}} <span class="text-success size">+20%↑</span></h5>
+                                <p class="small-text">Compared to 800 last month</p>
+                            </div>
+
+                            <div>
+                                <h6> Campaigns/Active Dealer</h6>
+                                <h5>{{dealerships.data.CampaignsActiveDealer}}<span class="text-success size">+20%↑</span></h5>
+                                <p class="small-text">Compared to 800 last month</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="last-card d-flex flex-column justify-content-center align-items-center">
+                        <div class="d-flex flex-row justify-content-around">
+                            <div class="mr-2">
+                                <h6>Reach/Campaign</h6>
+                                <h5>{{dealerships.data.ReachCampaign}} <span class="text-success size">+20%↑</span></h5>
+                                <p class="small-text">Compared to 800 last month</p>
+                            </div>
+
+                            <div class="mr-2">
+                                <h6>Total Posts</h6>
+                                <h5>{{dealerships.data.TotalPosts}} <span class="text-success size">+20%↑</span></h5>
+                                <p class="small-text">Compared to 800 last month</p>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </section>
+
+
+        <!---spend analysis-->
+        <section class="section">
+            <div class="grid mt-5">
+                <div class="secound-card">
+                    <div class="title">Spend Analysis</div>
+                    <hr>
+                    <div class="d-flex flex-row justify-content-between align-items-center p-2">
+                        <div class="pie-chart-container ml-0">
+                            <canvas id="dealersPieChart2"></canvas>
+                        </div>
+                        <div>
+                            <p class="dealers mb-0">
+                                <span class="circle whatsapp"></span>
+                                Whatsapp Spends - <span class="amount">₹ {{dealerships.data.spendAnalysis.WhatsappSpends}}  </span>
+                                <span class="text-success size">+20%↑</span>
+                            </p>
+                            <p class="small-text">Compared to 800 last month</p>
+                            <p class="dealers mb-0"><span class="circle facebook"></span>Facebook Spends - <span
+                                    class="amount">₹{{dealerships.data.spendAnalysis.FacebookSpends}}  </span><span class="text-success size">+20%↑</span></p>
+                            <p class="small-text">Compared to 800 last month</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex flex-column justify-content-between">
+                    <div class="sec-mid-card">
+                        <h6>Total Campaigns</h6>
+                        <h4>{{dealerships.data.CampaignsActiveDealer}}  <span class="text-success size">+20%↑</span></h4>
+                        <p class="small-text">Compared to 800 last month</p>
+                    </div>
+                    <div class="sec-mid-card">
+                        <h6>Reach/Campaign</h6>
+                        <h4>{{dealerships.data.CampaignsActiveDealer}} <span class="text-success size">+20%↑</span></h4>
+                        <p class="small-text">Compared to 800 last month</p>
+                    </div>
+                </div>
+
+                <div class="sec-mid-card">
+                    <div><b>Subscription Growth Rate</b></div>
+                    <hr>
+                    <canvas id="subscriptionChart"></canvas>
+                </div>
+            </div>
+        </section>
+        <br>
+        <br>
+
+        <section class="section">
+            <!-- <h1 class="title">Channel Performance</h1> -->
+            <div class="grid two-column">
+                <!-- Chart Section -->
+                <div class="section1"><br><br>
+                    <h1 class="title">Channel Performance</h1>
+                    <canvas id="channelPerformanceChart"></canvas>
+                    <p class="small-text">Performance increment/decrement % is shown against each channel compared to
+                        last month</p>
+                </div>
+
+                <!-- Visibility Section -->
+                <div class="section1">
+                    <h1 class="title">Visibility</h1>
+                    <div class="grid four-grid">
+                        <div class="card1">
+                            <h6>Total Reach</h6>
+                            <p>{{dealerships.data.TotalReach}}</p>
+                            <p class="small-text">Compared to 800 last month</p>
+                        </div>
+                        <div class="card1">
+                            <h6>Total Engagement</h6>
+                            <p>{{dealerships.data.TotalEngagement}}</p>
+                            <p class="small-text">Compared to 800 last month</p>
+                        </div>
+                        <div class="card1">
+                            <h6>Engagement Rate</h6>
+                            <p>{{dealerships.data.EngagementRate}}</p>
+                            <p class="small-text">Compared to 800 last month</p>
+                        </div>
+                        <div class="card1">
+                            <h6>Conversion Rate</h6>
+                            <p>{{dealerships.data.ConversionRate}}</p>
+                            <p class="small-text">Compared to 800 last month</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <br>
+        </section>
+
+        <section class="section">
+            <!-- <h1 class="title">Sentiment Analysis</h1> -->
+
+            <div class="grid two-column">
+                <div class="section1">
+                    <h1 class="title">Sentiment Analysis</h1>
+                    <div class="pie-chart-container1">
+                        <canvas id="sentimentChart"></canvas>
+                    </div>
+                </div>
+                <hr>
+                <div class="section1">
+                    <h1 class="title">Inbox Analysis</h1>
+                    <div class="grid four-grid">
+                        <div class="card1">
+                            <h6>Total Messages Received</h6>
+                            <p>{{dealerships.data.TotalSubscribers}}</p>
+                            <p class="small-text">Compared to 800 last month</p>
+                        </div>
+                        <div class="card1">
+                            <h6>Total Responses Sent</h6>
+                            <p>{{dealerships.data.Newsubscribers}}</p>
+                            <p class="small-text">Compared to 800 last month</p>
+                        </div>
+                        <div class="card1">
+                            <h6>Leads Generated</h6>
+                            <p>{{dealerships.data.TotalReach}}</p>
+                            <p class="small-text">Compared to 800 last month</p>
+                        </div>
+                        <div class="card1">
+                            <h6>Qualified Leads</h6>
+                            <p>{{dealerships.data.TotalEngagement}}</p>
+                            <p class="small-text">Compared to 800 last month</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section3">
+                <h1 class="title">Dealerships at a Glance</h1>
+                <b>Total: 32 Dealers</b>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Dealer</th>
+                            <th>Status</th>
+                            <th>Location</th>
+                            <th>Total Views</th>
+                            <th>Total Spends</th>
+                            <th>Active Campaigns</th>
+                            <th>New Subscribers</th>
+                            <th>Engagement Rate</th>
+                            <th>Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for dealer in dealerships.data.dealers %}
+                        <tr>
+                            <td>{{ dealer.dealer }}</td>
+                            <td>{{ dealer.status }}</td>
+                            <td>{{ dealer.location }}</td>
+                            <td>{{ dealer.total_views }}</td>
+                            <td>{{ dealer.total_spends }}</td>
+                            <td>{{ dealer.active_campaigns }}</td>
+                            <td>{{ dealer.new_subscribers }}</td>
+                            <td>{{ dealer.engagement_rate }}</td>
+                            <td><button class="btn1">View Report</button></td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+</div>
+<script>
+    /*Total Dealers*/
+    const ActiveDealers=`{{dealerships.data.TotalDealers.active}}`;
+    const InactiveDealers=`{{dealerships.data.TotalDealers.inactive}}`;
+    const dealersPieCtx = document.getElementById('dealersPieChart').getContext('2d');
+    new Chart(dealersPieCtx, {
+        type: 'pie',
+        data: {
+            datasets: [{
+                data: [ActiveDealers, InactiveDealers],
+                backgroundColor: ['#f44336', '#4caf50'],
+            }],
+        },
+        options: {
+            plugins: {
+                legend: {
+                    display: false,
+                },
+            },
+        },
+    });
+
+    /*spend analysis*/
+
+    const dealersPieChat = document.getElementById('dealersPieChart2').getContext('2d');
+    new Chart(dealersPieChat, {
+        type: 'pie',
+        data: {
+            datasets: [{
+                data: [40, 60],
+                backgroundColor: ['#4caf50', '#ede328'],
+            }],
+        },
+        options: {
+            plugins: {
+                legend: {
+                    display: false,
+                },
+            },
+        },
+    });
+
+    const Jan =`{{dealerships.data.subscriptionGrowthRate.labels[0]}}`;
+const Feb =`{{dealerships.data.subscriptionGrowthRate.labels[1]}}`;
+const Mar =`{{dealerships.data.subscriptionGrowthRate.labels[2]}}`;
+const Apr =`{{dealerships.data.subscriptionGrowthRate.labels[3]}}`;
+const Jan1 =`{{dealerships.data.subscriptionGrowthRate.data[0]}}`;
+const Feb1 =`{{dealerships.data.subscriptionGrowthRate.data[1]}}`;
+const Mar1 =`{{dealerships.data.subscriptionGrowthRate.data[2]}}`;
+const Apr1 =`{{dealerships.data.subscriptionGrowthRate.data[3]}}`;
+    const ctx = document.getElementById('subscriptionChart').getContext('2d');
+    const subscriptionChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: [Jan, Feb, Mar, Apr],
+            datasets: [{
+                label: 'Subscribers',
+                data: [Jan1, Feb1, Mar1, Apr1],
+                borderColor: 'green',
+                borderWidth: 2,
+                fill: false,
+                tension: 0.2,
+                pointBackgroundColor: 'green',
+                pointRadius: 5
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    display: false
+                }
+            },
+            scales: {
+                x: {
+                    grid: {
+                        display: true,
+                        color: '#000'
+                    },
+                    ticks: {
+                        color: '#000'
+                    }
+                },
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        stepSize: 5,
+                        color: '#000'
+                    },
+                    grid: {
+                        color: '#000'
+                    }
+                }
+            }
+        }
+    });
+
+    // Channel Performance Bar Chart
+    const FacebookAds =`{{dealerships.data.ChannelPerformance.labels[0]}}`;
+const WhatsApp =`{{dealerships.data.ChannelPerformance.labels[1]}}`;
+const Instagram =`{{dealerships.data.ChannelPerformance.labels[2]}}`;
+const email =`{{dealerships.data.ChannelPerformance.labels[3]}}`;
+const SEO =`{{dealerships.data.ChannelPerformance.labels[4]}}`;
+const FacebookAds1 =`{{dealerships.data.ChannelPerformance.data[0]}}`;
+const WhatsApp1 =`{{dealerships.data.ChannelPerformance.data[1]}}`;
+const Instagram1 =`{{dealerships.data.ChannelPerformance.data[2]}}`;
+const email1 =`{{dealerships.data.ChannelPerformance.data[3]}}`;
+const SEO1 =`{{dealerships.data.ChannelPerformance.data[4]}}`;
+    const ctx1 = document.getElementById('channelPerformanceChart').getContext('2d');
+    new Chart(ctx1, {
+        type: 'bar',
+        data: {
+            labels: [FacebookAds, WhatsApp, Instagram, email, SEO],
+            datasets: [{
+                label: 'Performance (%)',
+                data: [FacebookAds1, WhatsApp1, Instagram1, email1, SEO1],
+                backgroundColor: '#4e73df',  // Same color for all bars
+                borderRadius: 5,
+                barThickness: 30,
+            }]
+        },
+        options: {
+            indexAxis: 'y',
+            plugins: {
+                legend: { display: false },
+                tooltip: { enabled: false },
+            },
+            scales: {
+                x: {
+                    beginAtZero: true,
+                    max: 100,
+                    grid: { display: false },
+                    ticks: { display: false },
+                },
+                y: {
+                    grid: { display: false },
+                    ticks: { display: true },
+                }
+            },
+            animation: {
+                onComplete: function () {
+                    const ctx = this.chart.ctx;
+                    const dataset = this.chart.data.datasets[0];
+                    const meta = this.chart.getDatasetMeta(0);
+                    meta.data.forEach((bar, index) => {
+                        const percentage = dataset.data[index];
+                        const fontSize = 14;
+                        ctx.fillStyle = '#fff';
+                        ctx.font = fontSize + 'px Arial';
+                        ctx.textAlign = 'center';
+                        ctx.textBaseline = 'middle';
+                        const x = bar.x;
+                        const y = bar.y;
+                        const width = bar.width;
+                        const height = bar.height;
+                        ctx.fillText(percentage + '%', x, y);
+                    });
+                }
+            }
+        }
+    });
+
+    // Sentiment Analysis Pie Chart
+    const PositiveReview=`{{dealerships.data.SentimentAnalysis.PositiveReview}}`;
+    const NegativeReview=`{{dealerships.data.SentimentAnalysis.NegativeReview}}`;    
+    const NeutralReview=`{{dealerships.data.SentimentAnalysis.NeutralReview}}`;
+    const sentimentCtx = document.getElementById('sentimentChart').getContext('2d');
+    new Chart(sentimentCtx, {
+        type: 'pie',
+        data: {
+            labels: ['Positive Reviews (40%)', 'Neutral Reviews (35%)', 'Negative Reviews (25%)'],
+            datasets: [{
+                data: [PositiveReview, NegativeReview, NeutralReview],
+                backgroundColor: ['#4caf50', '#ffeb3b', '#f44336']
+            }]
+        },
+        options: {
+            plugins: {
+                legend: {
+                    position: 'right',
+                    labels: {
+                        boxWidth: 15,
+                        font: { size: 14 }
+                    }
+                }
+            }
+        }
+    });
+
+    /*Print functionality*/
+    document.querySelector('.link-in-iframe1').addEventListener('click', () => {
+        const sections = document.querySelectorAll('.section'); // Select all sections
+        const printWindow = window.open('', '', 'height=600,width=800');
+
+        // Prepare the print document
+        printWindow.document.write(`
+        <html>
+            <head>
+                <title>Print Report</title>
+                <style>
+                    body {
+                        margin: 0;
+                        padding: 0;
+                        font-family: Arial, sans-serif;
+                    }
+                    .section {
+                        margin: 10px auto;
+                        padding: 10px;
+                        border: 1px solid #ccc;
+                        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+                        page-break-inside: avoid; /* Prevent section splitting */
+                    }
+                    .page-container {
+                        page-break-after: always; /* Ensure each page container ends cleanly */
+                    }
+                </style>
+            </head>
+            <body>
+    `);
+
+        // Process sections for printing
+        const processSectionsForPrint = async () => {
+            let pageContainerHTML = ''; // Collect sections for each page
+            let sectionCount = 0; // To track section number for the first page
+
+            // First, process the first page with 3 sections
+            for (let i = 0; i < 3 && i < sections.length; i++) {
+                const section = sections[i];
+                const canvas = await html2canvas(section, {
+                    scale: 2,
+                    useCORS: true
+                });
+                const imgData = canvas.toDataURL('image/png');
+                pageContainerHTML += `<img src="${imgData}" style="width: 100%; height: auto;" />`;
+            }
+
+            // Add the first page with 3 sections
+            printWindow.document.write(`<div class="page-container">${pageContainerHTML}</div>`);
+            pageContainerHTML = ''; // Reset for the next pages
+
+            // Now process remaining pages with 2 sections each
+            for (let i = 3; i < sections.length; i++) {
+                const section = sections[i];
+                const canvas = await html2canvas(section, {
+                    scale: 2,
+                    useCORS: true
+                });
+                const imgData = canvas.toDataURL('image/png');
+                pageContainerHTML += `<img src="${imgData}" style="width: 100%; height: auto;" />`;
+
+                // After every 2 sections, we create a new page
+                if ((i - 2) % 2 === 0 || i === sections.length - 1) {
+                    printWindow.document.write(`<div class="page-container">${pageContainerHTML}</div>`);
+                    pageContainerHTML = ''; // Reset for the next set of sections
+                }
+            }
+
+            // Close the print document
+            printWindow.document.write('</body></html>');
+            printWindow.document.close();
+
+            // Trigger print
+            setTimeout(() => {
+                printWindow.print();
+            }, 500);
+        };
+
+        processSectionsForPrint();
+    });
+
+    /*Download functionality*/
+    document.querySelector('.download-btn').addEventListener('click', () => {
+        const { jsPDF } = window.jspdf;
+        const pdf = new jsPDF('p', 'mm', 'a4');
+        const pageWidth = pdf.internal.pageSize.getWidth();
+        const pageHeight = pdf.internal.pageSize.getHeight();
+        const html2canvasOptions = { scale: 2 };
+
+        const sections = document.querySelectorAll('.section'); // Select all sections
+        let yPosition = 0;
+
+        const renderSectionsToPDF = async () => {
+            for (let i = 0; i < sections.length; i++) {
+                const section = sections[i];
+
+                // Render the section into a canvas
+                const canvas = await html2canvas(section, html2canvasOptions);
+                const imgData = canvas.toDataURL('image/png');
+                const canvasHeight = (canvas.height * pageWidth) / canvas.width; // Scale height based on width
+
+                if (yPosition + canvasHeight > pageHeight) {
+                    // If the section doesn't fit on the current page, add a new page
+                    pdf.addPage();
+                    yPosition = 0;
+                }
+
+                // Add the section image to the PDF
+                pdf.addImage(imgData, 'PNG', 0, yPosition, pageWidth, canvasHeight);
+                yPosition += canvasHeight;
+            }
+
+            // Save the final PDF
+            pdf.save('Dealership-Report.pdf');
+        };
+
+        renderSectionsToPDF();
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>

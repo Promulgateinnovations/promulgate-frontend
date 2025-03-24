@@ -1,0 +1,41 @@
+.page_add_templates .animate__animated.animate__zoomIn .swal2-icon {
+    border: none;
+    margin: 0px;
+}
+
+.campaign_content {
+    margin: 0;
+}
+
+.warning_note {
+    color: red;
+    font-size: 12px;
+}
+
+.wa_preview {
+    width: 300px;
+    margin: 0 auto;
+    border: 1px solid #dee2e6;
+    padding: 10px;
+    text-align: left;
+}
+
+.wa_preview_header_img {
+    width: 100%;
+    height: 200px;
+}
+
+.wa_preview_header {
+    font-weight: bold;
+    font-size: 18px;
+    color: #525f7f;
+}
+
+.wa_preview_body {
+    font-size: 15px;
+    color: #525f7f;
+}
+
+.wa_button_section {
+    text-align: center;
+}

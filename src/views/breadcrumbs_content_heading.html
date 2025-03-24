@@ -1,0 +1,43 @@
+<div class="row mb-3">
+	<div class="col-7 main_breadcrumbs_div">
+		{% if breadcrumbs|length > 0 %}
+		{% set breadcrumbs_count = breadcrumbs|length %}
+		<div class="breadcrumb-section">
+			<nav aria-label="breadcrumb">
+				<ol class="breadcrumb breadcrumb-links breadcrumb-dark">
+					{% for breadcrumb_no, breadcrumb in breadcrumbs %}
+						{% if ((breadcrumb_no+1) == breadcrumbs_count) or breadcrumb.url == false %}
+						<li class="breadcrumb-item active ">
+							<a>
+								{% if breadcrumb.icon %}
+								<i class="{{ breadcrumb.icon }}"></i>
+								{% endif %}
+								{% if breadcrumb.title %}
+								<span>{{ breadcrumb.title }}</span>
+								{% endif %}
+							</a>
+						</li>
+						{% else %}
+						<li class="breadcrumb-item">
+							<a href="{{ breadcrumb.url }}">
+								{% if breadcrumb.icon %}
+								<i class="{{ breadcrumb.icon }}"></i>
+								{% endif %}
+								{% if breadcrumb.title %}
+								<span>{{ breadcrumb.title }}</span>
+								{% endif %}
+							</a>
+						</li>
+						{% endif %}
+					{% endfor %}
+				</ol>
+			</nav>
+		</div>
+		{% endif %}
+	</div>
+	<div class="col-5 page_content_heading_div">
+		{% if page_content_heading %}
+			<h5 class="page_content_heading">{{ page_content_heading | title }}</h5>
+		{% endif %}
+	</div>
+</div>

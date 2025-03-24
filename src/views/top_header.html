@@ -1,0 +1,53 @@
+<header class="header top-nav-bar">
+	<div class="top-nav-content">
+		<div class="logo-div">
+			<a href="{% if logged_in_user.username == 'admin' %}{{ url('super_agency_list') }}{% else %}{{ url('/homepage') }}{% endif %}">
+				<img alt="Promulgate Logo" class="logo" src="{{ images_path }}/logo.png"/>
+			</a>
+		</div>
+		<div class="d-flex align-items-center">
+			{% if logged_in_user %}
+			<div class="top-nav-menus">
+				<a class="nav-link" href="{% if logged_in_user.username == 'admin' %}{{ url('super_agency_list') }}{% else %}{{ url('/homepage') }}{% endif %}">
+					<i class="fa fa-home"></i>
+					<span class="nav-link-text">Home</span>
+				</a>
+			</div>
+			{% if user_organization %}
+				<div class="btn-group">
+					<a class="nav-link" href="#">
+						<i class="fa fa-building"></i>
+						<span class="nav-link-text">{{user_organization.name}}</span>
+					</a>
+				</div>
+			{% endif %}
+			<div class="btn-group">
+				<button type="button" class="btn btn-outline-promulgate-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					<span class="avatar-img">
+						<i class="fa fa-user-circle"></i>
+					</span>
+					<span>{{ logged_in_user.name }}</span>
+				</button>
+				<ul class="dropdown-menu dropdown-menu promulgate-theme">
+					<!-- <li>
+						<a class="dropdown-item" href="#"><i class="fa fa-user"> </i><span>Profile</span></a>
+					</li>
+					<li>
+						<hr class="dropdown-divider">
+					</li> -->
+					<li>
+						<a class="g_id_signout dropdown-item" href="{{ url('user_logout') }}"><i class="fa fa-sign-out"> </i><span>Logout</span></a>
+					</li>
+				</ul>
+			</div>
+			{% else %}
+			<div class="top-nav-menus no_login">
+				<a class="nav-link" href="{{ url('/login') }}">
+					<i class="fa fa-sign-in"></i>
+					<span class="nav-link-text">Login</span>
+				</a>
+			</div>
+			{% endif %}
+		</div>
+	</div>
+</header>

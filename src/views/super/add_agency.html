@@ -1,0 +1,48 @@
+{% include '/super/tab_bar.html' %}
+<div class="admin_content active">
+	<div class="row content_header">
+		<div class="col-6">
+			<h1 class="title">
+				<i class="fa fa-user-plus"></i> Add New
+			</h1>
+		</div>
+		<div class="col-6 action_buttons">
+			<a class="btn btn-promulgate-primary btn-sm" href="{{ url('super_agency_list') }}">
+				Agencies
+				<i class="fa fa-users"></i>
+			</a>
+		</div>
+	</div>
+
+
+	<div class="content_body">
+		<form class="needs-validation" action="{{ form_action }}" novalidate>
+
+			<div class="row">
+				<div class="col-lg-6">
+					<div class="form-group">
+						<label for="agency_name" class="form-label">Agency Name</label>
+						<input type="text" class="form-control" name="agency_name" id="agency_name" placeholder="Agency Name">
+					</div>
+					<div class="form-group">
+						<label for="agency_email" class="form-label">Agency Email</label>
+						<input type="email" class="form-control" name="email" id="agency_email" placeholder="Agency Email">
+					</div>
+					<div class="form-group">
+						<label for="agency_description" class="form-label">Description</label>
+						<textarea class="form-control" id="agency_description" name="agency_description" placeholder="Description"></textarea>
+					</div>
+				</div>
+				<input type="hidden" name="form_source" id="form_source" value="add_new_agency">
+			</div>
+			<div class="row">
+				<div class="text-center">
+					<button class="btn btn-min btn-promulgate-primary" type="submit" id="form_main_action_button">
+							Create
+					</button>
+					<button class="btn btn-min btn-outline-danger" type="reset">Ignore Changes</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>

@@ -1,0 +1,34 @@
+<link rel="stylesheet" type="text/css" href="/assets/css/leads_section/leads_details.css">
+<div class="lead_table_parent">
+    <div class="content_body">
+        <table class="table table-bordered align-middle">
+            <thead>
+                <tr>
+                    <th>Sr no.</th>
+                    <th>Start</th>
+                    <th>End</th>
+                    <th>Sent</th>
+                    <th>Delivered</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% set counter = 0 %}
+                {% for analyt in whatsAppAnalytics.analytics.data_points %}
+                {% set counter = counter + 1 %}
+                <tr>
+                    <td>{{counter}}</td>
+                    <td>{{ analyt.start|date('d/m/Y') }}</td>
+                    <td>{{ analyt.start|date('d/m/Y') }}</td>
+                    <td>{{analyt.sent}}</td>
+                    <td>{{analyt.delivered}}</td>
+                </tr>
+                {% endfor %}
+                {% if whatsAppAnalytics|length == 0 %}
+                <tr>
+                    <td colspan="5">No Records Found</td>
+                </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>

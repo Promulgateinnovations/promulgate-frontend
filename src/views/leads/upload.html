@@ -1,0 +1,100 @@
+    <link rel="stylesheet" type="text/css" href="/assets/css/leads_section/upload.css">
+    <div class="container-fluid">
+        <!-- file upload section  -->
+        <form id='form' method="post" enctype="multipart/form-data" >
+            <input type="hidden" name="org_id" id="org_id_value" value="{{org_id}}"/>
+            <div class="file-upload">
+                <i class="fa fa-upload" style="font-size:36px"></i>
+                <h4>Drag and Drop File</h4>
+                <h4>or</h4>
+                <label class="btn-browse">
+                    <input name="file" type="file" id="excel_file" name="excel-file" accept=".xlsx, .xls" required onchange="showname()"/>
+                    Browse File
+                </label>
+                <p class="selected_file_name hide_selected_name mt-2 mb-0"><b>Selected File:</b> <span id="selected_file_name"></span></p>
+            </div>
+            
+            <!-- source section  -->
+            <div class="source">
+                <h5 class="sourcefont">Source</h5>
+                <input name="source" type="text" id="lead_source" placeholder="Lead Source" required>
+            </div>
+
+            <!-- description section  -->
+            <div class="description">
+                <h5 class="descfont">Description</h5>
+                <textarea name="desc"  rows="6" id="lead_desc" placeholder="Lead Description" required></textarea>
+            </div>
+
+            <!-- buttons section  -->
+            <div class="btns">
+                <input class="btn btn-promulgate-primary btn-sm" type="submit" name="save" value="Save Changes">
+                <a href="/leads/leads">
+                    <button class="btn btn-light btn-sm" type="button">
+                        Cancel
+                    </button>
+                </a>
+                
+            </div>
+        </form>
+    </div>
+    <script type="text/javascript" src="{{ js_path }}/lib/jquery-3.6.0.min.js"></script>
+
+
+    <script>
+        //action="{{ form_action }}"
+        const form = document.getElementById("form");
+
+        form.addEventListener("submit", submitForm);
+
+
+        function submitForm(e) {
+            e.preventDefault();
+          
+            const lead_source = document.getElementById("lead_source");
+            const lead_desc = document.getElementById("lead_desc");
+            const files = document.getElementById("excel_file");
+            const org_id = document.getElementById("org_id_value");
+            const formData = new FormData();
+            formData.append("source", lead_source.value);
+            formData.append("lead_desc", lead_desc.value);
+            formData.append("org_id", org_id.value);
+            formData.append("file_name", Date.now() + "-" + files.files[0].name);
+            formData.append("action_type", e.submitter.attributes.name.value);
+            formData.append("excel-file", files.files[0]);
+
+            var baseUrl =  "{{API_BASE_URL}}";
+         
+            fetch(baseUrl+"/api/v1/uploadLeadsData", {
+                method: 'POST',
+                body: formData,
+                headers: {
+                'Authorization': "Basic {{API_TOKEN}}"
+                }
+            }).then((res) => {
+                if(res.status == 200 || res.status == 201) {
+                    showSuccessMessageToast('Leads Uploaded.', 'Success', {
+                        'positionClass': 'toast-top-right'
+                    });
+                    window.location.href="/leads/leads";
+                } else {
+                    showErrorMessageToast('Leads Not Uploaded', 'Error', {
+                        'positionClass': 'toast-top-right'
+                    });
+                }
+            })
+            .catch((err) => {
+                showErrorMessageToast('Leads Not Uploaded', 'Error', {
+                    'positionClass': 'toast-top-right'
+                });
+                console.log("Error occured", err)
+            });
+        }
+
+        function showname() {
+            document.getElementsByClassName("selected_file_name")[0].classList.remove("hide_selected_name");
+            var name = document.getElementById('excel_file'); 
+            document.getElementById("selected_file_name").innerHTML = name.files.item(0).name;
+        }
+
+    </script>

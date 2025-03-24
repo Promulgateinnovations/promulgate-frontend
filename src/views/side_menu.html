@@ -1,0 +1,132 @@
+<nav class="side-bar-nav sidemenu transition-ease">
+	<div class="nav-bar-collapse">
+		<div class="tab-bar-nav">
+			<div class="nav-bar-collapse">
+				<ul class="nav-bar-nav">
+					<li class="nav-item">
+						<a class="nav-link {% if 'admin_' in current_url_name %} active {% endif %}" href="{{ url('admin_organization') }}" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="navbar-dashboards">
+							<i class="fa fa-user"></i>
+							<span class="nav-link-text">Admin</span>
+							<span class="nav-link-icon"><i class="fa fa-caret-down {% if 'admin_' in current_url_name %}  fa-caret-up {% endif %}"></i></span>
+						</a>
+						<div class="collapse {% if 'admin_' in current_url_name %} show {% endif %} sub-menu">
+							<ul class="nav nav-sm flex-column">
+								<li class="nav-item {% if current_url_name == 'admin_organization' %} active {% endif %}">
+									<a class="Organization" href="{{ url('admin_organization') }}">Organization</a>
+								</li>
+								<li class="nav-item {% if current_url_name == 'admin_team_list' %} active {% endif %}">
+									<a class="Team" href="{{ url('admin_team_list') }}">Team</a>
+								</li>
+								<li class="nav-item {% if current_url_name == 'admin_business' %} active {% endif %}">
+									<a class="Business" href="{{ url('admin_business') }}">Business</a>
+								</li>
+								<li class="nav-item {% if current_url_name == 'admin_connections' %} active {% endif %}">
+									<a class="Connections" href="{{ url('admin_connections') }}">Connections</a>
+								</li>
+							</ul>
+						</div>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link {% if 'campaign_' in current_url_name %}  active {% endif %}"
+								href="{{ url('campaign_initiation') }}" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="navbar-dashboards">
+							<i class="fa fa-group"></i>
+							<span class="nav-link-text">Campaign</span>
+							<span class="nav-link-icon"><i class="fa fa-caret-down {% if 'campaign_' in current_url_name %}  fa-caret-up {% endif %}"></i></span>
+						</a>
+						<div class="collapse {% if 'campaign_' in current_url_name %} show {% endif %} sub-menu">
+							<ul class="nav nav-sm flex-column">
+								<li class="nav-item {% if current_url_name == 'campaign_initiation' %} active {% endif %}">
+									<a class="Business" href="{{ url('campaign_initiation') }}">Initiation</a>
+								</li>
+								<li class="nav-item {% if current_url_name != 'campaign_initiation' and current_campaign_strategy_definition_details.campaign_id == 0 %} active {% endif %}">
+									<a class="campaign" href="{{ url('campaign_strategy_definition', {}) }}">Start new campaign</a>
+								</li>
+								{% if current_campaign_strategy_definition_details.campaign_id != 0 %}
+								<li class="nav-item {% if current_url_name != 'campaign_initiation' %} active {% endif %}">
+									<a class="campaign"
+											href="{{ url('campaign_strategy_definition', {'campaign_id': current_campaign_strategy_definition_details.campaign_id }) }}">Edit campaign</a>
+								</li>
+								{% endif %}
+							</ul>
+						</div>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link {% if 'leads' in current_url_name %} active {% endif %}" href="{{ url('leads') }}" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="navbar-dashboards">
+							<i class="fa fa-bullhorn"></i>
+							<span class="nav-link-text">Lead Generation</span>
+							<span class="nav-link-icon"><i class="fa fa-caret-down {% if 'leads' in current_url_name %}  fa-caret-up {% endif %}"></i></span>
+						</a>
+						<div class="collapse {% if 'leads' in current_url_name %} show {% endif %} sub-menu">
+							<ul class="nav nav-sm flex-column">
+								<li class="nav-item {% if current_url_name == 'leads' %} active {% endif %}">
+									<a href="{{ url('leads') }}">Leads</a>
+								</li>
+								<li class="nav-item {% if current_url_name == 'broadcasted_leads' %} active {% endif %}">
+									<a href="{{ url('broadcasted_leads') }}">Broadcasted Leads</a>
+								</li>
+							</ul>
+						</div>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link {% if 'analytics_' in current_url_name or current_url_name == 'social_inbox' %} active {% endif %}" href="{{ url('analytics_channels') }}" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="navbar-dashboards">
+							<i class="fa fa-line-chart"></i>
+							<span class="nav-link-text">Analytics</span>
+							<span class="nav-link-icon">
+								<i class="fa fa-caret-down {% if 'analytics_' in current_url_name or current_url_name == 'social_inbox' %} fa-caret-up {% endif %}"></i>
+							</span>
+						</a>
+						<div class="collapse {% if 'analytics_' in current_url_name or current_url_name == 'social_inbox' %} show {% endif %} sub-menu">
+							<ul class="nav nav-sm flex-column">
+								<li class="nav-item {% if current_url_name == 'analytics_channels' %} active {% endif %}">
+									<a href="{{ url('analytics_channels') }}">Subscription Analysis</a>
+								</li>
+								<li class="nav-item {% if current_url_name == 'analytics_campaigns' %} active {% endif %}">
+									<a href="{{ url('analytics_campaigns') }}">Campaigns Analysis</a>
+								</li>
+								<li class="nav-item {% if current_url_name == 'analytics_competitors' %} active {% endif %}">
+									<a href="{{ url('analytics_competitors') }}">Competitor Analysis</a>
+								</li>
+								<li class="nav-item {% if current_url_name == 'analytics_YouTube' %} active {% endif %}">
+									<a href="{{ url('analytics_YouTube') }}">YouTube Analysis</a>
+								</li>
+								<li class="nav-item {% if current_url_name == 'analytics_views' %} active {% endif %}">
+									<a href="{{ url('analytics_views') }}">Viewership Analysis</a>
+								</li>
+								<li class="nav-item {% if current_url_name == 'analytics_mentions' %} active {% endif %}">
+									<a href="{{ url('analytics_mentions') }}">Sentiment Analysis</a>
+								</li>
+								<li class="nav-item {% if current_url_name == 'analytics_whatsapp' %} active {% endif %}">
+									<a href="{{ url('analytics_whatsapp') }}">Whatsapp Analysis</a>
+								</li>
+								<li class="nav-item {% if current_url_name == 'social_inbox' %} active {% endif %}">
+									<a href="{{ url('social_inbox', {type : 'incoming', filterBy: 'all'}) }}">Social Inbox</a>
+								</li>
+							</ul>
+						</div>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link {% if 'reports_' in current_url_name %} active {% endif %}" href="{{ url('reports_overview') }}" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="navbar-dashboards">
+							<i class="fa fa-clipboard"></i>		
+							<span class="nav-link-text">Reports</span>
+							<!-- <span class="nav-link-icon">
+								<i class="fa fa-caret-down {% if 'reports_' in current_url_name %} fa-caret-up {% endif %}"></i>
+							</span> -->
+						</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link {% if 'dealership_' in current_url_name %} active {% endif %}" href="{{ url('dealership_overview') }}" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="navbar-dashboards">
+							<i class="fa fa-file"></i>
+							<span class="nav-link-text">Dealership Report</span>
+							<!-- <span class="nav-link-icon">
+								<i class="fa fa-caret-down {% if 'reports_' in current_url_name %} fa-caret-up {% endif %}"></i>
+							</span> -->
+						</a>
+					</li>
+				</ul>
+			</div>
+			<div class="toggle-icon">
+				<i class="fa fa-chevron-left" aria-hidden="true"></i>
+			</div>
+		</div>
+	</div>
+</nav>

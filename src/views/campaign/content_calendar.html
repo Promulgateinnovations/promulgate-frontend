@@ -1,0 +1,75 @@
+{% include '/campaign/tab_bar.html' %}
+
+<div class="campaign_content active">
+	<div class="row content_header">
+		<div class="col-6">
+			<h1 class="title">
+				<i class="fa fa-calendar"></i> Content Calendar
+			</h1>
+		</div>
+	</div>
+	<div class="content_body">
+		<form class="needs-validation" action="{{ form_action }}" novalidate>
+			{% if current_calendar_events %}
+			{% set social_icon_size = 'fa-2x' %}
+			<div class="row mb-5">
+				<div class="calendar_events">
+					{% for date, only_events in current_calendar_events %}
+					<div class="calendar_date_group">
+						<div class="header">{{ date }}</div>
+						<div class="date_events">
+							{% for event in only_events %}
+							<div class="calendar_card {{ event.status }}">
+								<div class="body">
+									<div class="left">
+										<h3>{{ event.time }}</h3>
+										<small class="text-muted">
+											<b>{{ event.status | upper }}</b>
+										</small>
+									</div>
+									<span class="social-icons icon-rounded icon-zoom">
+											{% set social_icon_unique_key = event.unique_name %}
+											{% include 'social_icons.html' %}
+										</span>
+								</div>
+							</div>
+							{% endfor %}
+						</div>
+					</div>
+					{% endfor %}
+				</div>
+			</div>
+			<input type="hidden" name="campaign_id" id="campaign_id" value="{{ current_campaign_strategy_definition_details.campaign_id }}">
+			<input type="hidden" name="form_source" id="form_source" value="content_calendar">
+			<input type="hidden" name="button_source" id="button_source" value>
+			<div class="row">
+				<div class="form-group">
+					<label for="review_comments">Comments</label>
+					<textarea type="textarea" class="form-control" id="review_comments" name="review_comments" placeholder="Specify change comments"></textarea>
+				</div>
+			</div>
+			<div class="row">
+				<div class="text-center">
+				{% if logged_in_user.role != 'CREATOR' %}
+					<button class="btn btn-min btn-success button_source" data-b-source="approve_campaign" type="submit">Approve</button>
+				{% endif %}
+					<button class="btn btn-min btn-promulgate-primary" type="submit">Send for review</button>
+				</div>
+			</div>
+			{% else %}
+			<div class="row mt-5">
+				<div class="text-center">
+					<h3 class="mb-5 page-data-needed-block animate__animated animate__pulse">No schedules are available</h3>
+					<h5>
+						<a href="{{ url('campaign_content_curation', {'campaign_id': current_campaign_strategy_definition_details.campaign_id}) }}" class="btn btn-promulgate-secondary">
+							Schedule some posts
+						</a>
+					</h5>
+				</div>
+			</div>
+			{% endif %}
+		</form>
+	</div>
+</div>
+
+

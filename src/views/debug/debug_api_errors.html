@@ -1,0 +1,38 @@
+{% if debug_api_response_errors %}
+<div class="api-errors-block">
+	<div class="accordion" id="api_errors_accordion">
+		<div class="accordion-item">
+			<h2 class="accordion-header title" id="api_error_heading">
+				<span class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#api_error_content" aria-expanded="false" aria-controls="api_error_content">
+					API Errors
+				</span>
+			</h2>
+			<div id="api_error_content" class="accordion-collapse show"
+					aria-labelledby="api_error_heading" data-bs-parent="#api_errors_accordion">
+				<div class="accordion-body">
+					<table class="table">
+						<tr>
+							<th>Request URL</th>
+							<th>Request Body</th>
+							<th>API Response Code</th>
+							<th>Error Type</th>
+							<th>Error Message</th>
+						</tr>
+						{% for error_no, response_error in debug_api_response_errors %}
+						<tr>
+							<td>{{ response_error.request_data.url }}</td>
+							<td class="json_text">
+								<pre> {{ response_error.request_data.body }}</pre>
+							</td>
+							<td>{{ response_error.status_code }}</td>
+							<td>{{ response_error.error_type | upper }}</td>
+							<td>{{ response_error.error_message }}</td>
+						</tr>
+						{% endfor %}
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endif %}

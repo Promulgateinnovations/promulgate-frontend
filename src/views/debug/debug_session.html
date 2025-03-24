@@ -1,0 +1,19 @@
+{% if debug_session %}
+<div class="debug-session-block">
+	<div class="accordion" id="debug_session_accordion">
+		<div class="accordion-item">
+			<h2 class="accordion-header title" id="api_log_heading">
+				<span class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#debug_session_content" aria-expanded="false" aria-controls="debug_session_content">
+					Session
+				</span>
+			</h2>
+			<div id="debug_session_content" class="accordion-collapse show"
+					aria-labelledby="api_log_heading" data-bs-parent="#debug_session_accordion">
+				<div class="accordion-body">
+					<pre class="json_text">{{ debug_session | json_encode(constant('JSON_PRETTY_PRINT')) }}</pre>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endif %}

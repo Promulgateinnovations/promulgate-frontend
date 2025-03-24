@@ -1,0 +1,199 @@
+/* body{
+  background-color: rgb(209, 209, 209);
+  margin: 0;
+} */
+
+/* boxes */
+
+.bg_color {
+  background-color: rgb(209, 209, 209);
+}
+
+.box{
+  background-color: white;
+}
+
+/* heading of the box sections */
+.box-heading{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.box-heading h5{
+  font-weight: bold;
+}
+
+.box-heading h6{
+  color: gray;
+}
+
+/* first box buttons */
+.button-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 5px;
+}
+
+.button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  border: 5px solid #bbbdbe;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.3s;
+}
+
+.button img {
+  max-width: 20%;
+  max-height: 20%;
+  margin-bottom: 0.1rem;
+}
+
+.button:hover {
+  border-color: #00acee;
+}
+
+.label {
+  color: #000000;
+  font-size: 16px;
+  text-align: center;
+  margin-top: 5px;
+}
+
+.label h4{
+  color: gray;
+  font-size: 1.15rem;
+}
+
+/* contents inside the circle  */
+.circle-content{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.circle-content h3{
+  font-weight: 650;
+  margin: 0;
+  font-size: 18px;
+}
+
+.circle-content h5{
+  color: gray;
+  font-weight: 500;
+  font-size: 0.8rem;
+}
+
+/* progress bar */
+#progress-container {
+  width: 80%;
+  height: 18px;
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.progress-section {
+  height: 100%;
+  position: absolute;
+  transition: width 0.5s;
+}
+
+#section1 {
+  background-color: #15dd57;
+}
+
+#section2 {
+  background-color: #000000;
+}
+
+#section3 {
+  background-color: #dc6967;
+}
+
+/* progress text */
+.progress-text{
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  justify-content: space-between;
+}
+
+#text1{
+  color:#15dd57;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+#text2{
+  color:#000000;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+#text3{
+  color:#dc6967;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+/* sentiment meter status */
+.sentiment-status{
+  color: #15dd57;
+  text-align: center;
+  font-weight: 400;
+  font-size: 1.4rem;
+  margin-bottom: 1rem;
+}
+
+/* gender box */
+.gender-box{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.gender-box-inner{
+  display: flex;
+  padding: 0.7rem;
+  justify-content: center;
+  padding-left: 1rem;
+  padding-right: 2rem;
+}
+
+.gender-box-inner img{
+  width: 45%;
+}
+
+.male-text{
+  color:#18aeb9;
+  display: flex;
+  flex-direction: column;
+  padding-top: 0.5rem;
+}
+
+.male-text h2{
+  font-weight: 800;
+}
+
+.female-text{
+  color:#d93636;
+  display: flex;
+  flex-direction: column;
+  padding-top: 0.5rem;
+}
+
+.female-text h2{
+  font-weight: 800;
+}

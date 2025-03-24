@@ -1,0 +1,12 @@
+<div class="tab-container">
+	<div class="uitabs">
+		<ul class="uitabs-container">
+			<li>
+				<a class="Organization  {% if current_url_name == 'agency_details' %} active {% endif %}" href="{{ url('agency_details') }}">Agency</a>
+			</li>
+			<li>
+				<a class="Team {% if 'agency_team_' in current_url_name %} active {% endif %}" href="{{ url('agency_team_members') }}">Agency Employees</a>
+			</li>
+		</ul>
+	</div>
+</div>

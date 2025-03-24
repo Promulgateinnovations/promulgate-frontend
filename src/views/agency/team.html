@@ -1,0 +1,133 @@
+{% include '/agency/tab_bar.html' %}
+<div class="admin_content active">
+	<div class="row content_header">
+		<div class="col-6">
+			<h1 class="title">
+				<i class="fa fa-users"></i> Team
+			</h1>
+		</div>
+		{% if user_agency.id %}
+		<div class="col-6 action_buttons">
+			<a class="btn btn-promulgate-primary btn-sm" href="{{ url('agency_add_new_member') }}">
+				<span>Add New</span>
+				<i class="fa fa-user-plus"></i>
+			</a>
+		</div>
+		{% endif %}
+	</div>
+	<div class="content_body">
+		{% if user_agency.id %}
+		<div class="row">
+			{% if teams_list %}
+			<table class="table data-table-emply table-hover table-bordered align-middle ">
+				<thead>
+				<tr class="text-center table-head-bg">
+					<th>First Name</th>
+					<th>Last Name</th>
+					<th>Username</th>
+					<th>Email</th>
+					<th>User Status</th>
+					<th>Actions</th>
+				</tr>
+				</thead>
+				<tbody>
+				{% for team in teams_list %}
+				<tr>
+					<td>{{ team.firstName }}</td>
+					<td>{{ team.lastName }}</td>
+					<td>{{ team.userName }}</td>
+					<td>{{ team.email }}</td>
+					<td>{{ team.userStatus }}</td>
+					<td class="text-center">
+						<a href="#" 
+						class="btn btn-outline-promulgate-primary edit-employee-btn small-btn"
+						data-bs-toggle="modal"
+						data-bs-target="#editAgencyEmployee"
+						userid="{{ team.userId }}"
+						agencyid="{{ team.agencyAgencyId }}">
+						<span><i class="fa fa-edit"></i></span>
+						</a>
+						<a href="javascript:void(0);" 
+						class="btn btn-outline-danger deleteUser small-btn" 
+						data-user-id="{{ team.userId }}" 
+						data-agency-id="{{ team.agencyAgencyId }}">							<span><i class="fa fa-trash-o"></i></span>
+						</a>
+					</td>
+				</tr>
+				{% endfor %}
+				</tbody>
+			</table>
+			{% else %}
+			<div class="row mt-5">
+				<div class="text-center">
+					<h3>No team members are available</h3>
+					<a class="btn btn-promulgate-primary btn-min mt-5" href="{{ url('agency_add_new_member') }}">
+						<span>Add New</span>
+						<i class="fa fa-plus"></i>
+					</a>
+				</div>
+			</div>
+			{% endif %}
+		</div>
+		{% else %}
+		<div class="row mt-5">
+			<div class="text-center">
+				<h3 class="page-data-needed-block animate__animated animate__pulse">Please create Agency for adding your team!</h3>
+				<h5 class="mt-5">
+					<a href="{{ url('agency_details') }}" class="btn btn-promulgate-secondary">
+						Create Agency
+					</a>
+				</h5>
+			</div>
+		</div>
+		{% endif %}
+	</div>
+</div>
+
+
+<!-- Edit Agency Employee -->
+<div class="modal fade" id="editAgencyEmployee" tabindex="-1" aria-labelledby="editEmployeeModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+	  <div class="modal-content">
+		<div class="modal-header">
+		  <h5 class="modal-title" id="editEmployeeModalLabel">Edit Employee</h5>
+		</div>
+		<div class="modal-body">
+		  <form id="editAgencyEmployee">
+			<input type="hidden" id="emplyUserId">
+			<input type="hidden" id="emplyAgencyId">
+			
+			<div class="mb-3">
+			  <label for="emplyFirstName" class="form-label">First Name</label>
+			  <input type="text" class="form-control" id="emplyFirstName" required>
+			</div>
+			<div class="mb-3">
+			  <label for="emplyLastName" class="form-label">Last Name</label>
+			  <input type="text" class="form-control" id="emplyLastName" required>
+			</div>
+			<div class="mb-3">
+			  <label for="emplyUserName" class="form-label">Username</label>
+			  <input type="text" class="form-control" id="emplyUserName" required>
+			</div>
+			<div class="mb-3">
+			  <label for="emplyEmail" class="form-label">Email</label>
+			  <input type="email" class="form-control" id="emplyEmail" required>
+			</div>
+			<div class="mb-3">
+			  <label for="emplyStatus" class="form-label">User Status</label>
+			  <select class="form-control" id="emplyStatus">
+				<option value="active">Active</option>
+				<option value="inactive">Inactive</option>
+			  </select>
+			</div>
+			<div class="modal-footer">
+				<button class="btn btn-min btn-promulgate-primary" type="submit">
+					Update
+			</button>
+			<button class="btn btn-min btn-outline-danger" data-bs-dismiss="modal" type="reset">Close</button>
+			</div>
+		  </form>
+		</div>
+	  </div>
+	</div>
+</div>

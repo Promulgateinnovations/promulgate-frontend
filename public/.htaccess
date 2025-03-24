@@ -1,0 +1,20 @@
+Options -Indexes
+Options +FollowSymLinks
+
+SetEnv TZ Asia/Kolkata
+
+RewriteEngine on
+
+# Exclcuding DAM - PIM CORE url from frontend
+RewriteCond %{REQUEST_URI} !^/dam
+
+# Force SSL - Rewrite always to www and https
+#RewriteCond %{HTTPS} off [OR]
+#RewriteCond %{HTTP_HOST} !^www\. [NC]
+#RewriteCond %{HTTP_HOST} ^(?:www\.)?(.+)$ [NC]
+#RewriteRule ^ https://www.%1%{REQUEST_URI} [L,NE,R=	301]
+
+RewriteCond %{SCRIPT_FILENAME} !-f
+RewriteCond %{SCRIPT_FILENAME} !-d
+RewriteCond %{SCRIPT_FILENAME} !-l
+RewriteRule ^(.*)$ index.php/$1

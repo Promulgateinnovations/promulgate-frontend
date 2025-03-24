@@ -1,0 +1,46 @@
+{% include '/super/tab_bar1.html' %}
+
+<div class="admin_content active">
+    <div class="row content_header">
+        <div class="col-9">
+            <h1 class="title">
+                <p style="color: rgb(91, 107, 122); font-size: 18px;">{{agency_name}}</p>
+                <i class="fa fa-building"></i> Organization Details
+            </h1>
+        </div>
+        <div class="action_buttons col-3">
+            <a href="{{ url('super_agency_list') }}" class="btn btn-promulgate-primary">Back to SuperAgency</a>
+    </div>
+    </div>
+
+    <div class="content_body">
+        <div class="row">
+            <table class="table data-table table-hover table-bordered align-middle size">
+                <thead>
+                    <tr class="text-center table-head-bg">
+                        <th>Organization Name</th>
+                        <th>Organization Alias</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for organization in organizations_list %}
+                    <tr>
+                        <td>{{ organization.name }}</td>  <!-- Display organization name -->
+                        <td>{{ organization.aliasName }}</td>  <!-- Organization URL -->
+                        <td>{{ organization.orgStatus }}</td> 
+                        <td class="text-center">
+                            <input type="hidden" name="form_source" id="form_source" value="{{ user_organization.id }}">
+                            <a href="{{ url('get_campaigns', { organization_id: organization.orgId }) }}" 
+                               class="link-in-iframe btn btn-sm btn-outline-promulgate-primary">
+                                <span><i class="fa fa-eye"></i> View Campaigns</span>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>                
+            </table>
+        </div>
+    </div>
+</div>
