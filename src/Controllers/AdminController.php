@@ -339,17 +339,17 @@ class AdminController extends BaseController
 		}
 
 		
-	 	// $LinkedInClient = new \LinkedIn\Client(env('LINKEDIN_CLIENT_ID'), env('LINKEDIN_CLIENT_SECRET'));
+	 	$LinkedInClient = new \LinkedIn\Client(env('LINKEDIN_CLIENT_ID'), env('LINKEDIN_CLIENT_SECRET'));
 
-		// $LinkedInClient->setRedirectUrl(getAbsoluteUrl('oauth_linkedin_callback', NULL, [
-		// 	'source' => 'connection',
-		// ], [
-		// 	'NO_DEBUG' => false,
-		// ]));
+		$LinkedInClient->setRedirectUrl(getAbsoluteUrl('oauth_linkedin_callback', NULL, [
+			'source' => 'connection',
+		], [
+			'NO_DEBUG' => false,
+		]));
 
-		// 		// P($final_organization_connections);
-		// //Saving state in session & validate once we receive authorization code for security
-		// Session::set('linkedin_oauth_state', $LinkedInClient->getState());
+				// P($final_organization_connections);
+		//Saving state in session & validate once we receive authorization code for security
+		Session::set('linkedin_oauth_state', $LinkedInClient->getState());
 
 
 		$this->setViewData('connections.html',
@@ -369,8 +369,8 @@ class AdminController extends BaseController
 				'facebook_graph_api_version'      => env('FACEBOOK_GRAPH_API_VERSION'),
 				'GOOGLE_OAUTH_CLIENT_ID'          => env('GOOGLE_OAUTH_CLIENT_ID'),
 				'GOOGLE_YOUTUBE_API_KEY'          => env('GOOGLE_YOUTUBE_API_KEY'),
-				// 'linkedin_oauth_authorization_url' => $LinkedInClient->getLoginUrl(['r_emailaddress', 'r_liteprofile', 'w_member_social', 'rw_organization_admin', 'r_organization_social', 'w_organization_social', 'w_member_social', 'r_1st_connections_size']),
-				'linkedin_oauth_authorization_url' => [],
+				'linkedin_oauth_authorization_url' => $LinkedInClient->getLoginUrl(['r_emailaddress', 'r_liteprofile', 'w_member_social', 'rw_organization_admin', 'r_organization_social', 'w_organization_social', 'w_member_social', 'r_1st_connections_size']),
+				// 'linkedin_oauth_authorization_url' => [],
 				'CONNECTION_OAUTH_STATUS'          => json_encode(Session::pull('CONNECTION_OAUTH_STATUS') ?? []),
 				'organization_name'                => $this->adminModel->getOrganizationDetails($this->organizationId)['body']['data']['name'] ?? '',
 				]
