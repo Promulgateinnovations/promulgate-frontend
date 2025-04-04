@@ -2821,11 +2821,7 @@ class ConfigureLinkedInConnection {
   };
 }
 
-function configureLinkedInConnection(connection_configuration_toggle_element, connection_selector) {
-  let linkedInConfiguration = new ConfigureLinkedInConnection();
-  linkedInConfiguration.setData(connection_configuration_toggle_element, connection_selector);
-  linkedInConfiguration.checkLoginStatus();
-}
+
 
 // Called from handleConfigurationConnections dynamically
 function configureGoogleDriveConnection(
